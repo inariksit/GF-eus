@@ -7,7 +7,8 @@ concrete GrammarEus of Grammar = open MorphoEus, Prelude in {
       -- {s : Case => Str ; a : Agr} ; 
     VP = MorphoEus.VP ;  
       -- {v : AgrVerb ; compl : Str} ;
-    AP = {s : Str} ;
+    -- AP = {s : Str} ;
+    AP = {s : Str ; artic : Str } ;
     CN = Noun ;           -- {s : Number => Str} ;
     Det = {s : Str ; n : Number} ;
     N = Noun ;            -- {s : Number => Str} ;
@@ -85,7 +86,7 @@ concrete GrammarEus of Grammar = open MorphoEus, Prelude in {
 
     UseN n = n ;
 
-    UseA adj = adj ;
+    UseA adj = adj ; 
 
     UsePN pn = {
       s = \\_ => pn.s ;
@@ -98,7 +99,8 @@ concrete GrammarEus of Grammar = open MorphoEus, Prelude in {
       } ;
 
     ConjS  co x y = {s = x.s ++ co.s ++ y.s} ;
-    ConjAP co x y = {s = x.s ++ co.s ++ y.s} ;
+    --ConjAP co x y = {s = x.s ++ co.s ++ y.s } ;
+    ConjAP co x y = {s = x.s ++ co.s ++ y.s ; artic = y.artic } ;
 
     ConjNP co nx ny = {
       s = \\c => nx.s ! c ++ co.s ++ ny.s ! c ;
@@ -113,6 +115,26 @@ concrete GrammarEus of Grammar = open MorphoEus, Prelude in {
     -- Past = {s = [] ; t = TPast} ;
     -- Fut  = {s = [] ; t = TFut} ;
 
+    ---
+    -- Move to lexicon
+    ---
+
     and_Conj = {s = "eta" ; n = Pl} ; -- TODO: move to morph 
+
+    very_AdA = ss "oso" ;
+
+    we_NP = pronNP "gu" Pl Per1 ;
+
+    the_Det = mkDet "a" Sg ;
+    this_Det = mkDet "hau" Sg ;
+    these_Det = mkDet "hauek" Pl ;
+
+    by_Prep = ss "z" ;
+    with_Prep = ss "ekin" ;
+    in_Prep = ss "n" ;
+
+
+
+    here_Adv = ss "hemen" ;
 
 }

@@ -29,6 +29,11 @@ oper
     a : Agr
     } ; 
 
+  AP = { 
+    s : Str ;
+    artic : Str  
+  } ; 
+
   pronNP : (s : Str) -> Number -> Person -> NP =
   \s,n,p -> {
     s = table {
@@ -39,7 +44,10 @@ oper
     a =  Ag n p
     } ;
 
--- dakizu ? badakit!
+  mkDet : Str -> Number -> {s : Str ; n : Number} = \s,n -> {
+    s = s ;
+    n = n
+    } ;
 
   conjAgr : Number -> Agr -> Agr -> Agr = \n,xa,ya -> 
     case <xa,ya> of {
@@ -58,9 +66,8 @@ oper
       _                   => Per3
       } ;
 
-
   Noun : Type = {s : Str} ;
-  Adj  : Type = {s : Str} ;
+  Adj  : Type = {s : Str ; artic : Str } ; -- handi . handiago . handien
   Post : Type = {s : Str} ;
 
 --  mkNoun : Str -> Noun = \katu -> {
@@ -74,9 +81,12 @@ oper
 
   mkNoun : Str -> Noun = \s -> ss s ; 
 
-  mkAdj : Str -> Adj = \s -> ss s ;
 
-  mkPost : Str -> Post = \s -> ss s ;
+-- FUNCTION : InType -> OutType = InVar -> Function OutVar ; 
+
+  mkAdj : Str -> Str -> Adj ; 
+
+  mkAdj str article = {s = str ; artic = article } ; 
 
   neg : Bool -> Str = \b -> case b of {True => [] ; False => "ez"} ;
 

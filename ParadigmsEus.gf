@@ -12,7 +12,7 @@ oper
 
   mkA = overload {
     mkA : (small : Str) -> A 
-      = \a -> lin A (mkAdj a) ;
+      = \a -> lin A (mkAdj a "") ;
     } ;
 
 --  mkV = overload {
