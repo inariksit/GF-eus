@@ -56,7 +56,7 @@ oper
     mkClause : NounPhrase -> VerbPhrase -> Clause ;
     mkClause np vp = 
       let
-        presCl = np.s ! Abs ++ vp.compl ++ vp.s ! np.agr ; --later: choose present,
+        presCl = vp.adv ++ np.s ! Abs ++ vp.compl ++ vp.s ! np.agr ; --later: choose present,
 	someOtherTenseCl = "sentence in some other tense than present" ; -- choose some other tenses
       in ss presCl ;
       -- later:

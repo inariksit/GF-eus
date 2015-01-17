@@ -30,5 +30,7 @@ concrete VerbEus of Verb = CatEus ** open ResEus, Prelude in {
                            compl = comp.s ! Abs ; 
                            adv   = [] } ;
 
+    -- AdvVP : VP -> Adv -> VP ;
+    AdvVP vp adv = lin VP { s = vp.s ; compl = vp.compl ; adv = adv.s } ;
 
 }
