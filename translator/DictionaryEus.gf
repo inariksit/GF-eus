@@ -9,8 +9,10 @@ lin from_Prep = mkPrep "tik" ;
 lin to_Prep = mkPrep "ra" ;
 
 lin boy_N = mkN "mutil" ; 
+lin fire_N = mkN "su" ;
 lin house_N = mkN "etxe" ; 
 lin light_N = mkN "argi" ;
+lin water_N = mkN "ur" ;
 
 lin now_Adv = mkAdv "orain" ;
 
