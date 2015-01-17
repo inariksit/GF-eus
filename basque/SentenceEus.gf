@@ -9,5 +9,7 @@ concrete SentenceEus of Sentence = CatEus ** open TenseX, ResEus, VerbEus, Prelu
 
     --UseCl    : Temp -> Pol -> Cl  -> S ;
     --later : do something with params
-    UseCl temp pol cl = cl ; 
+    UseCl temp pol cl = {s = cl.s ! temp.t} ;
+      -- let clause = cl ! temp.t ;
+      -- in clause ;
 }
