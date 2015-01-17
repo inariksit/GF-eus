@@ -21,7 +21,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
       s = \\cas => cn.s ++ BIND ++ det.s ! det.nbr ! cas  ;
-      agr = SgP3 ; --TODO choose agreement based on det.nbr
+      agr = Hau ; --TODO choose agreement based on det.nbr
     } ;
 
     DetQuant quant num = {

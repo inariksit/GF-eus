@@ -7,10 +7,23 @@ resource ResEus = ParamX ** open Prelude in {
 
 param 
     Case = Erg | Abs | Dat ;
-    Agr  = SgP3 | Hargle | Bargle ; --TODO Ag Number Person ; 
---    Number = Sg | Pl ;
---    Person  P1 | P2 | P3 
+    Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
+
 oper 
+
+    getNum : Agr -> Number = \np ->
+      case np of {
+        (Ni|Hi|Zu|Hau)      => Sg ;
+        (Gu|Zuek|Hauek) => Pl 
+      } ;
+
+    getPers : Agr -> Person = \np ->
+      case np of {
+        (Ni|Gu)      => P1 ;
+        (Hi|Zu|Zuek) => P2 ;
+        (Hau|Hauek)  => P3
+      } ;
+
 -- Noun stuffs
     Noun : Type = {s : Str } ;
     Complement : Type = {s : Case => Str } ;
@@ -43,11 +56,77 @@ oper
     addCopula : Complement -> VerbPhrase = \comp ->
      lin VP {s    = copula ; compl = comp.s ! Abs ; adv = [] } ;
 
-    copula : Agr => Str =
-      table {SgP3 => "da" ; 
-             Hargle => "hargle" ; 
-             Bargle => "bargle" } ;
 
+    copulaNor : Agr => Str =
+      table {Ni => "naiz" ; 
+             Hi => "haiz" ; 
+             Zu => "zara" ; 
+             Hau => "da" ; 
+             Gu => "gara" ; 
+             Zuek => "zarete" ; 
+             Hauek => "dira" 
+       } ;
+
+    copulaNorNork : Agr * Agr => Str = 
+       -- Nork,Nor
+       table {
+              <Ni,Ni> => Prelude.nonExist ;
+              <Ni,Hi> => "nauk" | "naun" ; -- FIXME: Gender
+              <Ni,Zu> => "nauzu" ;
+              <Ni,Hau> => "nau" ;
+              <Ni,Gu> => Prelude.nonExist ; -- FIXME: Maybe this exists?
+              <Ni,Zuek> => "nauzue" ;
+              <Ni,Hauek> => "naute" ;
+              <Hi,Ni> => "haut" ;
+              <Hi,Hi> => Prelude.nonExist ; 
+              <Hi,Zu> => Prelude.nonExist ;
+              <Hi,Hau> => "hau" ;
+              <Hi,Gu> => "haugu" ;
+              <Hi,Zuek> => Prelude.nonExist ;
+              <Hi,Hauek> => "haute" ;
+              <Zu,Ni> => "zaitut" ;
+              <Zu,Hi> => Prelude.nonExist ;
+              <Zu,Zu> => Prelude.nonExist ;
+              <Zu,Hau> => "zaitu" ;
+              <Zu,Gu> => "zaitugu" ;
+              <Zu,Zuek> => Prelude.nonExist ;
+              <Zu,Hauek> => "zaituzte" ;
+              <Hau,Ni> => "dut" ;
+              <Hau,Hi> => "duk" | "dun" ; -- FIXME: Gender
+              <Hau,Zu> => "duzu" ;
+              <Hau,Hau> => "du" ;
+              <Hau,Gu> => "dugu" ;
+              <Hau,Zuek> => "duzue" ;
+              <Hau,Hauek> => "dute" ;
+              <Gu,Ni> => Prelude.nonExist ;
+              <Gu,Hi> => "gaituk" | "gaitun" ;
+              <Gu,Zu> => "gaituzu" ;
+              <Gu,Hau> => "gaitu" ;
+              <Gu,Gu> => Prelude.nonExist ;
+              <Gu,Zuek> => "gaituzue" ;
+              <Gu,Hauek> => "gaituzte" ;
+              <Zuek,Ni> => "zaituztet" ;
+              <Zuek,Hi> => Prelude.nonExist ;
+              <Zuek,Zu> => Prelude.nonExist ;
+              <Zuek,Hau> => "zaituzte" ;
+              <Zuek,Gu> => "zaituztegu" ;
+              <Zuek,Zuek> => Prelude.nonExist ;
+              <Zuek,Hauek> => "zaituztete" ;
+              <Hauek,Ni> => "ditut" ;
+              <Hauek,Hi> => "dituk" | "ditun" ; -- FIXME: Gender
+              <Hauek,Zu> => "dituzu" ;
+              <Hauek,Hau> => "ditu" ;
+              <Hauek,Gu> => "ditugu" ;
+              <Hauek,Zuek> => "dituzue" ;
+              <Hauek,Hauek> => "dituzte" 
+   } ;
+
+-- ibili, ibiltzen, ibiliko
+-- amildu, amiltzen, amilduko
+
+-- choose copula based on transitivity(argstruct) of main verb.
+
+    copula = copulaNor ;
 
 -- Clause stuffs
     --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
