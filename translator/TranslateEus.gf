@@ -4,6 +4,7 @@ concrete TranslateEus of Translate =
   NounEus,
   SentenceEus,
   VerbEus - [UseCopula],
+  AdverbEus,
   DictionaryEus ** 
 open ResEus, Prelude in {
 
