@@ -45,11 +45,11 @@ oper
 -- Verb stuffs
 
     Verb : Type = {prc : Tense => Str} ;
-    Verb1 : Type = Verb ** {s : Agr => Str} ;
-    Verb2 : Type = Verb ** {s : Agr => Agr => Str ; sc : Case} ; --grammatical subject can be nork or nori
-    Verb3 : Type = Verb ** {s : Agr => Agr => Agr => Str} ; --for Verb3 it's always nor nori nork
+    Verb1 : Type = Verb ** {s : Tense => Agr => Str} ;
+    Verb2 : Type = Verb ** {s : Agr => Tense => Agr => Str ; sc : Case} ; --grammatical subject can be nork or nori
+    Verb3 : Type = Verb ** {s : Agr => Agr => Tense => Agr => Str} ; --for Verb3 it's always nor nori nork
 
-    VerbPhrase : Type = {s     : Agr => Str ; --head of VP
+    VerbPhrase : Type = {s     : Tense => Agr => Str ; --head of VP
 			 prc   : Tense => Str ;
 			 sc    : Case ; -- subject case can be Erg or Dat
                          compl : Str ;  -- complement will be always in Abs, so plain Str is enough
@@ -68,69 +68,86 @@ oper
 	     adv = [] } ;
 
 
-    copulaNor : Agr => Str =
-      table {Ni => "naiz" ; 
-             Hi => "haiz" ; 
-             Zu => "zara" ; 
-             Hau => "da" ; 
-             Gu => "gara" ; 
-             Zuek => "zarete" ; 
-             Hauek => "dira" 
+
+    copulaNor : Tense => Agr => Str =
+      table {Past => table {Ni => "nintzen" ; 
+                    Hi => "hintzen" ; 
+                    Zu => "zinen" ; 
+                    Hau => "zen" ; 
+                    Gu => "ginen" ; 
+                    Zuek => "zineten" ; 
+                    Hauek => "ziren" } ;
+             Cond => table {Ni => "banintz" ; 
+                    Hi => "bahintz" ; 
+                    Zu => "bazina" ; 
+                    Hau => "balitz" ; 
+                    Gu => "bagina" ; 
+                    Zuek => "bazinete" ; 
+                    Hauek => "balira" } ;
+             -- Present and future are identical
+	     _ =>  table {Ni => "naiz" ; 
+                    Hi => "haiz" ; 
+                    Zu => "zara" ; 
+                    Hau => "da" ; 
+                    Gu => "gara" ; 
+                    Zuek => "zarete" ; 
+                    Hauek => "dira" }
        } ;
 
-    copulaNorNork : Agr => Agr => Str = 
+    copulaNorNork : Agr => Tense => Agr => Str = 
        -- Nor,Nork
        table {
-              Ni => table {Ni  => Prelude.nonExist ;
-                           Hi => "nauk" | "naun" ; -- FIXME: Gender
-                           Zu => "nauzu" ;
-                           Hau => "nau" ;
-                           Gu => Prelude.nonExist ; -- FIXME: Maybe this exists?
-                           Zuek   => "nauzue" ;
-                           Hauek  => "naute"  } ;
-              Hi => table {Ni    => "haut" ;
-                           Hi    => Prelude.nonExist ; 
-                           Zu    => Prelude.nonExist ;
-                           Hau   => "hau" ;
-                           Gu    => "haugu" ;
-                           Zuek  => Prelude.nonExist ;
-                           Hauek => "haute" } ;
-              Zu => table {Ni => "zaitut" ;
-                           Hi => Prelude.nonExist ;
-                           Zu => Prelude.nonExist ;
-                           Hau => "zaitu" ;
-                           Gu => "zaitugu" ;
-                           Zuek => Prelude.nonExist ;
-                           Hauek => "zaituzte" };
-              Hau => table {Ni => "dut" ;
+              -- Ni => table {_ => {Ni  => Prelude.nonExist ;
+              --              Hi => "nauk" | "naun" ; -- FIXME: Gender
+              --              Zu => "nauzu" ;
+              --              Hau => "nau" ;
+              --              Gu => Prelude.nonExist ; -- FIXME: Maybe this exists?
+              --              Zuek   => "nauzue" ;
+              --              Hauek  => "naute"  } } ;
+              -- Hi => table {Ni    => "haut" ;
+              --              Hi    => Prelude.nonExist ; 
+              --              Zu    => Prelude.nonExist ;
+              --              Hau   => "hau" ;
+              --              Gu    => "haugu" ;
+              --              Zuek  => Prelude.nonExist ;
+              --              Hauek => "haute" } ;
+              -- Zu => table {Ni => "zaitut" ;
+              --              Hi => Prelude.nonExist ;
+              --              Zu => Prelude.nonExist ;
+              --              Hau => "zaitu" ;
+              --              Gu => "zaitugu" ;
+              --              Zuek => Prelude.nonExist ;
+              --              Hauek => "zaituzte" };
+              Hau => table {_ => table {Ni => "dut" ;
                             Hi => "duk" | "dun" ; -- FIXME: Gender
                             Zu => "duzu" ;
                             Hau => "du" ;
                             Gu => "dugu" ;
                             Zuek => "duzue" ;
-                            Hauek => "dute" } ;
-              Gu => table {Ni => Prelude.nonExist ;
-                           Hi => "gaituk" | "gaitun" ;
-                           Zu => "gaituzu" ;
-                           Hau => "gaitu" ;
-                           Gu => Prelude.nonExist ;
-                           Zuek => "gaituzue" ;
-                           Hauek => "gaituzte" } ;
-              Zuek => table {Ni => "zaituztet" ;
-                             Hi => Prelude.nonExist ;
-                             Zu => Prelude.nonExist ;
-                             Hau => "zaituzte" ;
-                             Gu => "zaituztegu" ;
-                             Zuek => Prelude.nonExist ;
-                             Hauek => "zaituztete" } ;
-              Hauek => table {Ni => "ditut" ;
-                              Hi => "dituk" | "ditun" ; -- FIXME: Gender
-                              Zu => "dituzu" ;
-                              Hau => "ditu" ;
-                              Gu => "ditugu" ;
-                              Zuek => "dituzue" ;
-                              Hauek => "dituzte" }
-   } ;
+                            Hauek => "dute" } } ;
+	      _ => table {_ => \\_ =>  "hargle" } };
+              -- Gu => table {Ni => Prelude.nonExist ;
+              --              Hi => "gaituk" | "gaitun" ;
+              --              Zu => "gaituzu" ;
+              --              Hau => "gaitu" ;
+              --              Gu => Prelude.nonExist ;
+              --              Zuek => "gaituzue" ;
+              --              Hauek => "gaituzte" } ;
+              -- Zuek => table {Ni => "zaituztet" ;
+              --                Hi => Prelude.nonExist ;
+              --                Zu => Prelude.nonExist ;
+              --                Hau => "zaituzte" ;
+              --                Gu => "zaituztegu" ;
+              --                Zuek => Prelude.nonExist ;
+              --                Hauek => "zaituztete" } ;
+              -- Hauek => table {Ni => "ditut" ;
+              --                 Hi => "dituk" | "ditun" ; -- FIXME: Gender
+              --                 Zu => "dituzu" ;
+              --                 Hau => "ditu" ;
+              --                 Gu => "ditugu" ;
+              --                 Zuek => "dituzue" ;
+              --                 Hauek => "dituzte" }
+   --} ;
 
 -- ibili, ibiltzen, ibiliko
 -- amildu, amiltzen, amilduko
@@ -145,15 +162,10 @@ oper
 
     mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp ->
       let
-        subject  = np.s ! vp.sc ;
-	finverb  = vp.s ! np.agr ;
-	finverbPast = "past copula or some harglebargle" ; -- vp.s ! TODO
+        subject : Str = np.s ! vp.sc ;
       in 
       { s = table {
-          Pres => vp.adv ++ subject ++ vp.compl ++ vp.prc ! Pres ++ finverb ;
-	  Fut  => vp.adv ++ subject ++ vp.compl ++ vp.prc ! Fut ++ finverb ;
-          Past => vp.adv ++ subject ++ vp.compl ++ vp.prc ! Past ++ finverbPast ;
-	  _    => "conditional or something lol"
+          tense => vp.adv ++ subject ++ vp.compl ++ vp.prc ! tense ++ vp.s ! tense ! np.agr 
             }
       } ;
 }
