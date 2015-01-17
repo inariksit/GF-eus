@@ -19,13 +19,13 @@ oper
 
     Verb : Type = {s : Agr => Str} ;
     Verb2 : Type = Verb  ** {cas : Case} ;
-    VerbPhrase : Type = {s     : Str ;
-			 verb  : Agr => Str ;
+    VerbPhrase : Type = {s     : Agr => Str ;
                          compl : Str ; --chosen by the compl field of V2
                          adv   : Str } ; 
 
+    --will need something like this later
     complV2 : Verb2 -> NounPhrase -> VerbPhrase = \v2,np ->
-     {s = "hargle" ; verb = v2.s ; compl = np.s ! v2.cas ; adv = [] } ;
+     {s = v2.s ; compl = np.s ! v2.cas ; adv = [] } ;
 
 
 
@@ -37,7 +37,7 @@ oper
     mkClause : NounPhrase -> VerbPhrase -> Clause ;
     mkClause np vp = 
       let
-        presCl = np.s ! Abs ++ vp.compl ++ vp.verb ! np.agr ; --later: choose present,
+        presCl = np.s ! Abs ++ vp.compl ++ vp.s ! np.agr ; --later: choose present,
 	someOtherTenseCl = "sentence in some other tense than present" ; -- choose some other tenses
       in 
       { s = table {

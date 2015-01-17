@@ -16,7 +16,7 @@ concrete CatEus of Cat =
 
     
 
-    Comp = ResEus.Complement ; --{s : Case => Str } ;
+    Comp = {s : Case => Str } ;
 
     Num = {s : Str ; n : Number ; isNum : Bool} ;
 
