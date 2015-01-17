@@ -1,14 +1,7 @@
 --# -path=.:../basque
 
-concrete DictionaryEus of Dictionary = CatEus 
-** open ResEus, Prelude in {
+concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, Prelude in {
 
-oper mkN : Str -> N = \s -> lin N {s = s} ;
-oper mkA : Str -> A = \s -> lin A {s = s} ;
-oper mkV : Str -> V = \s -> lin V {s = table {_ => s}} ;
-oper mkV2 : Str -> V2 = \s -> lin V2 {s = table {_ => s} ; cas = Abs} ;
-oper mkAdv : Str -> Adv = \s -> lin Adv {s = s} ;
-oper mkPrep : Str -> Prep = \s -> lin Prep {s = s} ;
 
 lin in_Prep = mkPrep "n" ;
 
