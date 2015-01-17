@@ -4,6 +4,9 @@ concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, Prelude in {
 
 
 lin in_Prep = mkPrep "n" ;
+lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
+lin from_Prep = mkPrep "tik" ;
+lin to_Prep = mkPrep "ra" ;
 
 lin boy_N = mkN "mutil" ; 
 lin house_N = mkN "etxe" ; 
