@@ -13,12 +13,13 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
       s = table {
                  Sg => table {_ => "a"  } ; 
                  Pl => table {_ => "ak" } 
-                } 
+                } ;
     };
 
+    -- DetCN : Det -> CN -> NP
     DetCN det cn = {
-      s = \\nbr,cas => cn.s ++ det.s ! nbr ! cas  ;
-      isPron = False
+      s = \\cas => cn.s ++ det.s ! det.nbr ! cas  ;
+      agr = SgP3 ; --TODO choose agreement based on det.nbr
     } ;
 
     DetQuant quant num = {

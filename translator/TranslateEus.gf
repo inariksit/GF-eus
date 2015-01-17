@@ -3,7 +3,6 @@
 concrete TranslateEus of Translate = 
   NounEus,
   SentenceEus,
-
   DictionaryEus ** 
 open ResEus, Prelude in {
 

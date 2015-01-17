@@ -7,27 +7,42 @@ resource ResEus = ParamX ** open Prelude in {
 
 param
     Case = Erg | Abs | Dat ;
+    Agr  = SgP3 | Hargle | Bargle ; --TODO 
 
-  oper 
-    Noun = {s : Str } ;
+oper 
+-- Noun stuffs
+    Noun : Type = {s : Str } ;
+    Complement : Type = {s : Case => Str } ;
+    NounPhrase : Type = {s : Case => Str ; agr : Agr} ;
 
-  mkClause : (Polarity -> Str) -> Agr -> VP -> Clause = 
-    \sub,agr,vp -> {
-      s = \\t,a,b => 
+-- Verb stuffs
+
+    Verb : Type = {s : Agr => Str} ;
+    Verb2 : Type = Verb  ** {cas : Case} ;
+    VerbPhrase : Type = {s     : Str ;
+			 verb  : Agr => Str ;
+                         compl : Str ; --chosen by the compl field of V2
+                         adv   : Str } ; 
+
+    complV2 : Verb2 -> NounPhrase -> VerbPhrase = \v2,np ->
+     {s = "hargle" ; verb = v2.s ; compl = np.s ! v2.cas ; adv = [] } ;
+
+
+
+
+-- Clause stuffs
+    --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
+    Clause : Type = {s : Tense => Str} ; 
+
+    mkClause : NounPhrase -> VerbPhrase -> Clause ;
+    mkClause np vp = 
       let
-        c = (mkClausePlus sub agr vp).s ! t ! a ! b ;
-        --                 saan              sinust     aru    0
-        --       ma        olen     täna     sinust     aru    saanud
-        declCl = c.subj ++ c.fin ++ c.adv ++ c.compl ++ c.p ++ c.inf ++ c.ext ;
-        --                                [sind näha]  0      tahtnud
-        --      täna     olen     ma        sinust     aru    saanud
-        invCl = c.adv ++ c.fin ++ c.subj ++ c.compl ++ c.p ++ c.inf ++ c.ext
+        presCl = np.s ! Abs ++ vp.compl ++ vp.verb ! np.agr ; --later: choose present,
+	someOtherTenseCl = "sentence in some other tense than present" ; -- choose some other tenses
       in 
-         table {
-           SDecl  => declCl ;
-           SQuest => "al" ++ declCl ;
-           SInv   => invCl 
-         }
+      { s = table {
+              TPres => presCl ;
+      	       _    => someOtherTenseCl 
+            }
       } ;
-
 }

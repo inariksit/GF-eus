@@ -7,11 +7,13 @@ concrete VerbEus of Verb = CommonX ** open CatEus, ResEus, Prelude in {
     CompAP ap = {s = ap.s} ;
     CompNP np = {s = np.s} ; 
 
+    UseCopula = {s = "hargle" ; verb = copula ; compl = [] ; adv = [] } ;
+
     --UseComp : Comp -> VP ;
     --UseComp = useCopula ;
-    UseComp comp = lin VP {s     = copula ; 
-                           compl = comp.s ! Abs ; 
-                           adv   = [] } ;
+    -- UseComp comp = lin VP {verb  = copula ; 
+    --                        compl = comp.s ! Abs ; 
+    --                        adv   = [] } ;
 
 oper
     copula : Agr => Str =
@@ -21,5 +23,5 @@ oper
 
 
     useCopula : Comp -> VP = \comp ->
-     lin VP {s = copula ; compl = comp.s ! Abs ; adv = [] } ;
+     lin VP {s = "hargle" ; verb = copula ; compl = comp.s ! Abs ; adv = [] } ;
 }

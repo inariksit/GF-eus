@@ -8,10 +8,15 @@ concrete CatEus of Cat =
     Det = {s : Number => Case => Str ; cas : Case ; nbr : Number } ;
 
 -- Noun
+    N = ResEus.Noun ;
 
-    CN = {s : Str } ;
+    CN = ResEus.Noun ;       --{s : Str} ;
 
-    NP = {s : Number => Case => Str } ;
+    NP = ResEus.NounPhrase ; --{s : Case => Str ; agr : Agr} ;
+
+    
+
+    Comp = ResEus.Complement ; --{s : Case => Str } ;
 
     Num = {s : Str ; n : Number ; isNum : Bool} ;
 
@@ -19,7 +24,16 @@ concrete CatEus of Cat =
       s  : Number => Case => Str 
     } ;
 
+-- Adjective
+    A = ResEus.Noun ; 
+    AP = ResEus.NounPhrase ;
 
-    N  = Noun ;
+-- Verb
+    V  = ResEus.Verb ;
+    V2 = ResEus.Verb2 ;
+    VP = ResEus.VerbPhrase ; 
+
+-- Clause
+    Cl = ResEus.Clause ;
 
 }
