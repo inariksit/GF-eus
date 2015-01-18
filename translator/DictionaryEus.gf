@@ -5,14 +5,15 @@ concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, ResEus, Prel
 -- SECTION: Adpositions
 
 lin in_Prep = mkPrep "n" ;
-lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
 lin from_Prep = mkPrep "tik" ;
 lin to_Prep = mkPrep "ra" ;
+lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
 
 -- SECTION: Adjectives
 
 lin new_A = mkA "berri" ;
 lin big_A = mkA "handi" ;
+lin green_A = mkA "berde" ; 
 lin difficult_A = mkA "errazo" ;
 
 -- SECTION: Nouns
@@ -159,18 +160,54 @@ lin woman_N = mkN "emakume" ;
 lin worm_N = mkN "har" ;
 lin year_N = mkN "urte" ;
 
+lin baby_N = mkN "ume" ; -- FIXME: see child_N
 lin back_N = mkN "bizkar" ;
+lin bank_N = mkN "banku" ;
+lin bark_N = mkN "azal"  ; -- FIXME: ladrido
 lin belly_N = mkN "urdail" ;
 lin breast_N = mkN "bular" ;
+lin camera_N = mkN "kamera" ;
+lin cap_N = mkN "txapel" | mkN "tapoi" ; 
+lin car_N = mkN "automobil" ;
+lin carpet_N = mkN "alfonbra" ;
+lin ceiling_N = mkN "sabai" ;
+lin coat_N = mkN "beroki" ;
+lin cousin_N = mkN "lehengusu" ;
+lin cow_N = mkN "behi" ;
+lin fat_N = mkN "gantz" ;
+lin fingernail_N = mkN "azazkal" ;
+lin fog_N = mkN "laino" ;
+lin forest_N = mkN "baso" ;
+lin grass_N = mkN "belar" ;
+lin hair_N = mkN "ile" | mkN "adats" ;
+lin hat_N = mkN "kapela" ;
+lin hill_N = mkN "muino" ;
+lin horn_N = mkN "adar" ;
 lin husband_N = mkN "senar" ;
+lin king_N = mkN "errege" ;
+lin knee_N = mkN "belaun" ;
 lin leaf_N = mkN "orri" ;
+lin leather_N = mkN "larru" ;
+lin liver_N = mkN "gibel" ;
+lin louse_N = mkN "zorri" ;
+lin oil_N = mkN "olio" ;
+lin pen_N = mkN "boligrafo" ;
+lin priest_N = mkN "apaiz" | mkN "artzain" ; -- FIXME: split
+lin queen_N = mkN "erregina ;
+lin reason_N = mkN "arrazoi" ;
+lin rubber_N = mkN "goma" ;
+lin sheep_N = mkN "ardi" ;
+lin steel_N = mkN "altzairu" ;
+lin stove_N = mkN "berogailu" ;
 lin tail_N = mkN "buztan" ;
 lin tongue_N = mkN "mihi" ;
 lin wife_N = mkN "emazte" ;
+lin wood_N = mkN "zur" ; -- FIXME: leña, bosque
 
 -- SECTION: Adverbs 
 
 lin now_Adv = mkAdv "orain" ;
+lin again_Adv = mkAdv "berriz" ; 
 
 -- SECTION: Verbs
 
@@ -181,47 +218,12 @@ lin see_V2  = mkV2 "ikusi" ;
 
 -- SECTION: TODO
 
--- lin cousin_N = mkN "lehengusu" ;
--- lin priest_N = mkN "apaiz" | mkN "artzain" ; -- FIXME: split
-
--- lin ceiling_N = mkN "sabai" ;
--- lin baby_N = mkN "baby" ;
--- lin bank_N = mkN "bank" ;
--- lin camera_N = mkN "camera" ;
--- lin cap_N = mkN "cap" ;
--- lin car_N = mkN "car" ;
--- lin carpet_N = mkN "carpet" ;
--- lin coat_N = mkN "coat" ;
--- lin cow_N = mkN "cow" ;
--- lin distance_N3 = mkN3 (mkN "distance") fromP toP ;
 -- lin brother_N2 = mkN2 (mkN masculine (mkN "brother")) (mkPrep "of") ;
 -- lin father_N2 = mkN2 (mkN masculine (mkN "father")) (mkPrep "of") ;
 -- lin mother_N2 = mkN2 (mkN feminine (mkN "mother")) (mkPrep "of") ;
--- lin hat_N = mkN "hat" ;
--- lin hill_N = mkN "hill" ;
--- lin king_N = mkN masculine (mkN "king") ;
--- lin leather_N = mkN "leather" ;
--- lin oil_N = mkN "oil" ;
--- lin pen_N = mkN "pen" ;
--- lin queen_N = mkN feminine (mkN "queen") ;
--- lin rubber_N = mkN "rubber" ;
--- lin sheep_N = mk2N "sheep" "sheep" ;
--- lin steel_N = mkN "steel" ;
--- lin stove_N = mkN "stove" ;
--- lin wood_N = mkN "wood" ;
 -- lin ashes_N = mkN "ash" ; -- FIXME: plural only?
--- lin bark_N = mkN "bark" ;
--- lin fat_N = mkN "fat" ;
--- lin fingernail_N = mkN "fingernail" ;
--- lin fog_N = mkN "fog" ;
--- lin forest_N = mkN "forest" ;
--- lin grass_N = mkN "grass" ;
 -- lin guts_N = mkN "gut" ; -- FIXME: no singular
--- lin hair_N = mkN "hair" ;
--- lin horn_N = mkN "horn" ;
--- lin knee_N = mkN "knee" ;
--- lin liver_N = mkN "liver" ;
--- lin louse_N = mk2N "louse" "lice" ;
--- lin reason_N = mkN "reason" ;
+-- lin distance_N3 = mkN3 (mkN "distantzia") fromP toP ;
+
 }
 

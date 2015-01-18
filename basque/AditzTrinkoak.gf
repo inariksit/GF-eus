@@ -30,6 +30,26 @@ oper
 
     copulaNorNork : Agr => Tense => Agr => Str = table {
        -- Nor,Nork
+              Ni => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => "ninduten" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "ninduzuen" ;
+                              Hau => "ninduen" ;
+                              Hi => "ninduan" | "nindunan" ;
+                              Zu => "ninduzun" 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => Prelude.nonExist ;
+                              Hauek => "naute" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "nauzue" ;
+                              Hau => "nau" ;
+                              Hi => "nauk" | "naun" ;
+                              Zu => "nauzu" 
+                     }
+              } ;
               Gu => table {
                      Past => table {
                               Gu => Prelude.nonExist ;
@@ -68,26 +88,6 @@ oper
                               Hau => "ditu" ;
                               Hi => "dituk" | "ditun" ;
                               Zu => "dituzu" 
-                     }
-              } ;
-              Ni => table {
-                     Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => "ninduten" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "ninduzuen" ;
-                              Hau => "ninduen" ;
-                              Hi => "ninduan" | "nindunan" ;
-                              Zu => "ninduzun" 
-                     } ;
-                     _ => table { -- Pres
-                              Gu => Prelude.nonExist ;
-                              Hauek => "naute" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "nauzue" ;
-                              Hau => "nau" ;
-                              Hi => "nauk" | "naun" ;
-                              Zu => "nauzu" 
                      }
               } ;
               Zuek => table {
