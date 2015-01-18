@@ -12,7 +12,11 @@ concrete VerbEus of Verb = CatEus ** open ResEus, AditzTrinkoak, Prelude in {
     Slash2V3 v3 np = lin VPSlash {s = AditzTrinkoak.copulaNoriNorNork ! np.agr ;
 				  prc = v3.prc ;
 				  sc = Erg } ;
---    Slash3V3 : V3  -> NP -> VPSlash ;  -- give (it) to her
+
+    -- V3  -> NP -> VPSlash ;  -- give (it) to her
+    -- Slash2V3 v3 np = lin VPSlash {s = AditzTrinkoak.copulaNorNoriNork ! np.agr ;
+    -- 				  prc = v3.prc ;
+    -- 				  sc = Erg } ;
 
     --ComplSlash : VPSlash -> NP -> VP
     ComplSlash vps np = lin VP {s = vps.s ! np.agr ; --(Agr => Agr => Str) to (Agr => Str) 

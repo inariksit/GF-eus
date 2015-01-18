@@ -51,7 +51,7 @@ oper
     Verb : Type = {prc : Tense => Str} ;
     Verb1 : Type = Verb ** {s : Tense => Agr => Str} ;
     Verb2 : Type = Verb ** {s : Agr => Tense => Agr => Str ; sc : Case} ; --grammatical subject can be nork or nori
-    Verb3 : Type = Verb ; --** {s : Agr => Agr => Tense => Agr => Str} ; --for Verb3 it's always nor nori nork, and sc is Erg
+    Verb3 : Type = Verb ; --for Verb3, verb is always nor nori nork, and sc is Erg
 
     VerbPhrase : Type = {s     : Tense => Agr => Str ; --head of VP
 			 prc   : Tense => Str ;

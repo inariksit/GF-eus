@@ -256,8 +256,8 @@ lin again_Adv = mkAdv "berriz" ;
 lin walk_V = mkV "ibili" ;
 lin fall_V = mkV "amildu" ;
 
-lin see_V2  = mkV2 "ikusi" ;
-lin pay_V3  = mkV3 "igorri" ;
+lin see_V2  = mkV2 "ikusi" ; 
+lin pay_V3  = mkV3 "igorri" ; --FIXME: igorri means send, but send_V3 wasn't in Dictionary abstract syntax
 
 -- Section: TODO
 
