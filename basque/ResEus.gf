@@ -5,6 +5,7 @@ resource ResEus = ParamX ** open TenseX, Prelude in {
 
 param 
     Case = Erg | Abs | Dat ;
+--    Degree = Posit | Compar | Superl | Excess ;
     Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
     AgrValency = Nor | NorNork | NorNori | NorNoriNork ;
     Phono = FinalA | FinalR | FinalCons | FinalVow ; 
@@ -25,7 +26,7 @@ oper
       } ;
 
 -- Noun stuffs
-    Noun : Type = {s : Str ; ph : Phono} ;
+    Noun : Type = {s : Str ; stem : Str ; ph : Phono} ;
     Complement : Type = {s : Case => Str } ;
     NounPhrase : Type = {s : Case => Str ; agr : Agr} ;
 
@@ -38,7 +39,12 @@ oper
 -- last column is return type, all other columns are arguments
 -- exempelvis: 
 ---      { Abs => "hargle"; Erg => "bargle" }
--- the field .agr. is of type Agr.           
+-- the field .agr. is of type Agr.   
+
+
+-- Adjective stuffs
+
+    Adjective : Type = {s : Degree => Str ; ph : Phono} ;
 
 -- Verb stuffs
 

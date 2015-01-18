@@ -1,8 +1,11 @@
 resource ParadigmsEus = open Prelude, AditzTrinkoak, ResEus, CatEus, ParamX in {
 
 oper
-  mkN : Str -> N = \s -> lin N (mkNoun s) ;
-  mkA : Str -> A = \s -> lin A (mkNoun s) ;
+  mkN = overload {
+   mkN : Str -> N = \s -> lin N (mkNoun s) ;
+   mkN : Str -> Phono -> N = \s,ph -> lin N {s = s ; stem = s ; ph = ph } 
+  } ;
+  mkA : Str -> A = \s -> lin A (mkAdj s) ;
   mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s} ;
 
   mkPrc : Str -> (Tense => Str) = \ikusi ->
@@ -13,13 +16,32 @@ oper
 	      Fut  => ikusiko ;
               _    => ikusi } ;
 
-  mkNoun : Str -> Noun = \s -> {s = s ;
-                                ph = case last s of {
-				   "r" => FinalR ;
-				   "a" => FinalA ;
-				   ("e"|"i"|"o"|"u") => FinalVow ;
- 				   _   => FinalCons } ;
-                                } ; 
+  mkAdj : Str -> Adjective = \s -> let 
+                                   stem : Str = case last s of {
+				       "a" => init s ; 
+				       _   => s                } ;
+				   phono : Phono = case last s of {
+				       "a"               => FinalA ;
+				       "r"               => FinalR ;
+				       ("e"|"i"|"o"|"u") => FinalVow ;
+ 				       _                 => FinalCons } 
+			       in { s = table {Posit  => stem ;
+					       Compar => stem + "ago" ;
+					       Superl => stem + "en" } ;
+					      -- Excess => stem + "egi" } ;
+				    ph = phono } ; 
+  mkNoun : Str -> Noun = \s -> let 
+                                   stem : Str = case last s of {
+				       "a" => init s ; 
+				       _   => s } ;
+				   phono : Phono = case last s of {
+				       "a"               => FinalA ;
+				       "r"               => FinalR ;
+				       ("e"|"i"|"o"|"u") => FinalVow ;
+ 				       _                 => FinalCons } 
+			       in { s = s; stem = stem ; ph = phono } ; 
+
+
 
 
   mkV2 = overload {

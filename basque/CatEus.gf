@@ -25,8 +25,8 @@ concrete CatEus of Cat =
     } ;
 
 -- Adjective
-    A = ResEus.Noun ; 
-    AP = ResEus.NounPhrase ;
+    A = ResEus.Adjective ; 
+    AP = ResEus.Noun ; 
 
 -- Verb
     V  = ResEus.Verb1 ;

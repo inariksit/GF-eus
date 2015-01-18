@@ -1,6 +1,6 @@
 --# -path=.:../basque
 
-concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, Prelude in {
+concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, ResEus, Prelude in {
 
 -- SECTION: Adpositions
 
@@ -8,6 +8,12 @@ lin in_Prep = mkPrep "n" ;
 lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
 lin from_Prep = mkPrep "tik" ;
 lin to_Prep = mkPrep "ra" ;
+
+-- SECTION: Adjectives
+
+lin new_A = mkA "berri" ;
+lin big_A = mkA "handi" ;
+lin difficult_A = mkA "errazo" ;
 
 -- SECTION: Nouns
 
@@ -144,7 +150,7 @@ lin tree_N = mkN "zuhaitz" ;
 lin university_N = mkN "unibertsitate" ;
 lin village_N = mkN "herrixka" ;
 lin war_N = mkN "gerra" ;
-lin water_N = mkN "ur" ;
+lin water_N = mkN "ur" FinalCons ;
 lin wind_N = mkN "haize" ;
 lin window_N = mkN "leiho" ;
 lin wine_N = mkN "ardo" ;
