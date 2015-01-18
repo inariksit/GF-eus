@@ -74,15 +74,18 @@ oper
 
 -- Clause stuffs
     --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
-    Clause : Type = {s : Tense => Str} ; 
+    Clause : Type = {s : Tense => Polarity => Str} ; 
 
     mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp ->
       let
         subject : Str = np.s ! vp.sc ;
       in 
       { s = table {
-          tense => vp.adv ++ subject ++ vp.compl ++ vp.prc ! tense ++ vp.s ! tense ! np.agr 
-            }
+          tense => table {
+              Pos => vp.adv ++ subject ++ vp.compl ++ vp.prc ! tense ++ vp.s ! tense ! np.agr ;
+	      Neg => vp.adv ++ subject ++ "ez" ++ vp.s ! tense ! np.agr ++ vp.prc ! tense ++ vp.compl 
+              }
+          }
       } ;
 }
 
