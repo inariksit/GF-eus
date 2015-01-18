@@ -269,18 +269,16 @@ lin die_V = mkV "hil" ;
 lin travel_V = mkV "bidaiatu" ;
 
 lin see_V2  = mkV2 "ikusi" ;
-<<<<<<< HEAD
 lin learn_V2 = mkV2 "ikasi" ;
 lin write_V2 = mkV2 "idatzi" ;
 lin hit_V2 = mkV2 "jo" ;
 lin drink_V2 = mkV2 "edan" ;
 
 -- lin like_V2 = mkVX "gustatu" ; -- NOR-NORI
-=======
+
 lin pay_V3  = mkV3 "igorri" ;
 
 -- Section: TODO
->>>>>>> a9a50fc9a352a587e63e29a16c87e94f2115a6fa
 
 -- lin add_V3 = mkVX "erantsi" ;
 -- lin add_V3 = mkVX "gaineratu" ;
