@@ -8,8 +8,8 @@ resource ResEus = ParamX ** open TenseX, Prelude in {
 param 
     Case = Erg | Abs | Dat ;
     Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
-    --VTense = VPres | VProg | VFut ;
     AgrValency = Nor | NorNork | NorNori | NorNoriNork ;
+    Phono = FinalA | FinalR | FinalCons | FinalVow ; 
 
 oper 
 
@@ -27,7 +27,7 @@ oper
       } ;
 
 -- Noun stuffs
-    Noun : Type = {s : Str } ;
+    Noun : Type = {s : Str ; ph : Phono} ;
     Complement : Type = {s : Case => Str } ;
     NounPhrase : Type = {s : Case => Str ; agr : Agr} ;
 

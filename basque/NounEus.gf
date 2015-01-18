@@ -5,7 +5,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
   lin
 
     --UseN : N -> CN
-    UseN n = n ;
+    UseN n = n  ;
 
     NumSg = {s = []; n = Sg ; isNum = False} ; 
     NumPl = {s = []; n = Pl ; isNum = False} ; 
@@ -13,19 +13,31 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --DefArt : Quant
     DefArt = {
       s = table {
-                 Sg => table {_ => "a"  } ; 
-                 Pl => table {_ => "ak" } 
+                 Sg => table {Abs => table {FinalA => []   ;
+					    _      => "a" } ;
+		              Erg => table {FinalA => "k"  ;
+					    _      => "ak" } ;
+		              Dat => table {FinalA => "ri" ;
+					    _      => "ari" } }; 
+
+                 Pl => table {Abs => table {FinalA => "k" ; _ => "ak"};
+		              Erg => table {_ => "ek" } ;
+		              Dat => table {_ =>"iai" } }
+
                 } ;
     };
 
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
-      s = \\cas => cn.s ++ BIND ++ det.s ! det.nbr ! cas  ;
-      agr = Hau ; --TODO choose agreement based on det.nbr
+      s = \\cas => cn.s ++ BIND ++ det.s ! det.nbr ! cas ! cn.ph ;
+      agr = case det.nbr of {
+	      Sg => Hau ;
+	      Pl => Hauek 
+	    }
     } ;
 
     DetQuant quant num = {
-        s = \\nbr,cas => quant.s ! num.n ! Abs ;
+        s = \\nbr,cas,ph => quant.s ! num.n ! cas ! ph ;
         nbr = num.n ;
         cas = Abs 
     } ;

@@ -5,12 +5,12 @@ concrete CatEus of Cat =
 
   lincat
 
-    Det = {s : Number => Case => Str ; cas : Case ; nbr : Number } ;
+    Det = {s : Number => Case => Phono => Str ; cas : Case ; nbr : Number } ;
 
 -- Noun
-    N = ResEus.Noun ;
+    N = ResEus.Noun ;       --{s : Str ; ph = Phono} ;
 
-    CN = ResEus.Noun ;       --{s : Str} ;
+    CN = ResEus.Noun ;
 
     NP = ResEus.NounPhrase ; --{s : Case => Str ; agr : Agr} ;
 
@@ -21,7 +21,7 @@ concrete CatEus of Cat =
     Num = {s : Str ; n : Number ; isNum : Bool} ;
 
     Quant = {
-      s  : Number => Case => Str 
+      s  : Number => Case => Phono => Str 
     } ;
 
 -- Adjective
