@@ -28,6 +28,17 @@ oper
                     Hauek => "dira" }
        } ;
 
+   -- copulaNorNoriNork : Agr => Agr => Tense => Agr => Str = 
+   -- table {
+   --     _ => copulaNoriNork  --TODO hauria d'existir?
+   -- } ;
+
+   copulaNoriNorNork : Agr => Agr => Tense => Agr => Str = 
+   table {
+       _ => copulaNorNork 
+   } ;
+  
+
     copulaNorNork : Agr => Tense => Agr => Str = table {
        -- Nor,Nork
               Ni => table {

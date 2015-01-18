@@ -43,11 +43,13 @@ oper
 
 
 
-
   mkV2 = overload {
    mkV2 : Str -> V2 = \s -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = Erg} ;
    mkV2 : Str -> Case -> V2 = \s,cas -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = cas} ;
   } ;
+
+
+  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s } ;
 
   mkAdv : Str -> Adv = \s -> lin Adv {s = s} ;
   mkPrep : Str -> Prep = \s -> lin Prep {s = s} ;}

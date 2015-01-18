@@ -257,8 +257,9 @@ lin walk_V = mkV "ibili" ;
 lin fall_V = mkV "amildu" ;
 
 lin see_V2  = mkV2 "ikusi" ;
+lin pay_V3  = mkV3 "igorri" ;
 
--- SECTION: TODO
+-- Section: TODO
 
 -- lin brother_N2 = mkN2 (mkN masculine (mkN "brother")) (mkPrep "of") ;
 -- lin father_N2 = mkN2 (mkN masculine (mkN "father")) (mkPrep "of") ;

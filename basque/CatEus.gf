@@ -31,6 +31,7 @@ concrete CatEus of Cat =
 -- Verb
     V  = ResEus.Verb1 ;
     V2 = ResEus.Verb2 ;
+    V3 = ResEus.Verb3 ;
     VP = ResEus.VerbPhrase ; 
     VPSlash = ResEus.VPSlash ;
 
