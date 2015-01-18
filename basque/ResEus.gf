@@ -94,60 +94,149 @@ oper
                     Hauek => "dira" }
        } ;
 
-    copulaNorNork : Agr => Tense => Agr => Str = 
+    copulaNorNork : Agr => Tense => Agr => Str = table {
        -- Nor,Nork
-       table {
-              -- Ni => table {_ => {Ni  => Prelude.nonExist ;
-              --              Hi => "nauk" | "naun" ; -- FIXME: Gender
-              --              Zu => "nauzu" ;
-              --              Hau => "nau" ;
-              --              Gu => Prelude.nonExist ; -- FIXME: Maybe this exists?
-              --              Zuek   => "nauzue" ;
-              --              Hauek  => "naute"  } } ;
-              -- Hi => table {Ni    => "haut" ;
-              --              Hi    => Prelude.nonExist ; 
-              --              Zu    => Prelude.nonExist ;
-              --              Hau   => "hau" ;
-              --              Gu    => "haugu" ;
-              --              Zuek  => Prelude.nonExist ;
-              --              Hauek => "haute" } ;
-              -- Zu => table {Ni => "zaitut" ;
-              --              Hi => Prelude.nonExist ;
-              --              Zu => Prelude.nonExist ;
-              --              Hau => "zaitu" ;
-              --              Gu => "zaitugu" ;
-              --              Zuek => Prelude.nonExist ;
-              --              Hauek => "zaituzte" };
-              Hau => table {_ => table {Ni => "dut" ;
-                            Hi => "duk" | "dun" ; -- FIXME: Gender
-                            Zu => "duzu" ;
-                            Hau => "du" ;
-                            Gu => "dugu" ;
-                            Zuek => "duzue" ;
-                            Hauek => "dute" } } ;
-	      _ => table {_ => \\_ =>  "hargle" } };
-              -- Gu => table {Ni => Prelude.nonExist ;
-              --              Hi => "gaituk" | "gaitun" ;
-              --              Zu => "gaituzu" ;
-              --              Hau => "gaitu" ;
-              --              Gu => Prelude.nonExist ;
-              --              Zuek => "gaituzue" ;
-              --              Hauek => "gaituzte" } ;
-              -- Zuek => table {Ni => "zaituztet" ;
-              --                Hi => Prelude.nonExist ;
-              --                Zu => Prelude.nonExist ;
-              --                Hau => "zaituzte" ;
-              --                Gu => "zaituztegu" ;
-              --                Zuek => Prelude.nonExist ;
-              --                Hauek => "zaituztete" } ;
-              -- Hauek => table {Ni => "ditut" ;
-              --                 Hi => "dituk" | "ditun" ; -- FIXME: Gender
-              --                 Zu => "dituzu" ;
-              --                 Hau => "ditu" ;
-              --                 Gu => "ditugu" ;
-              --                 Zuek => "dituzue" ;
-              --                 Hauek => "dituzte" }
-   --} ;
+              Gu => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => "gintuzten" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "gintuzuen" ;
+                              Hau => "gintuen" ;
+                              Hi => "gintuan" | "gintunan" ;
+                              Zu => "gintuzun" 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => Prelude.nonExist ;
+                              Hauek => "gaituzte" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "gaituzue" ;
+                              Hau => "gaitu" ;
+                              Hi => "gaituk" | "gaitun" ;
+                              Zu => "gaituzu" 
+                     }
+              } ;
+              Hauek => table {
+                     Past => table {
+                              Gu => "genituen" ;
+                              Hauek => "zituzten" ;
+                              Ni => "nituen" ;
+                              Zuek => "zenituzten" ;
+                              Hau => "zituen" ;
+                              Hi => "hituen" ;
+                              Zu => "zenituen" 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "ditugu" ;
+                              Hauek => "dituzte" ;
+                              Ni => "ditut" ;
+                              Zuek => "dituzue" ;
+                              Hau => "ditu" ;
+                              Hi => "dituk" | "ditun" ;
+                              Zu => "dituzu" 
+                     }
+              } ;
+              Ni => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => "ninduten" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "ninduzuen" ;
+                              Hau => "ninduen" ;
+                              Hi => "ninduan" | "nindunan" ;
+                              Zu => "ninduzun" 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => Prelude.nonExist ;
+                              Hauek => "naute" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "nauzue" ;
+                              Hau => "nau" ;
+                              Hi => "nauk" | "naun" ;
+                              Zu => "nauzu" 
+                     }
+              } ;
+              Zuek => table {
+                     Past => table {
+                              Gu => "zintuztegun" ;
+                              Hauek => "zintuzteten" ;
+                              Ni => "zintuztedan" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "zintuzten" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "zaituztegu" ;
+                              Hauek => "zaituztete" ;
+                              Ni => "zaituztet" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "zaituzte" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     }
+              } ;
+              Hau => table {
+                     Past => table {
+                              Gu => "genuen" ;
+                              Hauek => "zuten" ;
+                              Ni => "nuen" ;
+                              Zuek => "zenuten" ;
+                              Hau => "zuen" ;
+                              Hi => "huen" ;
+                              Zu => "zenuen" 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "dugu" ;
+                              Hauek => "dute" ;
+                              Ni => "dut" ;
+                              Zuek => "duzue" ;
+                              Hau => "du" ;
+                              Hi => "duk" | "dun" ;
+                              Zu => "duzu" 
+                     }
+              } ;
+              Hi => table {
+                     Past => table {
+                              Gu => "hindugun" ;
+                              Hauek => "hinduten" ;
+                              Ni => "hindudan" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "hinduen" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "haugu" ;
+                              Hauek => "haute" ;
+                              Ni => "haut" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "hau" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist
+                     }
+              } ;
+              Zu => table {
+                     Past => table {
+                              Gu => "zintugun" ;
+                              Hauek => "zintuzten" ;
+                              Ni => "zintudan" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "zintuen" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "zaitugu" ;
+                              Hauek => "zaituzte" ;
+                              Ni => "zaitut" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "zaitu" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     }
+              }
+   } ;
 
 -- ibili, ibiltzen, ibiliko
 -- amildu, amiltzen, amilduko

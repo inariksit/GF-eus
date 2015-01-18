@@ -153,6 +153,15 @@ lin woman_N = mkN "emakume" ;
 lin worm_N = mkN "har" ;
 lin year_N = mkN "urte" ;
 
+lin back_N = mkN "bizkar" ;
+lin belly_N = mkN "urdail" ;
+lin breast_N = mkN "bular" ;
+lin husband_N = mkN "senar" ;
+lin leaf_N = mkN "orri" ;
+lin tail_N = mkN "buztan" ;
+lin tongue_N = mkN "mihi" ;
+lin wife_N = mkN "emazte" ;
+
 -- SECTION: Adverbs 
 
 lin now_Adv = mkAdv "orain" ;
@@ -166,27 +175,28 @@ lin see_V2  = mkV2 "ikusi" ;
 
 -- SECTION: TODO
 
--- lin ceiling_N = mkN "ceiling" ;
+-- lin cousin_N = mkN "lehengusu" ;
+-- lin priest_N = mkN "apaiz" | mkN "artzain" ; -- FIXME: split
+
+-- lin ceiling_N = mkN "sabai" ;
 -- lin baby_N = mkN "baby" ;
 -- lin bank_N = mkN "bank" ;
--- lin brother_N2 = mkN2 (mkN masculine (mkN "brother")) (mkPrep "of") ;
 -- lin camera_N = mkN "camera" ;
 -- lin cap_N = mkN "cap" ;
 -- lin car_N = mkN "car" ;
 -- lin carpet_N = mkN "carpet" ;
 -- lin coat_N = mkN "coat" ;
--- lin cousin_N = mkN human (mkN "cousin") ;
 -- lin cow_N = mkN "cow" ;
 -- lin distance_N3 = mkN3 (mkN "distance") fromP toP ;
+-- lin brother_N2 = mkN2 (mkN masculine (mkN "brother")) (mkPrep "of") ;
 -- lin father_N2 = mkN2 (mkN masculine (mkN "father")) (mkPrep "of") ;
+-- lin mother_N2 = mkN2 (mkN feminine (mkN "mother")) (mkPrep "of") ;
 -- lin hat_N = mkN "hat" ;
 -- lin hill_N = mkN "hill" ;
 -- lin king_N = mkN masculine (mkN "king") ;
 -- lin leather_N = mkN "leather" ;
--- lin mother_N2 = mkN2 (mkN feminine (mkN "mother")) (mkPrep "of") ;
 -- lin oil_N = mkN "oil" ;
 -- lin pen_N = mkN "pen" ;
--- lin priest_N = mkN human (mkN "priest") ;
 -- lin queen_N = mkN feminine (mkN "queen") ;
 -- lin rubber_N = mkN "rubber" ;
 -- lin sheep_N = mk2N "sheep" "sheep" ;
@@ -194,10 +204,7 @@ lin see_V2  = mkV2 "ikusi" ;
 -- lin stove_N = mkN "stove" ;
 -- lin wood_N = mkN "wood" ;
 -- lin ashes_N = mkN "ash" ; -- FIXME: plural only?
--- lin back_N = mkN "back" ;
 -- lin bark_N = mkN "bark" ;
--- lin belly_N = mkN "belly" ;
--- lin breast_N = mkN "breast" ;
 -- lin fat_N = mkN "fat" ;
 -- lin fingernail_N = mkN "fingernail" ;
 -- lin fog_N = mkN "fog" ;
@@ -206,14 +213,9 @@ lin see_V2  = mkV2 "ikusi" ;
 -- lin guts_N = mkN "gut" ; -- FIXME: no singular
 -- lin hair_N = mkN "hair" ;
 -- lin horn_N = mkN "horn" ;
--- lin husband_N = mkN masculine (mkN "husband") ;
 -- lin knee_N = mkN "knee" ;
--- lin leaf_N = mk2N "leaf" "leaves" ;
 -- lin liver_N = mkN "liver" ;
 -- lin louse_N = mk2N "louse" "lice" ;
--- lin tail_N = mkN "tail" ;
--- lin tongue_N = mkN "tongue" ;
--- lin wife_N = mkN feminine (mk2N "wife" "wives") ;
 -- lin reason_N = mkN "reason" ;
 }
 
