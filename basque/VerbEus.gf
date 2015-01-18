@@ -1,4 +1,4 @@
-concrete VerbEus of Verb = CatEus ** open ResEus, Prelude in {
+concrete VerbEus of Verb = CatEus ** open ResEus, AditzTrinkoak, Prelude in {
 
 
   lin
@@ -20,13 +20,12 @@ concrete VerbEus of Verb = CatEus ** open ResEus, Prelude in {
 --    CompAdv adv = lin Comp {s = table {_ => adv.s}} ;
 
                             
-
-    UseCopula = lin VP {s = ResEus.copula ; prc = \\_ => [] ; 
+-- choose copula based on transitivity(argstruct) of main verb.
+    UseCopula = lin VP {s = copula ; prc = \\_ => [] ; 
 			sc = Abs ; compl = [] ; adv = [] } ;
 
     --UseComp : Comp -> VP ;
-    --UseComp = addCopula ;
-    UseComp comp = lin VP {s     = ResEus.copula ; 
+    UseComp comp = lin VP {s     = copula ; 
 			   prc   = \\_ => [] ;
 			   sc    = Abs ; 
                            compl = comp.s ! Abs ; 
@@ -38,5 +37,8 @@ concrete VerbEus of Verb = CatEus ** open ResEus, Prelude in {
 			    sc = vp.sc ;
 			    compl = vp.compl ;
 			    adv = vp.adv ++ adv.s } ;
+
+oper 
+  copula = AditzTrinkoak.copulaNor ;
 
 }

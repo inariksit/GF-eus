@@ -1,4 +1,4 @@
-resource ParadigmsEus = open Prelude,  ResEus, CatEus, ParamX in {
+resource ParadigmsEus = open Prelude, AditzTrinkoak, ResEus, CatEus, ParamX in {
 
 oper
   mkN : Str -> N = \s -> lin N (mkNoun s) ;
