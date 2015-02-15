@@ -27,7 +27,7 @@ oper
 
 -- Noun stuffs
     Noun : Type = {s : Str ; stem : Str ; ph : Phono} ;
-    Complement : Type = {s : Case => Str } ;
+    Complement : Type = {s : Agr => Str } ;
     NounPhrase : Type = {s : Case => Str ; agr : Agr} ;
 
 -- NounPhrase is a record
@@ -46,6 +46,7 @@ oper
 
     Adjective : Type = {s : Degree => Str ; ph : Phono} ;
 
+
 -- Verb stuffs
 
     Verb : Type = {prc : Tense => Str} ;
@@ -56,14 +57,21 @@ oper
     VerbPhrase : Type = {s     : Tense => Agr => Str ; --head of VP
 			 prc   : Tense => Str ;
 			 sc    : Case ; -- subject case can be Erg or Dat
-                         compl : Str ;  -- complement will be always in Abs, so plain Str is enough
+                         compl : Agr => Str ;  -- complement case will be always Abs; 
+			                       -- need Agr for AP to agree with subject.
                          adv   : Str } ; 
 
     VPSlash : Type = Verb2 ; --TODO do we need something else?
 
 
     predV : Verb1 -> VerbPhrase = \v -> {
-      s = v.s ; sc = Abs ; prc = v.prc ; compl = []; adv = []} ;
+      s = v.s ; sc = Abs ; prc = v.prc ; compl = table {_ => []}; adv = []} ;
+
+    insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp, vp ->
+      vp ** {compl = table {agr => vp.compl ! agr ++ comp.s ! agr}} ;
+
+    insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv, vp ->
+      vp ** {adv = vp.adv ++ adv.s} ;
   
 
 
@@ -82,8 +90,8 @@ oper
       in 
       { s = table {
           tense => table {
-              Pos => vp.adv ++ subject ++ vp.compl ++ vp.prc ! tense ++ vp.s ! tense ! np.agr ;
-	      Neg => vp.adv ++ subject ++ "ez" ++ vp.s ! tense ! np.agr ++ vp.prc ! tense ++ vp.compl 
+              Pos => vp.adv ++ subject ++ vp.compl ! np.agr ++ vp.prc ! tense ++ vp.s ! tense ! np.agr ;
+	      Neg => vp.adv ++ subject ++ "ez" ++ vp.s ! tense ! np.agr ++ vp.prc ! tense ++ vp.compl ! np.agr
               }
           }
       } ;

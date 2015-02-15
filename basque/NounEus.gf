@@ -42,7 +42,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
-      s = \\cas => cn.stem ++ BIND ++ det.s ! det.nbr ! cas ! cn.ph ;
+      s = \\cas => glue cn.stem (det.s ! det.nbr ! cas ! cn.ph) ;
       agr = case det.nbr of {
 	      Sg => Hau ;
 	      Pl => Hauek 
