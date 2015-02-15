@@ -41,6 +41,8 @@ oper
 ---      { Abs => "hargle"; Erg => "bargle" }
 -- the field .agr. is of type Agr.   
 
+    buru_NP : NounPhrase = {s = \\_ => "buru" ; agr = Hau} ;
+
 
 -- Adjective stuffs
 
@@ -55,23 +57,44 @@ oper
     Verb3 : Type = Verb ; --for Verb3, verb is always nor nori nork, and sc is Erg
 
     VerbPhrase : Type = {s     : Tense => Agr => Str ; --head of VP
-			 prc   : Tense => Str ;
-			 sc    : Case ; -- subject case can be Erg or Dat
+                         prc   : Tense => Str ;
+                         sc    : Case ; -- subject case can be Erg or Dat
                          compl : Agr => Str ;  -- complement case will be always Abs; 
-			                       -- need Agr for AP to agree with subject.
+                                               -- need Agr for AP to agree with subject.
                          adv   : Str } ; 
 
-    VPSlash : Type = Verb2 ; --TODO do we need something else?
+    VPSlash : Type = Verb2 ** {adv : Str}; --TODO do we need something else?
 
 
-    predV : Verb1 -> VerbPhrase = \v -> {
-      s = v.s ; sc = Abs ; prc = v.prc ; compl = table {_ => []}; adv = []} ;
+    predV : Verb1 -> VerbPhrase = \v -> {s     = v.s ; 
+                                         sc    = Abs ; 
+                                         prc   = v.prc ; 
+                                         compl = table {_ => []}; 
+                                         adv   = []} ;
 
-    insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp, vp ->
+    {- Syntax note: 
+          vp ** {adv = "hargle"} 
+       means: take the original VP except for the field adv, which is replaced by "hargle"
+       Same as \vp -> {s     = vp.s ; 
+                       sc    = vp.sc ; 
+                              prc   = vp.prc ; 
+                       compl = vp.compl ;
+                       adv   = "hargle"} ;
+    -}
+    insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv,vp ->
+      vp ** {adv = vp.adv ++ adv.s} ;
+
+
+    insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp,vp ->
       vp ** {compl = table {agr => vp.compl ! agr ++ comp.s ! agr}} ;
 
-    insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv, vp ->
-      vp ** {adv = vp.adv ++ adv.s} ;
+    complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
+      {s     = vps.s ! np.agr ; --(Agr => Agr => Str) to (Agr => Str) 
+       prc   = vps.prc ;
+       sc    = vps.sc ;
+       compl = table {_ => np.s ! Abs} ;
+       adv   = [] } ;
+
   
 
 
@@ -91,7 +114,7 @@ oper
       { s = table {
           tense => table {
               Pos => vp.adv ++ subject ++ vp.compl ! np.agr ++ vp.prc ! tense ++ vp.s ! tense ! np.agr ;
-	      Neg => vp.adv ++ subject ++ "ez" ++ vp.s ! tense ! np.agr ++ vp.prc ! tense ++ vp.compl ! np.agr
+              Neg => vp.adv ++ subject ++ "ez" ++ vp.s ! tense ! np.agr ++ vp.prc ! tense ++ vp.compl ! np.agr
               }
           }
       } ;

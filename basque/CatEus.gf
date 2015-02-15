@@ -16,7 +16,7 @@ concrete CatEus of Cat =
 
     
 
-    Comp = ResEus.Complement ; --{s : Case => Str } ;
+    Comp = ResEus.Complement ; --{s : Agr => Str } ;
 
     Num = {s : Str ; n : Number ; isNum : Bool} ;
 
@@ -29,7 +29,7 @@ concrete CatEus of Cat =
     AP = ResEus.Noun ; 
 
 -- Verb
-    V  = ResEus.Verb1 ;
+    V, VQ, VA = ResEus.Verb1 ;
     V2 = ResEus.Verb2 ;
     V3 = ResEus.Verb3 ;
     VP = ResEus.VerbPhrase ; 
