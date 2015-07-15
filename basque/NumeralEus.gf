@@ -15,7 +15,7 @@ param Even20 = ten | even ;
 param DForm = unit | teen | twenty | hund ;
 param Size = sg | pl ;
  
-lincat Numeral = {s : Str} ;
+--lincat Numeral = {s : Str} ;
 lincat Digit = LinDigit ;
 lincat Sub10 = LinDigit ;
 lincat Sub100 = {s : Str ; size : Size} ;

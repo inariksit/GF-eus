@@ -6,6 +6,9 @@ resource ResEus = ParamX ** open TenseX, Prelude in {
 param 
     Case = Erg | Abs | Dat ;
 --    Degree = Posit | Compar | Superl | Excess ;
+--    CardOrd = NCard | NOrd ;
+--    DForm = unit | teen | ten  ;
+
     Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
     AgrValency = Nor | NorNork | NorNori | NorNoriNork ;
     Phono = FinalA | FinalR | FinalCons | FinalVow ; 
