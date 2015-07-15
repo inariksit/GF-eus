@@ -47,6 +47,9 @@ oper
  				       _                 => FinalCons } 
 			       in { s = s; stem = stem ; ph = phono } ; 
 
+  mkConj : overload {
+    mkConj : Str -> Conj ;                  -- and (plural agreement) 
+  }
 
 
   mkV2 = overload {
