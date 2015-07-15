@@ -4,6 +4,7 @@ resource ResEus = ParamX ** open TenseX, Prelude in {
   coding=utf8 ;
 
 param 
+    Bizi = Inan | Anim ;
     Case = Erg | Abs | Dat ;
 --    Degree = Posit | Compar | Superl | Excess ;
 --    CardOrd = NCard | NOrd ;
