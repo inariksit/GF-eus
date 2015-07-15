@@ -7050,6 +7050,7 @@ lin window_N = mkN "leiho" ;
 lin windy_A = mkA "haizetsu" ;
 lin wine_N = mkN "ardo" ;
 lin wing_N = mkN "hegal" ;
+<<<<<<< HEAD
 lin winner_N = mkN "irabazle" ;
 lin winter_N = mkN "negu" ;
 lin winter_V = mkV "hibernatu" ;

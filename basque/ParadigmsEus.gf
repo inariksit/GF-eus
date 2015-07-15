@@ -8,6 +8,12 @@ oper
   mkA : Str -> A = \s -> lin A (mkAdj s) ;
   mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s} ;
 
+  mkPN = overload {
+    mkPN : Str -> PN = \s -> lin N (mkNoun s) ; -- FIXME: check mkNoun
+    mkPN : Str -> Phono -> PN = \s,ph -> lin PN {s = s ; stem = s ; ph = ph } 
+
+  } ;
+
   mkPrc : Str -> (Tense => Str) = \ikusi ->
     let ikus = init ikusi ;
         ikusten = ikus + "ten" ;
