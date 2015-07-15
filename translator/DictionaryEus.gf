@@ -8,6 +8,9 @@ lin in_Prep = mkPrep "n" ;
 lin from_Prep = mkPrep "tik" ;
 lin to_Prep = mkPrep "ra" ;
 lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
+lin of_Prep = mkPrep "ko" | mkPrep "ren" ;
+lin for_Prep = mkPrep "entzat" ;
+lin because_of_Prep = mkPrep "gatik" ;
 
 -- SECTION: Adjectives
 
