@@ -16,7 +16,7 @@ concrete CatEus of Cat =
 
     NP = ResEus.NounPhrase ; --{s : Case => Str ; agr : Agr} ;
 
-    
+    Conj = {s1,s2 : Str ; n : Number} ;
 
     Comp = ResEus.Complement ; --{s : Agr => Str } ;
 
