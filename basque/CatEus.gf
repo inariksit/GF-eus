@@ -10,6 +10,8 @@ concrete CatEus of Cat =
 -- Noun
     N = ResEus.Noun ;       --{s : Str ; ph = Phono} ;
 
+    PN = ResEus.Noun ; 
+
     CN = ResEus.Noun ;
 
     NP = ResEus.NounPhrase ; --{s : Case => Str ; agr : Agr} ;

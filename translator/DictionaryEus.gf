@@ -259,6 +259,11 @@ lin story_N = mkN "historia" ;
 -- lin guts_N = mkN "gut" ; -- FIXME: no singular
 -- lin distance_N3 = mkN3 (mkN "distantzia") fromP toP ;
 
+-- SECTION: Proper nouns
+
+lin james_PN = mkPN "James" ; -- FIXME: masc
+lin mary_PN = mkPN "Miren" ; -- FIXME: fem
+
 -- SECTION: Adverbs 
 
 lin now_Adv = mkAdv "orain" ;
