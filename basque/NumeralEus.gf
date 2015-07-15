@@ -1,4 +1,4 @@
-concrete basque of Numerals = {
+concrete NumeralEus of Numeral = CatEus [Numeral,Digits] ** open Prelude, ResEus in {
 -- include numerals.Abs.gf ;
 
 oper LinDigit = {s : DForm => Str ; even20 : Even20 ; size : Size} ;
