@@ -49,9 +49,9 @@ mkEntryVariants :: String -> [String] -> String
 mkEntryVariants sea_N itsasoak = 
   "lin " ++ sea_N ++ " = " ++ 
       concat 
-       (intersperse "| "      
+       (intersperse " | "      
          [ mkX ++ " \"" ++ itsaso ++ "\"" | itsaso <- itsasoak_bakarrik ] ) ++
-  " ;"
+  " ;\n"
  where
   (_,cat) = split '_' sea_N
   mkX = "mk" ++ cat
@@ -70,8 +70,9 @@ mkEntry sea_N itsaso_anas =
   (itsaso,_) = split '<' itsaso_anas
 
 -- e.g. "calm_N" "baretu<vblex>" no match, but "calm_V" and "baretu<vblex>" yes
+
 sameLemma :: String -> String -> Bool
-sameLemma eng absname = lemma==name  && pos `elem` map transTag anas
+sameLemma absname eng = lemma==name  && pos `elem` map transTag anas
  where
    (lemma:anas)  = map (delete '>') $ split' (=='<') eng
    (name,pos) = split '_' absname
@@ -108,7 +109,6 @@ cncHeader absModule language = unlines [
   "--# -path=.:../basque",
   "concrete " ++ cncModule ++ " of " ++ absModule ++ " = Cat" ++ language ++ " ** open " ++ openModules language ++ " in {",
   "flags coding = utf8 ;",
-  "lin",
   ""
  ]
  where cncModule = absModule ++ language
@@ -125,9 +125,11 @@ main = do
  let absnames = [ absName word | word <- dict, tag <- tags, tag `isInfixOf` word ]
 
 
- let sea_itsasoak = [ (sea_N, itsasoak) | sea_N <- take 1000 absnames
+ let sea_itsasoak = [ (sea_N, itsasoak) | sea_N <- absnames
                                         , let itsasoak = map fst $ filter ((sameLemma sea_N . snd)) eus_eng 
                                         , (not.null) itsasoak]
+
+-- print sea_itsasoak
 
  let entries = [ mkEntryVariants sea_N itsasoak | (sea_N, itsasoak) <- sea_itsasoak ]
 
