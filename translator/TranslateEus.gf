@@ -5,6 +5,7 @@ concrete TranslateEus of Translate =
   AdjectiveEus,
   SentenceEus,
   VerbEus - [UseCopula],
+  ConjunctionEus,
   NumeralEus,
   AdverbEus,
   DictionaryEus ** 

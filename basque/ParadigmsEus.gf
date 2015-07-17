@@ -1,12 +1,13 @@
 resource ParadigmsEus = open Prelude, AditzTrinkoak, ResEus, CatEus, ParamX in {
 
 oper
+
   mkN = overload {
    mkN : Str -> N = \s -> lin N (mkNoun s) ;
    mkN : Str -> Phono -> N = \s,ph -> lin N {s = s ; stem = s ; ph = ph } 
   } ;
+
   mkA : Str -> A = \s -> lin A (mkAdj s) ;
-  mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s} ;
 
   mkPN = overload {
     mkPN : Str -> PN = \s -> lin N (mkNoun s) ; -- FIXME: check mkNoun
@@ -47,19 +48,20 @@ oper
  				       _                 => FinalCons } 
 			       in { s = s; stem = stem ; ph = phono } ; 
 
-  mkConj : overload {
-    mkConj : Str -> Conj ;                  -- and (plural agreement) 
-  }
-
+  mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s} ;
 
   mkV2 = overload {
    mkV2 : Str -> V2 = \s -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = Erg} ;
    mkV2 : Str -> Case -> V2 = \s,cas -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = cas} ;
   } ;
 
-
   mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s } ;
 
+  mkConj : Str -> Conj = \s -> lin Conj { s = s } ; 
+
   mkAdv : Str -> Adv = \s -> lin Adv {s = s} ;
-  mkPrep : Str -> Prep = \s -> lin Prep {s = s} ;}
-    
+
+  mkPrep : Str -> Prep = \s -> lin Prep {s = s} ;
+
+}
+
