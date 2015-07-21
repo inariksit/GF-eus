@@ -1,5 +1,5 @@
 \documentclass[11pt,a4paper]{article}
-\usepackage[margin=70pt,head=50pt,headsep=30pt,foot=50pt]{geometry}
+\usepackage[margin=30pt,head=50pt,headsep=30pt,foot=50pt]{geometry}
 \usepackage{fontspec}
 \usepackage{xltxtra}
 \usepackage{xspace}
@@ -23,13 +23,45 @@
 
 \begin{document}
 
-xxx
-
 % Mutil ak katu a dauka .
 
+\begin{center}
+\begin{minipage}{.4\textwidth}
+\begin{tikzpicture}
 \Tree [.PredVP [.DetCN [.UseN boy\_N ] ] [.ComplSlash [.SlashV2a have\_V2 ] [.DetCN [.UseN cat\_N ] ] ] ] 
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{.4\textwidth}
+\begin{tikzpicture}
+\Tree [.Cl [.NP [.CN [.N mutil ] [.Det [.Quant ak ] ] ] ]
+           [.VP 
+                [.NP [.CN [.N katu ] ] [.Det [.Quant a ] ] ]
+                [.VPSlash [.V2 dauka ] ] 
+           ] ] 
+\end{tikzpicture}
+\end{minipage}
+\end{center}
 
 % Ni itsaso a ra ibiltzen naiz .
+
+\begin{center}
+\begin{minipage}{.4\textwidth}
+\begin{tikzpicture}
+\Tree [.PredVP [.DetCN [.UseN boy\_N ] ] [.AdvVP [.UseV walk\_V ] [.PrepNP to\_Prep [.DetCN [.UseN sea\_N ] ] ] ] ]
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{.4\textwidth}
+\begin{tikzpicture}
+\Tree [.Cl [.NP [.CN [.N mutil ] [.Det [.Quant a ] ] ] ]
+           [.VP 
+                [.Adv [.NP [.CN [.N itsaso ] [.Det [.Quant a ] ] ] ] [.Prep ra ] ]
+                [.V ibiltzen da ]
+           ] ]
+\end{tikzpicture}
+\end{minipage}
+\end{center}
+
+
 
 % Txakur a txiki a da .
 
