@@ -10,33 +10,21 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --UsePN   : PN -> NP ;          -- John
     UsePN pn = { s = table { _ => pn.s } ; agr = Hau }  ;
 
-    NumSg = {s = []; n = Sg ; isNum = False} ; 
-    NumPl = {s = []; n = Pl ; isNum = False} ; 
+    NumSg = {s = [] ; n = Sg ; isNum = False} ; 
+    NumPl = {s = [] ; n = Pl ; isNum = False} ; 
 
-    --DefArt : Quant
-    DefArt = {
-      s = table {
-                 Sg => table {Abs => table {FinalA => "a"  ;
-					    FinalR => "ra" ;
-					    _      => "a" } ;
-		              Erg => table {FinalA => "ak"  ;
-					    FinalR => "rak" ;
-					    _      => "ak" } ;
-		              Dat => table {FinalA => "ri" ;
-					    FinalR => "rari" ;
-					    _      => "ari" } }; 
+    --DefArt, IndefArt : Quant
+    --Notation explanation: The string in s will start with BIND,
+    --and a string from artA. The parameters n,c,p will eventually come
+    --from later functions, and they will be used to extract the wanted
+    --string from artA.
+    --This is equivalent to having written
+    --  artA = table { Sg =>
+    --                  table { Abs =>
+    --	                         table { FinalA = BIND ++ "a" ;
+    --                                   FinalR = BIND ++ "ra" ; ...
+    DefArt, IndefArt = { s = \\n,c,p => BIND ++ artA ! n ! c ! p };
 
-                 Pl => table {Abs => table {FinalA => "ak"  ;
-					    FinalR => "rak" ;
-					    _      => "ak" } ;
-		              Erg => table {FinalA => "ek"  ;
-					    FinalR => "rek" ;
-					    _      => "ek" } ;
-		              Dat => table {FinalR => "rei" ;
-					    _      => "ei" } }
-
-                } 
-    };
 
     -- AdjCN   : AP -> CN  -> CN 
     AdjCN ap cn = {s    = cn.s ++ ap.stem ; 
@@ -45,7 +33,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
-      s = \\cas => glue cn.stem (det.s ! det.nbr ! cas ! cn.ph) ;
+      s = \\cas => cn.stem ++ det.s ! cas ! cn.ph ;
       agr = case det.nbr of {
 	      Sg => Hau ;
 	      Pl => Hauek 
@@ -53,10 +41,33 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     } ;
 
     DetQuant quant num = {
-        s = \\nbr,cas,ph => quant.s ! num.n ! cas ! ph ;
-        nbr = num.n ;
-        cas = Abs 
+        s = \\cas,ph => quant.s ! num.n ! cas ! ph ;
+        nbr = num.n 
     } ;
 
+
+
+oper
+  artA : Number => Case => Phono => Str =
+   table { Sg => table {Abs => table {FinalA => "a"  ;
+                                      FinalR => "ra" ;
+                                      _      => "a" } ;
+                        Erg => table {FinalA => "ak"  ;
+                                      FinalR => "rak" ;
+                                      _      => "ak" } ;
+                        Dat => table {FinalA => "ri" ;
+                        FinalR => "rari" ;
+                        _      => "ari" } }; 
+
+           Pl => table {Abs => table {FinalA => "ak"  ;
+                                      FinalR => "rak" ;
+                                      _      => "ak" } ;
+                        Erg => table {FinalA => "ek"  ;
+                                      FinalR => "rek" ;
+                                      _      => "ek" } ;
+                        Dat => table {FinalR => "rei" ;
+                                      _      => "ei" } }
+
+          } ; 
 
 }

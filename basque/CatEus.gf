@@ -5,7 +5,8 @@ concrete CatEus of Cat =
 
   lincat
 
-    Det = {s : Number => Case => Phono => Str ; cas : Case ; nbr : Number } ;
+    Det = {s : Case => Phono => Str ;
+	   nbr : Number } ;
 
 -- Noun
     N = ResEus.Noun ;       --{s : Str ; ph = Phono} ;
