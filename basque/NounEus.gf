@@ -7,7 +7,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --UseN : N -> CN
     UseN n = n  ;
 
-    NumSg = {s = []; n = Sg ; isNum = False} ; 
+    NumSg = {s = [] ; n = Sg ; isNum = False} ; 
     NumPl = {s = []; n = Pl ; isNum = False} ; 
 
     --DefArt : Quant
@@ -42,7 +42,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
-      s = \\cas => glue cn.stem (det.s ! det.nbr ! cas ! cn.ph) ;
+      s = \\cas => glue cn.stem (det.s ! cas ! cn.ph) ;
       agr = case det.nbr of {
 	      Sg => Hau ;
 	      Pl => Hauek 
@@ -50,9 +50,9 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     } ;
 
     DetQuant quant num = {
-        s = \\nbr,cas,ph => quant.s ! num.n ! cas ! ph ;
-        nbr = num.n ;
-        cas = Abs 
+        s = \\cas,ph => quant.s ! num.n ! cas ! ph ;
+        nbr = num.n 
+
     } ;
 
 
