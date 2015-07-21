@@ -5,6 +5,7 @@ resource ResEus = ParamX ** open TenseX, Prelude in {
 
 param 
 --    Gender = Masc | Fem ; 
+    CopulaType = Egon | Izan  ; 
     Bizi = Inan | Anim ;
     Case = Erg | Abs | Dat ;
 --    Degree = Posit | Compar | Superl | Excess ;
@@ -32,7 +33,7 @@ oper
 
 -- Noun stuffs
     Noun : Type = {s : Str ; stem : Str ; ph : Phono} ;
-    Complement : Type = {s : Agr => Str } ;
+    Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
     NounPhrase : Type = {s : Case => Str ; agr : Agr} ;
 
 -- NounPhrase is a record

@@ -18,14 +18,14 @@ lin because_of_Prep = mkPrep "gatik" ;
 
 -- SECTION: Pronouns
 
-lin i_Pron = mkPron "ni" "niri" "nik" "nire" ;
-lin we_Pron = mkPron "gu" "guri" "guk" "gure" ;
-lin youSg_Pron = mkPron "zu" "zuri" "zuk" "zure" ; -- TODO: hi/hire
-lin youPl_Pron = mkPron "zuek" "zuei" "zuen" ;
-lin he_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
-lin she_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
-lin it_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
-lin they_Pron = mkPron "hauek" "hauei" "hauek" "haien" ; -- TODO: the others
+-- lin i_Pron = mkPron "ni" "niri" "nik" "nire" ;
+-- lin we_Pron = mkPron "gu" "guri" "guk" "gure" ;
+-- lin youSg_Pron = mkPron "zu" "zuri" "zuk" "zure" ; -- TODO: hi/hire
+-- lin youPl_Pron = mkPron "zuek" "zuei" "zuen" ;
+-- lin he_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
+-- lin she_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
+-- lin it_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
+-- lin they_Pron = mkPron "hauek" "hauei" "hauek" "haien" ; -- TODO: the others
 
 -- SECTION: Adjectives
 

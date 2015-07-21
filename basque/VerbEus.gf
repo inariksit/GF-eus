@@ -51,7 +51,12 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
     ReflVP vps = lin VP (complSlash vps buru_NP) ; ------ TODO
 
     --  : Comp -> VP ;
-    UseComp comp = lin VP (insertComp comp copulaVP) ;
+
+    UseComp comp = let copulaChoice = case comp.copula of { 
+                      Izan => copulaVP ; 
+                      Egon => copulaEgonVP  
+                   } in 
+                   lin VP (insertComp comp copulaChoice) ;
 
 {-
     PassV2   : V2 -> VP ;               -- be loved
@@ -85,11 +90,11 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
     -- the house is big   = etxea handia da
     -- the houses are big = etxeak handiak dira
     CompAP  ap  = lin Comp {s = table {agr => let art = DefArt.s ! getNum agr ! Abs ! ap.ph
-					      in glue ap.stem art}} ;
+					      in glue ap.stem art} ; copula = Izan } ;
 
-    CompNP  np  = lin Comp {s = table {_ => np.s ! Abs}} ; 
+    CompNP  np  = lin Comp {s = table {_ => np.s ! Abs} ; copula = Izan } ; 
 
-    CompAdv adv = lin Comp {s = table {_ => adv.s}} ;
+    CompAdv adv = lin Comp {s = table {_ => adv.s} ; copula = Egon } ;
 
 --    CompCN   : CN  -> Comp ;            -- (be) a man/men
 
@@ -107,4 +112,14 @@ oper
 		            sc    = Abs ; 
 			    compl = table {_ => []} ; 
 			    adv   = [] } ;
+
+    copulaEgonVP : VP = lin VP {s     = AditzTrinkoak.copulaEgonNor ; 
+  		 	    prc   = table {_ => []} ; 
+		            sc    = Abs ; 
+			    compl = table {_ => []} ; 
+			    adv   = [] } ;
+
+
+
+
 }

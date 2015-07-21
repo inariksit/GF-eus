@@ -45,5 +45,6 @@ concrete ConjunctionEus of Conjunction =
     [Adv] = {s1,s2 : Str} ;
     [CN] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
     [AP] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
+    [NP] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
 
 }
