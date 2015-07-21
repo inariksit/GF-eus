@@ -43,16 +43,17 @@ concrete ConjunctionEus of Conjunction =
     ConjNP conj ss = conjunctTable Case conj ss ** { agr = Hauek } ; 
 
 
+{-
     BaseCN cn1 cn2 = twoSS cn1 cn2 ** {stem = cn2.stem ; ph = cn2.ph } ;
     ConsCN cn1 cn2s = consrSS comma cn1 cn2s ** {stem = cn1.stem ; ph = cn1.ph} ; 
     ConjCN co ns = let newcn = conjunctX co ns in
      {s,stem=newcn ; ph=ns.ph} ;
-
+-}
     ConjAP co as = {s = conjunctX co as ; ph=FinalA ; stem = as.s2 } ; 
 
   lincat
     [Adv] = {s1,s2 : Str} ;
-    [CN] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
+--    [CN] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
     [AP] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
     [NP] = {s1,s2 : Case => Str ; agr : Agr} ;
 

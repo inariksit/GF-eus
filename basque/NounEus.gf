@@ -8,7 +8,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     UseN n = lin CN n  ;
 
     --UsePN   : PN -> NP ;          -- John
-    UsePN pn = { s = table { _ => pn.s } ; agr = Hau }  ;
+    UsePN pn = { s = table { _ => pn.s } ; agr = Hau ; anim = pn.anim }  ;
 
     NumSg = {s = [] ; n = Sg ; isNum = False} ; 
     NumPl = {s = [] ; n = Pl ; isNum = False} ; 
@@ -23,13 +23,18 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --                  table { Abs =>
     --	                         table { FinalA = BIND ++ "a" ;
     --                                   FinalR = BIND ++ "ra" ; ...
-    DefArt, IndefArt = { s = \\n,c,p => BIND ++ artA ! n ! c ! p };
+    DefArt, IndefArt = {
+      s = \\n,c,p => BIND ++ artA ! n ! c ! p ;
+      isPre = False
+    };
 
 
     -- AdjCN   : AP -> CN  -> CN 
-    AdjCN ap cn = {s    = cn.s ++ ap.stem ; 
-		   stem = cn.s ++ ap.stem ; 
-		   ph   = ap.ph} ;
+    AdjCN ap cn = {
+      s    = cn.s ++ ap.stem ; 
+      stem = cn.s ++ ap.stem ; 
+      ph   = ap.ph ;
+      anim = cn.anim } ;
     
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
@@ -37,14 +42,22 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
       agr = case det.nbr of {
 	      Sg => Hau ;
 	      Pl => Hauek 
-	    }
+	    } ;
+      anim = cn.anim
     } ;
 
     DetQuant quant num = {
-        s = \\cas,ph => quant.s ! num.n ! cas ! ph ;
-        nbr = num.n 
+      s = \\cas,ph => quant.s ! num.n ! cas ! ph ;
+      nbr = num.n ;
+      isPre = quant.isPre
     } ;
 
+
+    --PossPron : Pron -> Quant
+    PossPron pron = {
+      s     = \\_,_,_ => "" ;
+      isPre = True
+    } ;
 
 
 oper
