@@ -5,9 +5,7 @@ concrete CatEus of Cat =
 
   lincat
 
-    --Det = {s : Number => Case => Phono => Str ;
     Det = {s : Case => Phono => Str ;
-    	  -- cas : Case ;
 	   nbr : Number } ;
 
 -- Noun
