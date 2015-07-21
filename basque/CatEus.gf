@@ -5,8 +5,16 @@ concrete CatEus of Cat =
 
   lincat
 
-    Det = {s : Case => Phono => Str ;
-	   nbr : Number } ;
+    Det = { s : Case => Phono => Str ;
+            nbr : Number ;
+	    isPre : Bool } ;
+
+    Quant = { s : Number => Case => Phono => Str ;
+    	      isPre : Bool } ;
+
+--Pronouns need to have enough info to turn it into NP or Quant.
+    
+    Pron = ResEus.NounPhrase ;
 
 -- Noun
     N = ResEus.Noun ;       --{s : Str ; ph = Phono} ;
@@ -23,13 +31,10 @@ concrete CatEus of Cat =
 
     Num = {s : Str ; n : Number ; isNum : Bool} ;
 
-    Quant = {
-      s  : Number => Case => Phono => Str 
-    } ;
 
 -- Adjective
     A = ResEus.Adjective ; 
-    AP = ResEus.Noun ; 
+    AP = {s : Str ; stem : Str ; ph : Phono } ; 
 
 -- Verb
     V, VQ, VA = ResEus.Verb1 ;

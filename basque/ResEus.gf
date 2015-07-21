@@ -32,9 +32,9 @@ oper
       } ;
 
 -- Noun stuffs
-    Noun : Type = {s : Str ; stem : Str ; ph : Phono} ;
+    Noun : Type = {s : Str ; stem : Str ; ph : Phono ; anim : Bizi} ;
     Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
-    NounPhrase : Type = {s : Case => Str ; agr : Agr} ;
+    NounPhrase : Type = {s : Case => Str ; agr : Agr ; anim : Bizi} ;
 
 -- NounPhrase is a record
 -- a record is a thing with fields
@@ -47,12 +47,17 @@ oper
 ---      { Abs => "hargle"; Erg => "bargle" }
 -- the field .agr. is of type Agr.   
 
-    buru_NP : NounPhrase = {s = \\_ => "buru" ; agr = Hau} ;
+    buru_NP : NounPhrase = {s = \\_ => "buru" ; agr = Hau ; anim = Anim} ;
+
+-- Pronoun stuffs
+
+    Pronoun : Type = NounPhrase ;
 
 
 -- Adjective stuffs
 
     Adjective : Type = {s : Degree => Str ; ph : Phono} ;
+
 
 
 -- Verb stuffs

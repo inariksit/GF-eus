@@ -4,6 +4,7 @@ oper
 
   mkN = overload {
    mkN : Str -> N = \s -> lin N (mkNoun s) ;
+   mkN : Str -> Bizi -> N = \s,ani -> lin N (mkNoun s) ** {anim=ani} ;
    mkN : Str -> Phono -> N = \s,ph -> lin N {s = s ; stem = s ; ph = ph } 
   } ;
 
@@ -46,7 +47,7 @@ oper
 				       "r"               => FinalR ;
 				       ("e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
-			       in { s = s; stem = stem ; ph = phono } ; 
+			       in { s = s; stem = stem ; ph = phono ; anim=Inan } ; 
 
   mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s} ;
 
