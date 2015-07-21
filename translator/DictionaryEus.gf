@@ -22,7 +22,10 @@ lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
 lin of_Prep = mkPrep "ko" | mkPrep "ren" ;
 lin for_Prep = mkPrep "entzat" ;
 lin because_of_Prep = mkPrep "gatik" ;
+
 lin without_Prep = mkPrep "gabe" ; 
+lin against_Prep = mkPrep "kontra" ;
+lin in_favour_of_Prep = mkPrep "alde" ;
 
 -- SECTION: Pronouns
 
@@ -5771,6 +5774,8 @@ lin mary_PN = mkPN "Miren" ; -- FIXME: fem
 
 lin now_Adv = mkAdv "orain" ;
 lin again_Adv = mkAdv "berriz" ; 
+lin too_Adv = mkAdv "ere" ; 
+lin also_Adv = mkAdv "ere" ; 
 
 -- SECTION: Verbs
 
