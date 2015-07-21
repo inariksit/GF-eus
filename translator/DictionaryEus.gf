@@ -5776,6 +5776,8 @@ lin zone_N = mkN "zona" ;
 lin james_PN = mkPN "James" ; -- FIXME: masc
 lin mary_PN = mkPN "Miren" ; -- FIXME: fem
 
+lin bilbao_PN = mkPN "Bilbo" ; 
+
 -- SECTION: Adverbs 
 
 lin now_Adv = mkAdv "orain" ;
