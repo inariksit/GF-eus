@@ -36,6 +36,16 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
       ph   = ap.ph ;
       anim = cn.anim } ;
 
+
+{-
+   NOTE: This is non-optimal as really the -ko should be a node in
+     the tree. We would like to have e.g. 
+        [NP [AP [PP Bilbora [-ko]]] [N kale]] 
+     or something similar. This way we could treat APs like [AP [A berri]] 
+     and `adnominal' postpositional phrases similarly... as they both take 
+     all of the article declination.
+-}
+
     -- AdvCN   : CN -> Adv -> CN ;   -- house on the hill
     AdvCN cn ad = {
       s    = ad.s ++ BIND ++ "ko" ++ cn.s ; 
