@@ -5,7 +5,10 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
   lin
 
     --UseN : N -> CN
-    UseN n = n  ;
+    UseN n = lin CN n  ;
+
+    --UsePN   : PN -> NP ;          -- John
+    UsePN pn = { s = table { _ => pn.s } ; agr = Hau }  ;
 
     NumSg = {s = [] ; n = Sg ; isNum = False} ; 
     NumPl = {s = []; n = Pl ; isNum = False} ; 

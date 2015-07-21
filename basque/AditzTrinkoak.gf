@@ -3,6 +3,30 @@ resource AditzTrinkoak = open Prelude, ResEus, CatEus, ParamX in {
 -- Synthetic verbs are in this module
 
 oper
+
+
+    copulaEgonNor : Tense => Agr => Str =
+      table {Past => table {Ni => "nengoen" ; 
+                    Hi => "hengoen" ; 
+                    Zu => "zeunden" ; 
+                    Hau => "zegoen" ; 
+                    Gu => "geunden" ; 
+                    Zuek => "zeundeten" ; 
+                    Hauek => "zeuden" } ;
+             -- TODO: Cond
+             -- Present and future are identical
+	     _ =>  table {Ni => "nago" ; 
+                    Hi => "hago" ; 
+                    Zu => "zaude" ; 
+                    Hau => "dago" ; 
+                    Gu => "gaude" ; 
+                    Zuek => "zaudete" ; 
+                    Hauek => "daude" }
+       } ;
+
+
+
+
     copulaNor : Tense => Agr => Str =
       table {Past => table {Ni => "nintzen" ; 
                     Hi => "hintzen" ; 
@@ -11,13 +35,7 @@ oper
                     Gu => "ginen" ; 
                     Zuek => "zineten" ; 
                     Hauek => "ziren" } ;
-             Cond => table {Ni => "banintz" ; 
-                    Hi => "bahintz" ; 
-                    Zu => "bazina" ; 
-                    Hau => "balitz" ; 
-                    Gu => "bagina" ; 
-                    Zuek => "bazinete" ; 
-                    Hauek => "balira" } ;
+             -- TODO: Cond
              -- Present and future are identical
 	     _ =>  table {Ni => "naiz" ; 
                     Hi => "haiz" ; 

@@ -16,6 +16,17 @@ lin of_Prep = mkPrep "ko" | mkPrep "ren" ;
 lin for_Prep = mkPrep "entzat" ;
 lin because_of_Prep = mkPrep "gatik" ;
 
+-- SECTION: Pronouns
+
+-- lin i_Pron = mkPron "ni" "niri" "nik" "nire" ;
+-- lin we_Pron = mkPron "gu" "guri" "guk" "gure" ;
+-- lin youSg_Pron = mkPron "zu" "zuri" "zuk" "zure" ; -- TODO: hi/hire
+-- lin youPl_Pron = mkPron "zuek" "zuei" "zuen" ;
+-- lin he_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
+-- lin she_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
+-- lin it_Pron = mkPron "hau" "honi" "honek" "haren" ; -- TODO: the others
+-- lin they_Pron = mkPron "hauek" "hauei" "hauek" "haien" ; -- TODO: the others
+
 -- SECTION: Adjectives
 
 lin abdominal_A = mkA "abdominal" ;
@@ -166,7 +177,7 @@ lin autonomous_A = mkA "autonomo" ;
 lin auxiliary_A = mkA "laguntzaile" | mkA "laguntzaile" ;
 lin available_A = mkA "libre" ;
 lin average_A = mkA "ertain" ;
-lin avid_A = mkA "egarri" | mkA "egarri" ;
+lin avid_A = mkA "egarri" ;
 lin aware_A = mkA "kontziente" | mkA "kontziente" ;
 lin awesome_A = mkA "txundigarri" ;
 lin awful_A = mkA "beldurgarri" | mkA "ikaragarri" ;
@@ -2733,7 +2744,7 @@ lin breast_N = mkN "bular" | mkN "bular" ;
 lin breathing_N = mkN "arnasketa" ;
 lin breath_N = mkN "arnasa" | mkN "arnasketa" ;
 lin breed_N = mkN "arraza" ;
-lin breeze_N = mkN "haize_leun" ;
+lin breeze_N = mkN "haize leun" ;
 lin bricklayer_N = mkN "igeltsero" | mkN "paleta" ;
 lin brick_N = mkN "adreilu" ;
 lin bridge_N = mkN "zubi" ;
