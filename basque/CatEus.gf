@@ -10,7 +10,7 @@ concrete CatEus of Cat =
 -- Noun
     N = ResEus.Noun ;       --{s : Str ; ph = Phono} ;
 
-    PN = ResEus.Noun ; 
+    PN = ResEus.Noun ** { nbr : Number } ; 
 
     CN = ResEus.Noun ;
 
