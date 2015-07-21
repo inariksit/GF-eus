@@ -4,7 +4,6 @@ resource AditzTrinkoak = open Prelude, ResEus, CatEus, ParamX in {
 
 oper
 
-
     copulaEgonNor : Tense => Agr => Str =
       table {Past => table {Ni => "nengoen" ; 
                     Hi => "hengoen" ; 
@@ -195,6 +194,150 @@ oper
                               Ni => "zaitut" ;
                               Zuek => Prelude.nonExist ;
                               Hau => "zaitu" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     }
+              }
+   } ;
+
+   eduki_V2 : Agr => Tense => Agr => Str = table {
+       -- Nor,Nork
+              Ni => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => Prelude.nonExist ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => Prelude.nonExist ;
+                              Hauek => "naukate" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "naukazue" ;
+                              Hau => "nauka" ;
+                              Hi => "naukan" | "naukan" ;
+                              Zu => "naukazu" 
+                     }
+              } ;
+              Gu => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => Prelude.nonExist ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => Prelude.nonExist ;
+                              Hauek => "gauzkate" ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => "gauzkazue" ;
+                              Hau => "gauzka" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => "gauzkazu" 
+                     }
+              } ;
+              Hauek => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => Prelude.nonExist ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "dauzkagu" ;
+                              Hauek => "dauzkate" ;
+                              Ni => "dauzkat" ;
+                              Zuek => "dauzkazue" ;
+                              Hau => "dauzka" ;
+                              Hi => "dauzkak" | "dauzkan" ;
+                              Zu => "dauzkazu" 
+                     }
+              } ;
+              Zuek => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => Prelude.nonExist ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "zauzkategu" ;
+                              Hauek => "zauzkatete" ;
+                              Ni => "zauzkatet" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "zauzkate" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     }
+              } ;
+              Hau => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => Prelude.nonExist ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "daukagu" ;
+                              Hauek => "daukate" ;
+                              Ni => "daukat" ;
+                              Zuek => "daukazue" ;
+                              Hau => "dauka" ;
+                              Hi => "daukak" | "daukan" ;
+                              Zu => "daukazu" 
+                     }
+              } ;
+              Hi => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => Prelude.nonExist ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "haukagu" ;
+                              Hauek => "haukate" ;
+                              Ni => "haukat" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "hauka" ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist
+                     }
+              } ;
+              Zu => table {
+                     Past => table {
+                              Gu => Prelude.nonExist ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => Prelude.nonExist ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => Prelude.nonExist ;
+                              Hi => Prelude.nonExist ;
+                              Zu => Prelude.nonExist 
+                     } ;
+                     _ => table { -- Pres
+                              Gu => "zauzkagu" ;
+                              Hauek => Prelude.nonExist ;
+                              Ni => "zauzkat" ;
+                              Zuek => Prelude.nonExist ;
+                              Hau => "zauzka" ;
                               Hi => Prelude.nonExist ;
                               Zu => Prelude.nonExist 
                      }

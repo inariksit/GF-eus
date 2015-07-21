@@ -1,12 +1,19 @@
 --# -path=.:../basque
 
-concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, ResEus, Prelude in {
+concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, AditzTrinkoak, ResEus, Prelude in {
 
 -- SECTION: Conjunctions 
 
 lin and_Conj = mkConj "eta" ; 
+lin or_Conj = mkConj "edo" | mkConj "ala" ; 
 
 -- SECTION: Adpositions
+
+{- 
+   NOTE: Here we need to distinguish postpositions 
+     that are attached (i.e. with BIND; -tik, -ekin, etc.) 
+     from those which are separated from the word (e.g. gabe)
+-}
 
 lin in_Prep = mkPrep "n" ;
 lin from_Prep = mkPrep "tik" ;
@@ -15,6 +22,7 @@ lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
 lin of_Prep = mkPrep "ko" | mkPrep "ren" ;
 lin for_Prep = mkPrep "entzat" ;
 lin because_of_Prep = mkPrep "gatik" ;
+lin without_Prep = mkPrep "gabe" ; 
 
 -- SECTION: Pronouns
 
@@ -5771,13 +5779,15 @@ lin fall_V = mkV "amildu" ;
 lin die_V = mkV "hil" ;
 lin travel_V = mkV "bidaiatu" ;
 
+lin have_V2 = { s = AditzTrinkoak.eduki_V2 } ** { prc = mkPrc "" ; sc = Erg } ;
+
 --lin see_V2  = mkV2 "ikusi" ;
 --lin learn_V2 = mkV2 "ikasi" ;
 --lin write_V2 = mkV2 "idatzi" ;
 --lin hit_V2 = mkV2 "jo" ;
 --lin drink_V2 = mkV2 "edan" ;
 
--- lin like_V2 = mkVX "gustatu" ; -- NOR-NORI
+--lin like_V2 = mkVX "gustatu" ; -- NOR-NORI
 
 lin pay_V3  = mkV3 "igorri" ;
 
@@ -6579,7 +6589,6 @@ lin pay_V3  = mkV3 "igorri" ;
 -- lin harden_V = mkV "gogortu" ;
 -- lin hasten_V = mkV "bizkortu" ;
 -- lin hatch_V = mkV "arrautzatik_atera" ;
--- lin have_V = mkV "eduki" | mkV "eduki" | mkV "ezan" | mkV "izan" ;
 -- lin head_V = mkV "hasi" ;
 -- lin heal_V = mkV "orbaindu" ;
 -- lin hear_V = mkV "entzun" ;
