@@ -35,6 +35,14 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
       stem = cn.s ++ ap.stem ; 
       ph   = ap.ph ;
       anim = cn.anim } ;
+
+    -- AdvCN   : CN -> Adv -> CN ;   -- house on the hill
+    AdvCN cn ad = {
+      s    = ad.s ++ BIND ++ "ko" ++ cn.s ; 
+      stem = ad.s ++ BIND ++ "ko" ++ cn.s ; 
+      ph   = cn.ph ;
+      anim = cn.anim } ;
+
     
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
