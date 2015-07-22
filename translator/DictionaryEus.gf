@@ -9,10 +9,10 @@ lin or_Conj = mkConj "edo" | mkConj "ala" ;
 
 -- SECTION: Adpositions
 
-{- 
-   NOTE: Here we need to distinguish postpositions 
-     that are attached (i.e. with BIND; -tik, -ekin, etc.) 
-     from those which are separated from the word (e.g. gabe)
+{-
+    NOTE: The "-ko" suffix is taken care of in ExtraEus.gf,
+      as this is not a postposition but better a derivational
+      suffix that can apply to whole NPs 
 -}
 
 lin in_Prep = mkPrep "n" ;
@@ -20,13 +20,16 @@ lin from_Prep = mkPrep "tik" ;
 lin to_Prep = mkPrep "ra" ;
 lin with_Prep = mkPrep "z" | mkPrep "ekin" ;  -- split
 
--- NOTE: "-ko" suffix is taken care of in NounEus.gf,
---   as this is not a postposition but better a derivational
---   suffix that can apply to whole NPs 
-
 lin of_Prep = mkPrep "ren" ;
 lin for_Prep = mkPrep "entzat" ;
 lin because_of_Prep = mkPrep "gatik" ;
+lin towards_Prep = mkPrep "antz" ;
+
+{-
+    NOTE: Postpositions which are written separately from
+      their complements need to take "False" as a second 
+      argument and specify the case of their complement.
+-}
 
 lin without_Prep = mkPrep "gabe" ParNP False | mkPrep "gabe" AbsNP False ; 
 lin against_Prep = mkPrep "kontra" GenNP False ;
