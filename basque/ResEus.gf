@@ -77,7 +77,7 @@ oper
 
 -- 
 
-   Posposizio : Type = {s : Str ; complType : ComplType ; attached : Bool } ;
+   Postposizio : Type = {s : Str ; complType : ComplType ; attached : Bool } ;
 
 -- Pronoun stuffs
 
