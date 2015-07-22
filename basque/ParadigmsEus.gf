@@ -62,7 +62,15 @@ oper
 
   mkAdv : Str -> Adv = \s -> lin Adv {s = s} ;
 
-  mkPrep : Str -> Prep = \s -> lin Prep {s = s} ;
+--  mkPrep : Str -> Prep = \s -> lin Prep {s = s} ;
+
+  mkPrep = overload {
+ 
+    mkPrep : Str -> ComplType -> Bool -> Prep = \s,compl,konf -> lin Prep { s = s ; complType = compl ; attached = konf } ;
+    mkPrep : Str -> ComplType -> Prep = \s,compl -> lin Prep { s = s ; complType = compl ; attached = True } ;
+    mkPrep : Str -> Prep = \s -> lin Prep { s = s ; complType = AbsNP ; attached = True } ;
+
+  } ; 
 
 }
 

@@ -31,6 +31,8 @@ concrete CatEus of Cat =
 
     Num = {s : Str ; n : Number ; isNum : Bool} ;
 
+    Prep = ResEus.Posposizio ;
+
 
 -- Adjective
     A = ResEus.Adjective ; 

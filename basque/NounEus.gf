@@ -44,23 +44,6 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
       anim = cn.anim } ;
 
 
-{-
-   NOTE: This is non-optimal as really the -ko should be a node in
-     the tree. We would like to have e.g. 
-        [NP [AP [PP Bilbora [-ko]]] [N kale]] 
-     or something similar. This way we could treat APs like [AP [A berri]] 
-     and `adnominal' postpositional phrases similarly... as they both take 
-     all of the article declination.
--}
-
-    -- AdvCN   : CN -> Adv -> CN ;   -- house on the hill
---    AdvCN cn ad = {
---      s    = ad.s ++ BIND ++ "ko" ++ cn.s ; 
---      stem = ad.s ++ BIND ++ "ko" ++ cn.s ; 
---      ph   = cn.ph ;
---      anim = cn.anim } ;
-
-    
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {
       s = \\cas => cn.stem ++ det.s ! cas ! cn.ph ;
@@ -87,15 +70,20 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
 oper
   artA : Number => Case => Phono => Str =
-   table { Sg => table {Abs => table {FinalA => "a"  ;
-                                      FinalR => "ra" ;
-                                      _      => "a" } ;
-                        Erg => table {FinalA => "ak"  ;
-                                      FinalR => "rak" ;
-                                      _      => "ak" } ;
-                        Dat => table {FinalA => "ri" ;
-                        FinalR => "rari" ;
-                        _      => "ari" } }; 
+   table { Sg => table {Abs => table {FinalA   => "a"  ;
+                                      FinalR   => "ra" ;
+                                      _        => "a" } ;
+                        Erg => table {FinalA   => "ak"  ;
+                                      FinalR   => "rak" ;
+                                      _        => "ak" } ;
+                        Dat => table {FinalA   => "ri" ;
+                                      FinalR   => "rari" ;
+                                      _        => "ari" } ;
+                        Par => table {FinalA   => "rik" ;
+                                      FinalR   => "rarik" ;
+                                      FinalVow => "rik" ;
+                                      FinalCons => "ik" } 
+                        }; 
 
            Pl => table {Abs => table {FinalA => "ak"  ;
                                       FinalR => "rak" ;
@@ -104,7 +92,9 @@ oper
                                       FinalR => "rek" ;
                                       _      => "ek" } ;
                         Dat => table {FinalR => "rei" ;
-                                      _      => "ei" } }
+                                      _      => "ei" } ;
+                        Par => table {_ => Prelude.nonExist } 
+                        }
 
           } ; 
 

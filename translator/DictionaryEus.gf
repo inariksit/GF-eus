@@ -28,9 +28,9 @@ lin of_Prep = mkPrep "ren" ;
 lin for_Prep = mkPrep "entzat" ;
 lin because_of_Prep = mkPrep "gatik" ;
 
-lin without_Prep = mkPrep "gabe" ; 
-lin against_Prep = mkPrep "kontra" ;
-lin in_favour_of_Prep = mkPrep "alde" ;
+lin without_Prep = mkPrep "gabe" ParNP False | mkPrep "gabe" AbsNP False ; 
+lin against_Prep = mkPrep "kontra" GenNP False ;
+lin in_favour_of_Prep = mkPrep "alde" GenNP False ;
 
 -- SECTION: Pronouns
 

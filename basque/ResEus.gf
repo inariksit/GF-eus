@@ -4,14 +4,39 @@ resource ResEus = ParamX ** open TenseX, Prelude in {
   coding=utf8 ;
 
 param 
---    Gender = Masc | Fem ; 
+{-
+   Type of copula used, e.g. 
+ 
+     Miren lorategi a n dago [CopulaType = Egon]
+     Miren irakasle a da [CopulaType = Izan]
+-}
     CopulaType = Egon | Izan  ; 
+
+{-
+   Type of the complement of a postposition. e.g.
+
+      diru gabe [ComplType = AbsNP]
+      dirurik gabe [ComplType = ParNP]
+      horma ren kontra [ComplType = GenNP]
+-}
+    ComplType = ParNP | GenNP | AbsNP ;  
+
+{-
+   Type of adjectival phrase, e.g.
+ 
+      kale txiki a [APType = Bare]
+      itsaso ra ko kale a [APType = Ko]
+-}
+    APType = Ko | Bare ; 
+
     Bizi = Inan | Anim ;
-    Case = Erg | Abs | Dat ;
+
+    Case = Erg | Abs | Dat | Par ;
+
+--    Gender = Masc | Fem ; 
 --    Degree = Posit | Compar | Superl | Excess ;
 --    CardOrd = NCard | NOrd ;
 --    DForm = unit | teen | ten  ;
-    APType = Ko | Bare ; 
 
     Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
     AgrValency = Nor | NorNork | NorNori | NorNoriNork ;
@@ -49,6 +74,10 @@ oper
 -- the field .agr. is of type Agr.   
 
     buru_NP : NounPhrase = {s = \\_ => "buru" ; agr = Hau ; anim = Anim} ;
+
+-- 
+
+   Posposizio : Type = {s : Str ; complType : ComplType ; attached : Bool } ;
 
 -- Pronoun stuffs
 
