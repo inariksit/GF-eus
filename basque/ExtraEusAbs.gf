@@ -6,6 +6,10 @@ cat
 
 fun
 
-    AdvAP : Adv -> Attr -> AP ; 
+   ko_Attr : Attr ;
+
+    -- AdnP = Adnominal phrase
+
+    AdnP : Adv -> Attr -> AP ; 
 
 } ;

@@ -12,9 +12,16 @@ oper
 
 lin
 
---	AdvAP : Adv -> Attr -> AP ;  -- Bilbo ra ko 
+ ko_Attr = mkAttr "ko" ;
 
-  AdvAP adv attr = {
+{-
+   Tokiorako bidaia bat 'a journey to Tokyo' [Tokyo-to-ko journey one]
+
+-}
+
+--	AdnP : Adv -> Attr -> AP ;  -- Bilbo ra ko 
+
+  AdnP adv attr = {
       s    = adv.s ++ BIND ++ attr.s ; 
       stem = adv.s ++ BIND ++ attr.s ; 
       ph = FinalVow ;

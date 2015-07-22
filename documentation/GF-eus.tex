@@ -23,6 +23,8 @@
 
 \begin{document}
 
+\section{Simple sentence structure}
+
 % Mutil ak katu a dauka .
 
 \begin{center}
@@ -33,6 +35,7 @@
 \end{minipage}
 \begin{minipage}{.4\textwidth}
 \begin{tikzpicture}
+\tikzset{frontier/.style={distance from root=150pt}}
 \Tree [.Cl [.NP [.CN [.N mutil ] [.Det [.Quant ak ] ] ] ]
            [.VP 
                 [.NP [.CN [.N katu ] ] [.Det [.Quant a ] ] ]
@@ -41,6 +44,8 @@
 \end{tikzpicture}
 \end{minipage}
 \end{center}
+
+\section{Adverbial phrases}
 
 % Mutil a itsaso a ra ibiltzen da .
 
@@ -52,6 +57,7 @@
 \end{minipage}
 \begin{minipage}{.4\textwidth}
 \begin{tikzpicture}
+\tikzset{frontier/.style={distance from root=200pt}}
 \Tree [.Cl [.NP [.CN [.N mutil ] [.Det [.Quant a ] ] ] ]
            [.VP 
                 [.Adv [.NP [.CN [.N itsaso ] [.Det [.Quant a ] ] ] ] [.Prep ra ] ]
@@ -67,6 +73,9 @@
 
 % Ez dauzkagu katu ik .
 
+
+\section{Adnominal phrases with \emph{-ko}}
+
 % Bilbo ra ko errepide a berri a da .
 
 \begin{center}
@@ -74,14 +83,21 @@
 ???
 \end{minipage}
 \begin{minipage}{.4\textwidth}
-\Tree [.Cl [.NP [.AdvAP [.Adv [.NP [.PN Bilbo ] ] [.Prep ra ] ] [.Attr ko ] ] 
-                [.CN [.N errepide ] [.Det [.Quant a ] ] ] 
+\begin{tikzpicture}
+\tikzset{frontier/.style={distance from root=200pt}}
+\Tree [.Cl [.NP [.CN 
+                     [.AP 
+                       [.Adv [.NP [.PN Bilbo ] ] [.Prep ra ] ] 
+                       [.Attr ko ]  ]
+                     [.CN [.N errepide ] ] 
+                ] 
+                [.Det [.Quant a ] ]
            ]
            [.VP [.Comp [.AP [.A berri ] [.Det [.Quant a ] ] ] ] 
                 [.V da ]
            ] ]
+\end{tikzpicture}
 \end{minipage}
-\end{center}
 
 
 \end{center}
