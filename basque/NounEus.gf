@@ -31,17 +31,14 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
 
     -- AdjCN   : AP -> CN  -> CN 
-    AdjCN ap cn = {
-      s    = case ap.typ of {
+    AdjCN ap cn =
+      let result = case ap.typ of {
                      Ko => ap.stem ++ cn.s ; 
                      Bare => cn.s ++ ap.stem 
-             } ;
-      stem    = case ap.typ of {
-                     Ko => ap.stem ++ cn.s ; 
-                     Bare => cn.s ++ ap.stem 
-             } ;
-      ph   = ap.ph ;
-      anim = cn.anim } ;
+                   } ;
+      in { s,stem = result ;
+           ph     = ap.ph ;
+           anim   = cn.anim } ;
 
 
 {-
