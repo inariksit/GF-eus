@@ -15,7 +15,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
     --DefArt, IndefArt : Quant
     --Notation explanation: The string in s will start with BIND,
-    --and a string from artA. The parameters n,c,p will eventually come
+    --and a string from artA. The parameters nbr,case,phon will eventually come
     --from later functions, and they will be used to extract the wanted
     --string from artA.
     --This is equivalent to having written
@@ -24,7 +24,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --	                         table { FinalA = BIND ++ "a" ;
     --                                   FinalR = BIND ++ "ra" ; ...
     DefArt, IndefArt = {
-      s = \\n,c,p => BIND ++ artA ! n ! c ! p ;
+      s = \\nbr,case,phon => BIND ++ artA ! nbr ! case ! phon ;
       isPre = False
     };
 
