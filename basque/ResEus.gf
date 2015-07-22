@@ -11,6 +11,7 @@ param
 --    Degree = Posit | Compar | Superl | Excess ;
 --    CardOrd = NCard | NOrd ;
 --    DForm = unit | teen | ten  ;
+    APType = Ko | Bare ; 
 
     Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
     AgrValency = Nor | NorNork | NorNori | NorNoriNork ;

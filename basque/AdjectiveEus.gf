@@ -9,12 +9,14 @@ concrete AdjectiveEus of Adjective = CatEus ** open ResEus, Prelude in {
     --AP : {s : Str ; stem : Str ; ph : Phono}  
     PositA a = lin AP {s    = a.s ! Posit ; 
 		       stem = a.s ! Posit ; 
-		       ph   = a.ph} ;
+		       ph   = a.ph ; 
+                       typ  = Bare } ;
 
 
     --ComparA : A  -> NP -> AP ;  -- euskara ingelesa baino errazagoa da.
      ComparA a np = lin AP {s    = np.s ! Abs ++ "baino" ++ a.s ! Compar ; 
 			    stem = np.s ! Abs ++ "baino" ++ a.s ! Compar ; 
-			    ph   = a.ph
+			    ph   = a.ph ;
+                            typ = Bare
 			    } ;
 }

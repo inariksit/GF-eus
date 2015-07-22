@@ -17,7 +17,8 @@ lin
   AdvAP adv attr = {
       s    = adv.s ++ BIND ++ attr.s ; 
       stem = adv.s ++ BIND ++ attr.s ; 
-      ph = FinalVow 
+      ph = FinalVow ;
+      typ = Ko 
   } ;
 
 } ;

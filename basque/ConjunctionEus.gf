@@ -49,12 +49,12 @@ concrete ConjunctionEus of Conjunction =
     ConjCN co ns = let newcn = conjunctX co ns in
      {s,stem=newcn ; ph=ns.ph} ;
 -}
-    ConjAP co as = {s = conjunctX co as ; ph=FinalA ; stem = as.s2 } ; 
+    ConjAP co as = {s = conjunctX co as ; ph=FinalA ; stem = as.s2 ; typ = as.typ } ; 
 
   lincat
     [Adv] = {s1,s2 : Str} ;
 --    [CN] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
-    [AP] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
+    [AP] = {s1,s2 : Str ; stem : Str ; ph : Phono ; typ : APType } ;
     [NP] = {s1,s2 : Case => Str ; agr : Agr} ;
 
 

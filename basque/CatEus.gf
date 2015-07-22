@@ -34,7 +34,7 @@ concrete CatEus of Cat =
 
 -- Adjective
     A = ResEus.Adjective ; 
-    AP = {s : Str ; stem : Str ; ph : Phono } ; 
+    AP = {s : Str ; stem : Str ; ph : Phono ; typ : APType } ; 
 
 -- Verb
     V, VQ, VA = ResEus.Verb1 ;
