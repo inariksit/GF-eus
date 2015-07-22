@@ -1,6 +1,10 @@
 --# -path=.:../basque
 
-concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, AditzTrinkoak, ResEus, Prelude in {
+concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, AditzTrinkoak, ResEus, ExtraEus, Prelude in {
+
+-- SECTION: Miscellaneous
+
+lin ko_Attr = mkAttr "ko" ;
 
 -- SECTION: Conjunctions 
 
