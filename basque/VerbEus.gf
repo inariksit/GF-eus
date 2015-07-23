@@ -89,12 +89,20 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
     -- the house is big   = etxea handia da
     -- the houses are big = etxeak handiak dira
-    CompAP  ap  = lin Comp {s = table {agr => let art = DefArt.s ! getNum agr ! Abs ! ap.ph
-					      in glue ap.stem art} ; copula = Izan } ;
 
-    CompNP  np  = lin Comp {s = table {_ => np.s ! Abs} ; copula = Izan } ; 
+    -- Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
 
-    CompAdv adv = lin Comp {s = table {_ => adv.s} ; copula = Egon } ;
+    CompAP  ap  = lin Comp {s = table { agr => ap.stem ++ DefArt.s ! getNum agr ! Abs ! ap.ph } ;
+                            copula = Izan 
+                           };
+
+    CompNP  np  = lin Comp {s = table {_ => np.s ! Abs} ; 
+                            copula = Izan 
+                           } ; 
+
+    CompAdv adv = lin Comp {s = table {_ => adv.s} ; 
+                            copula = Egon 
+                           } ;
 
 --    CompCN   : CN  -> Comp ;            -- (be) a man/men
 
@@ -103,6 +111,7 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
                             
 -- choose copula based on transitivity(argstruct) of main verb.
+
     UseCopula = lin VP copulaVP ;
 
 

@@ -7,7 +7,7 @@
 000001
 Cl
 Miren lorategi &+ a &+ n dago
-PredVP (UsePN mary_PN) (UseComp (CompAdv (PrepNP in_Prep (DetCN (DetQuant DefArt ?5) (UseN garden_N)))))
+PredVP (UsePN mary_PN) (UseComp (CompAdv (PrepNP in_Prep (DetCN (DetQuant DefArt NumSg) (UseN garden_N)))))
 (Cl:13 (NP:1 (PN:0 Miren)) (VP:12 (Comp:11 (Adv:10 (NP:9 (CN:8 (N:7 lorategi)) (Det:6 (Quant:3 &+ a))) &+ (Prep:2 n)))) (VP:12 dago))
 
 000002
@@ -18,6 +18,18 @@ PredVP (ConjNP and_Conj (BaseNP (UsePN mary_PN) (UsePN james_PN))) (UseComp (Com
 
 000003
 Cl 
-
+txakur &+ ra oso zoriontsu &+ a da
 PredVP (DetCN (DetQuant DefArt NumSg) (UseN dog_N)) (UseComp (CompAP (AdAP very_AdA (PositA happy_A))))
+(Cl:12 (NP:5 (CN:4 (N:3 txakur)) (Det:2 (Quant:0 &+ ra))) (VP:11 (Comp:10 (AP:9 (AdA:6 oso) (AP:8 (A:7 zoriontsu))) &+ a)) (VP:11 da))
 
+000004
+Cl
+txakur &+ ra oso zoriontsu &+ a da orain
+PredVP (DetCN (DetQuant DefArt NumSg) (UseN dog_N)) (AdVVP now_AdV (UseComp (CompAP (AdAP very_AdA (PositA happy_A))))) 
+(Cl:15 (VP:14 (AdV:7 orain)) (NP:6 (CN:5 (N:4 txakur)) (Det:3 (Quant:0 &+ ra))) (VP:14 (VP:13 (Comp:12 (AP:11 (AdA:8 oso) (AP:10 (A:9 zoriontsu))) &+ a))) (VP:14 (VP:13 da)))
+
+000005
+Cl
+etxe &+ ak handi &+ ak dira
+PredVP (DetCN (DetQuant DefArt NumPl) (UseN house_N)) (UseComp (CompAP (PositA big_A)))
+(Cl:11 (NP:6 (CN:5 (N:4 etxe)) (Det:3 (Quant:0 &+ ak))) (VP:10 (Comp:9 (AP:8 (A:7 handi)) &+ ak)) (VP:10 dira))

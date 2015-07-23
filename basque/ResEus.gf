@@ -60,7 +60,7 @@ oper
 -- Noun stuffs
     Noun : Type = {s : Str ; stem : Str ; ph : Phono ; anim : Bizi} ;
     Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
-    NounPhrase : Type = {s : Case => Str ; agr : Agr ; anim : Bizi} ;
+    NounPhrase : Type = {s : Case => Str ; agr : Agr ; anim : Bizi ; nbr : Number } ;
 
 -- NounPhrase is a record
 -- a record is a thing with fields
@@ -73,7 +73,7 @@ oper
 ---      { Abs => "hargle"; Erg => "bargle" }
 -- the field .agr. is of type Agr.   
 
-    buru_NP : NounPhrase = {s = \\_ => "buru" ; agr = Hau ; anim = Anim} ;
+    buru_NP : NounPhrase = {s = \\_ => "buru" ; agr = Hau ; anim = Anim ; nbr = Sg } ;
 
 -- 
 
@@ -82,6 +82,19 @@ oper
 -- Pronoun stuffs
 
     Pronoun : Type = NounPhrase ;
+
+--    reflPron : NounPhrase = { s = case agr of {
+--        Ni => "nire buru" ;
+--        Hi => "hire buru" ;
+--        Zu => "zure buru" ;
+--        Hau => "bere buru" ;
+--        Gu => "gure buru" ;
+--        Zuek => "zuen buru" ;
+--        Hauek => "beren buru" } ;
+--      agr = agr ; 
+--      anim = Anim ; 
+--      nbr = Sg;
+--    } ;
 
 
 -- Adjective stuffs
@@ -154,7 +167,8 @@ oper
       in 
       { s = table {
           tense => table {
-              Pos => vp.adv ++ subject ++ vp.compl ! np.agr ++ vp.prc ! tense ++ vp.s ! tense ! np.agr ;
+              Pos => vp.adv ++ subject ++ vp.compl ! np.agr ++ vp.prc ! tense ++ vp.s ! tense ! np.agr | 
+                     subject ++ vp.compl ! np.agr ++ vp.prc ! tense ++ vp.s ! tense ! np.agr ++ vp.adv ;
               Neg => vp.adv ++ subject ++ "ez" ++ vp.s ! tense ! np.agr ++ vp.prc ! tense ++ vp.compl ! np.agr
               }
           }

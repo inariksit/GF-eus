@@ -8,7 +8,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     UseN n = lin CN n  ;
 
     --UsePN   : PN -> NP ;          -- John
-    UsePN pn = { s = table { _ => pn.s } ; agr = Hau ; anim = pn.anim }  ;
+    UsePN pn = { s = table { _ => pn.s } ; agr = Hau ; anim = pn.anim ; nbr = Sg }  ;
 
     NumSg = {s = [] ; n = Sg ; isNum = False} ; 
     NumPl = {s = [] ; n = Pl ; isNum = False} ; 
@@ -26,7 +26,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --                                   FinalR = BIND ++ "ra" ; ...
     DefArt, IndefArt = {
       s = \\n,c,p => BIND ++ artA ! n ! c ! p ;
-      isPre = False
+      isPre = False ;
+      nbr = Sg
     };
 
 
@@ -48,7 +49,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 	      Sg => Hau ;
 	      Pl => Hauek 
 	    } ;
-      anim = cn.anim
+      anim = cn.anim ;
+      nbr = det.nbr
     } ;
 
     DetQuant quant num = {
