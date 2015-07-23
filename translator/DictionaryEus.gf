@@ -3391,6 +3391,42 @@ lin zeal_N = mkN "zelo" ;
 lin zero_N = mkN "zero" ;
 lin zone_N = mkN "zona" ;
 
+lin allusion_N = mkN "zeharkakoaipamen" ; 
+lin beech_N = mkN "pagadi" ; 
+lin coca_N = mkN "koka-landare" ; 
+lin cotton_plant_N = mkN "kotoi-landare" ; 
+lin digestive_N = mkN "digestio-aparatu" ; 
+lin driving_N = mkN "gidabaimen" ; 
+lin etcetera_N = mkN "etaabar" ; 
+lin excavator_N = mkN "hondeatzekomakina" ; 
+lin fan_belt_N = mkN "aireztatzeuhal" ; 
+lin hand_grenade_N = mkN "esku-bonba" ; 
+lin ice_cream_N = mkN "izozki-denda" ; 
+lin impatience_N = mkN "pairamenikez" ; 
+lin implication_N = mkN "nahasiaegote" ; 
+lin involvement_N = mkN "nahasiaegote" ; 
+lin latex_N = mkN "latex-alergia" ; 
+lin laundry_N = mkN "latsarri" ; 
+lin living_room_N = mkN "areto" ; 
+lin mailing_list_N = mkN "posta-zerrenda" ; 
+lin napalm_N = mkN "napalm-ezkobonba" ; 
+lin patron_N = mkN "patroi" ; 
+-- lin plenty_NP = mkN "ugaritasun" ; 
+lin ring_finger_N = mkN "hatznagi" ; 
+lin royal_N = mkN "errege-bide" ; 
+lin sea_level_N = mkN "itsas-maila" ; 
+lin skipping_rope_N = mkN "sokasalto" ; 
+lin smoke_bomb_N = mkN "ke-bonba" ; 
+lin stare_N = mkN "adi-adibegiratu" ; 
+lin starting_point_N = mkN "abiapuntu" ; 
+lin steering_N = mkN "bolante" ; 
+lin steering_wheel_N = mkN "bolante" ; 
+lin swimming_pool_N = mkN "igerileku" ; 
+lin time_bomb_N = mkN "erloju-bonba" ; 
+lin vice_president_N = mkN "lehendakariorde" ; 
+lin wash_house_N = mkN "latsarri" ; 
+lin webpage_N = mkN "weborri" ; 
+lin working_N = mkN "astegun" ; 
 
 -- lin brother_N2 = mkN2 (mkN masculine (mkN "brother")) (mkPrep "of") ;
 -- lin father_N2 = mkN2 (mkN masculine (mkN "father")) (mkPrep "of") ;
@@ -4236,7 +4272,7 @@ lin hairy_A = mkA "iletsu" ;
 lin half_A = mkA "ertain" ;
 lin handsome_A = mkA "eder" | mkA "erakargarri" ;
 lin handy_A = mkA "erabilgarri" ;
-lin happy_A = mkA "zorioneko" | mkA "zoriontsu" ;
+lin happy_A = mkA "pozik" | mkA "zorioneko" | mkA "zoriontsu" ;
 lin hardy_A = mkA "gogor" ;
 lin harmful_A = mkA "kaltegarri" ;
 lin harsh_A = mkA "gogor" ;
@@ -5780,12 +5816,80 @@ lin zealous_A = mkA "kartsu" ;
 lin zonal_A = mkA "zona" ;
 lin zoological_A = mkA "zoologiko" ;
 
+lin accessible_A = mkA "sartzenerraz" ; -- <izo>
+lin airborne_A = mkA "airezgarraiatu" ; -- 
+lin ambitious_A = mkA "anbiziohandiko" ; -- 
+lin approachable_A = mkA "sartzenerraz" ; -- <izo>
+lin contingent_A = mkA "gertadaitekeen" ; -- 
+lin delectable_A = mkA "osogozo" ; -- <izo>
+lin diabolic_A = mkA "osotxar" ; -- <izo>
+lin diabolical_A = mkA "osotxar" ; -- <izo>
+lin enormous_A = mkA "osohandi" ; -- 
+lin fabulous_A = mkA "osoon" ; -- <izo>
+lin flawless_A = mkA "akatsikgabe" ; -- 
+lin fruitless_A = mkA "fruiturikgabe" ; -- <izo>
+lin glacial_A = mkA "izugarrihotz" ; -- 
+lin groundless_A = mkA "oinarrigabe" ; -- <izo>
+lin hackneyed_A = mkA "osoezagun" ; -- <izo>
+lin harmless_A = mkA "ezkaltegarri" ; -- <izo>
+lin hellish_A = mkA "osotxar" ; -- <izo>
+lin incoherent_A = mkA "loturarikgabe" ; -- <izo>
+lin inconsiderate_A = mkA "begirunerikgabe" ; -- <izo>
+lin inconspicuous_A = mkA "nabarmendugabe" ; -- <izo>
+lin incorrect_A = mkA "ezzuzen" ; -- <izo>
+lin indiscreet_A = mkA "diskreziorikgabe" ; -- <izo>
+lin indiscriminate_A = mkA "bereizigabe" ; -- <izo>
+lin ineffective_A = mkA "ezeraginkor" ; -- <izo>
+lin inexperienced_A = mkA "trebetasunikgabe" ; -- <izo>
+lin insecure_A = mkA "ezseguru" ; -- <izo>
+lin insubstantial_A = mkA "sendotasunikgabe" ; -- <izo>
+lin likely_A = mkA "gertadaitekeen" ; -- 
+lin lousy_A = mkA "osokaskar" ; -- <izo>
+lin luscious_A = mkA "izugarrigozo" ; -- <izo>
+lin mediaeval_A = mkA "erdiAroko" ; -- 
+lin newborn_A = mkA "jaioberri" ; -- <izo>
+lin oblivious_A = mkA "ezkontziente" ; -- <izo>
+lin patient_A = mkA "eramanhandiko" ; -- 
+lin predictable_A = mkA "aurreikusdaitekeen" ; -- 
+lin probable_A = mkA "gertadaitekeen" ; -- 
+lin prospective_A = mkA "gertadaitekeen" ; -- 
+lin sleepless_A = mkA "lorikegingabe" ; -- <izo>
+lin stuffy_A = mkA "aireztatugabe" ; -- <izo>
+-- lin subject_A2 = mkA2 "lotu" ; -- 
+lin tremendous_A = mkA "osohandi" ; -- 
+lin trivial_A = mkA "garrantzirikgabeko" ; -- 
+lin unaffected_A = mkA "aldatugabe" ; -- 
+lin unchanged_A = mkA "aldatugabe" ; -- 
+lin unchecked_A = mkA "kontrolikgabe" ; -- <izo>
+lin unclear_A = mkA "ezgarbi" ; -- <izo>
+lin unconscious_A = mkA "konorterikgabe" ; -- <izo>
+lin undoubted_A = mkA "zalantzarikgabe" ; -- 
+lin unfailing_A = mkA "hutsikgabe" ; -- <izo>
+lin unfounded_A = mkA "oinarrigabe" ; -- <izo>
+lin unhurt_A = mkA "zauririkgabe" ; -- <izo>
+lin unleaded_A = mkA "berunikgabe" ; -- <izo>
+lin unnecessary_A = mkA "ezbeharrezko" ; -- 
+lin unprecedented_A = mkA "aurrekaririkgabe" ; -- 
+lin unruly_A = mkA "diziplinarikgabe" ; -- <izo>
+lin unsafe_A = mkA "ezseguru" ; -- <izo>
+lin unscathed_A = mkA "zauririkgabe" ; -- <izo>
+lin unscrupulous_A = mkA "eskrupulurikgabe" ; -- <izo>
+lin unsure_A = mkA "ezseguru" ; -- 
+lin untapped_A = mkA "ustiatugabe" ; -- <izo>
+lin unusual_A = mkA "ohiezbezalako" ; -- 
+lin unwieldy_A = mkA "astunetaerabiltzekozail" ; -- <izo>
+lin unwilling_A = mkA "ezprest" ; -- <izo>
+lin unwritten_A = mkA "idatzigabe" ; -- <izo>
+
+
 -- SECTION: Adverbs 
 
 lin where_IAdv = { s = "non" } ;
 lin how_IAdv = { s = "nola" } ;
 lin when_IAdv = { s = "noiz" } ;
 lin why_IAdv = { s = "zergatik" } ;
+
+lin very_AdA = mkAdA "oso" ;
 
 lin now_Adv = mkAdv "orain" ;
 lin again_Adv = mkAdv "berriz" ; 

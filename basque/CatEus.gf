@@ -33,7 +33,6 @@ concrete CatEus of Cat =
 
     Prep = ResEus.Postposizio ;
 
-
 -- Adjective
     A = ResEus.Adjective ; 
     AP = {s : Str ; stem : Str ; ph : Phono ; typ : APType } ; 

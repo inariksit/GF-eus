@@ -10,7 +10,8 @@ concrete AdjectiveEus of Adjective = CatEus ** open ResEus, Prelude in {
     PositA a = lin AP {s    = a.s ! Posit ; 
 		       stem = a.s ! Posit ; 
 		       ph   = a.ph ; 
-                       typ  = Bare } ;
+                       typ  = Bare 
+    } ;
 
 
     --ComparA : A  -> NP -> AP ;  -- euskara ingelesa baino errazagoa da.
@@ -18,5 +19,14 @@ concrete AdjectiveEus of Adjective = CatEus ** open ResEus, Prelude in {
 			    stem = np.s ! Abs ++ "baino" ++ a.s ! Compar ; 
 			    ph   = a.ph ;
                             typ = Bare
-			    } ;
+     } ;
+
+
+    --AdAP    : AdA -> AP -> AP ; 
+    AdAP ada ap = lin AP {
+      s = ada.s ++ ap.s ; 
+      stem = ada.s ++ ap.s ; 
+      ph = ap.ph ;
+      typ = Bare  
+    } ;
 }

@@ -15,3 +15,9 @@ Cl
 Miren eta James lorategi &+ a &+ n daude
 PredVP (ConjNP and_Conj (BaseNP (UsePN mary_PN) (UsePN james_PN))) (UseComp (CompAdv (PrepNP in_Prep (DetCN (DetQuant DefArt ?10) (UseN garden_N)))))
 (Cl:18 (NP:6 (ListNP:5 (NP:2 (PN:1 Miren))) (Conj:0 eta) (ListNP:5 (NP:4 (PN:3 James)))) (VP:17 (Comp:16 (Adv:15 (NP:14 (CN:13 (N:12 lorategi)) (Det:11 (Quant:8 &+ a))) &+ (Prep:7 n)))) (VP:17 daude))
+
+000003
+Cl 
+
+PredVP (DetCN (DetQuant DefArt NumSg) (UseN dog_N)) (UseComp (CompAP (AdAP very_AdA (PositA happy_A))))
+
