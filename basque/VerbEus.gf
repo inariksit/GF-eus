@@ -78,7 +78,7 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
     AdVVPSlash adv vps = lin VPSlash (vps ** {adv=adv.s}) ;
 
     --- VPSlash assumes that complement is a core complement;
-    --- TODO generalise the type and allow adverbial complements to be inserted
+    --- TODO: generalise the type and allow adverbial complements to be inserted
     -- : VP -> Prep -> VPSlash ;  -- live in (it)
     VPSlashPrep vp prep = lin VPSlash (vp ** {s = copulaNorNork; compl = \\agr => vp.compl ! agr ++ BIND ++ prep.s }) ;
 

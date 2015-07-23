@@ -7,8 +7,19 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --UseN : N -> CN
     UseN n = lin CN n  ;
 
+
+{-
+    NOTE: This is horrible, cases should probably go somewhere better :D
+-}
+
     --UsePN   : PN -> NP ;          -- John
-    UsePN pn = { s = table { _ => pn.s } ; agr = Hau ; anim = pn.anim ; nbr = Sg }  ;
+    UsePN pn = { s = table { Erg => pn.s ++ BIND ++ "ek" ; 
+                             Dat => pn.s ++ BIND ++ "i" ;
+                             Par => pn.s ++ BIND ++ "ik" ;
+                             Abs => pn.s ;
+                             _ => pn.s } ; 
+                 agr = Hau ; 
+                 anim = pn.anim ; nbr = Sg }  ;
 
     NumSg = {s = [] ; n = Sg ; isNum = False} ; 
     NumPl = {s = [] ; n = Pl ; isNum = False} ; 

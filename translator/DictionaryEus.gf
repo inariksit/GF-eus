@@ -7041,10 +7041,12 @@ lin why_IAdv = { s = "zergatik" } ;
 
 lin very_AdA = mkAdA "oso" ;
 
-lin now_AdV = mkAdv "orain" ;
-lin again_AdV = mkAdv "berriz" ; 
-lin too_AdV = mkAdv "ere" ; 
-lin also_AdV = mkAdv "ere" ; 
+lin now_AdV = mkAdV "orain" ;
+lin again_AdV = mkAdV "berriz" ; 
+lin too_AdV = mkAdV "ere" ; 
+lin also_AdV = mkAdV "ere" ; 
+lin still_AdV = mkAdV "oraindik" ;
+lin never_AdV = mkAdV "inoiz" ; 
 
 -- SECTION: Verbs
 
