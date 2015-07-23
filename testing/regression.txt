@@ -1,9 +1,17 @@
+# ID
+# Start category
+# Input string
+# Abstract tree
+# Concrete tree 
+
 000001
+Cl
 Miren lorategi &+ a &+ n dago
 PredVP (UsePN mary_PN) (UseComp (CompAdv (PrepNP in_Prep (DetCN (DetQuant DefArt ?5) (UseN garden_N)))))
 (Cl:13 (NP:1 (PN:0 Miren)) (VP:12 (Comp:11 (Adv:10 (NP:9 (CN:8 (N:7 lorategi)) (Det:6 (Quant:3 &+ a))) &+ (Prep:2 n)))) (VP:12 dago))
 
 000002
+Cl
 Miren eta James lorategi &+ a &+ n daude
 PredVP (ConjNP and_Conj (BaseNP (UsePN mary_PN) (UsePN james_PN))) (UseComp (CompAdv (PrepNP in_Prep (DetCN (DetQuant DefArt ?10) (UseN garden_N)))))
 (Cl:18 (NP:6 (ListNP:5 (NP:2 (PN:1 Miren))) (Conj:0 eta) (ListNP:5 (NP:4 (PN:3 James)))) (VP:17 (Comp:16 (Adv:15 (NP:14 (CN:13 (N:12 lorategi)) (Det:11 (Quant:8 &+ a))) &+ (Prep:7 n)))) (VP:17 daude))
