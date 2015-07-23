@@ -34,28 +34,20 @@ concrete ConjunctionEus of Conjunction =
     ConsAdv = consrSS comma ;
     ConjAdv = conjunctSS ;
     
-    BaseNP x y = twoTable Case x y ** {agr = y.agr} ;
-    ConsNP xs x = consrTable Case comma xs x ** {agr = x.agr} ;
+    BaseNP x y = twoTable Case x y ** {agr = y.agr ; anim = y.anim } ;
+    ConsNP xs x = consrTable Case comma xs x ** {agr = x.agr ; anim = x.anim } ;
 
 
     -- FIXME: The agreement should be sensible like 
     --         "Ni eta Inari itsasoan gaude."
-    ConjNP conj ss = conjunctTable Case conj ss ** { agr = Hauek } ; 
+    ConjNP conj ss = conjunctTable Case conj ss ** { agr = Hauek ; anim = Inan } ; 
 
-
-{-
-    BaseCN cn1 cn2 = twoSS cn1 cn2 ** {stem = cn2.stem ; ph = cn2.ph } ;
-    ConsCN cn1 cn2s = consrSS comma cn1 cn2s ** {stem = cn1.stem ; ph = cn1.ph} ; 
-    ConjCN co ns = let newcn = conjunctX co ns in
-     {s,stem=newcn ; ph=ns.ph} ;
--}
     ConjAP co as = {s = conjunctX co as ; ph=FinalA ; stem = as.s2 ; typ = as.typ } ; 
 
   lincat
     [Adv] = {s1,s2 : Str} ;
---    [CN] = {s1,s2 : Str ; stem : Str ; ph : Phono} ;
     [AP] = {s1,s2 : Str ; stem : Str ; ph : Phono ; typ : APType } ;
-    [NP] = {s1,s2 : Case => Str ; agr : Agr} ;
+    [NP] = {s1,s2 : Case => Str ; agr : Agr ; anim : Bizi } ;
 
 
 }
