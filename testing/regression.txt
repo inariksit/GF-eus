@@ -40,3 +40,4 @@ Miren &+ ek katu &+ a dauka
 PredVP (UsePN mary_PN) (ComplSlash (SlashV2a have_V2) (DetCN (DetQuant DefArt ?6) (UseN cat_N)))
 (Cl:12 (NP:1 (PN:0 Miren) &+ ek) (VP:11 (NP:10 (CN:9 (N:8 katu)) (Det:7 (Quant:4 &+ a)))) (VP:11 (VPSlash:3 (V2:2 dauka))))
 
+

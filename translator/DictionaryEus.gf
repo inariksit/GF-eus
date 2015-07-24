@@ -6,6 +6,7 @@ concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, AditzTrinkoa
 
 lin and_Conj = mkConj "eta" ; 
 lin or_Conj = mkConj "edo" | mkConj "ala" ; 
+lin but_Conj = mkConj "baina" ; 
 
 -- SECTION: Adpositions
 
