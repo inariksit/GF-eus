@@ -6,6 +6,7 @@ concrete TranslateEus of Translate =
   SentenceEus,
   VerbEus - [UseCopula],
   ConjunctionEus,
+  ChunkEus,
   NumeralEus,
   AdverbEus,
   DictionaryEus ** 
