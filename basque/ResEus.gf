@@ -83,6 +83,17 @@ oper
 
     Pronoun : Type = NounPhrase ;
 
+    mkPron : Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,a->
+     { s = table { Erg => nork ;
+                   Abs => nor ;
+                   Dat => nori ;
+                   Par => Prelude.nonExist 
+                 } ;
+       agr = a ;
+       anim = Anim ;
+       nbr = getNum a 
+     } ;
+
 --    reflPron : NounPhrase = { s = case agr of {
 --        Ni => "nire buru" ;
 --        Hi => "hire buru" ;
@@ -105,17 +116,21 @@ oper
 
 -- Verb stuffs
 
-    Verb : Type = {prc : Tense => Str} ;
+    Verb : Type = { prc : Tense => Str ;
+                    ph  : Phono  --for relative clause
+                  } ;
     Verb1 : Type = Verb ** {s : Tense => Agr => Str} ;
     Verb2 : Type = Verb ** {s : Agr => Tense => Agr => Str ; sc : Case} ; --grammatical subject can be nork or nori
     Verb3 : Type = Verb ; --for Verb3, verb is always nor nori nork, and sc is Erg
 
-    VerbPhrase : Type = {s     : Tense => Agr => Str ; --head of VP
-                         prc   : Tense => Str ;
-                         sc    : Case ; -- subject case can be Erg or Dat
-                         compl : Agr => Str ;  -- complement case will be always Abs; 
+    VerbPhrase : Type = { s     : Tense => Agr => Str ; --head of VP
+                          prc   : Tense => Str ;
+                          sc    : Case ; -- subject case can be Erg or Dat
+                          compl : Agr => Str ;  -- complement case will be always Abs; 
                                                -- need Agr for AP to agree with subject.
-                         adv   : Str } ; 
+                          adv   : Str ;
+                          ph    : Phono --for making relative clause
+                        } ; 
 
     VPSlash : Type = Verb2 ** {adv : Str}; --TODO do we need something else?
 
@@ -124,7 +139,8 @@ oper
                                          sc    = Abs ; 
                                          prc   = v.prc ; 
                                          compl = table {_ => []}; 
-                                         adv   = []} ;
+                                         adv   = [] ;
+                                         ph    = v.ph } ;
 
     {- Syntax note: 
           vp ** {adv = "hargle"} 
@@ -147,7 +163,8 @@ oper
        prc   = vps.prc ;
        sc    = vps.sc ;
        compl = table {_ => np.s ! Abs} ;
-       adv   = [] } ;
+       adv   = [] ;
+       ph    = vps.ph } ;
 
   
 
@@ -173,6 +190,34 @@ oper
               }
           }
       } ;
+
+
+    -- Relative clause
+    -- We need to keep agreement, because a RS may be attached to a CN or NP,
+    -- and we need to produce correct agreement:
+    -- `gorria den tzakurra' vs. `gorriak diren tzakurrak'
+
+    RClause : Type = {s : Tense => Polarity => Agr => Str} ;
+
+    mkRCl : {s : Phono => Str} -> VerbPhrase -> RClause = \rp,vp ->
+    let en  = rp.s ! vp.ph  ; --TODO phono may be different for different tenses
+    in 
+    { s = table {
+        tense => table {        
+            Pos => table {                             
+                agr => vp.adv ++ vp.compl ! agr                -- John 
+                              ++ vp.prc ! tense                -- maite 
+                              ++ vp.s ! tense ! agr ++ en } ;  -- duen
+            Neg => table {
+                agr => vp.adv ++ vp.compl ! agr                -- John 
+                              ++ vp.prc ! tense                -- maite 
+                              ++ "ez"                          -- ez
+                              ++ vp.s ! tense ! agr ++ en }    -- duen
+            }
+        }
+    } ;
+
+
 }
 
 -- Nik ikusi dut. past-pres

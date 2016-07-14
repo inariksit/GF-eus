@@ -18,10 +18,12 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
     SlashV2a v2 = lin VPSlash (v2 ** {adv = []}) ;
 
     -- : V3 -> NP -> VPSlash ;  -- give it (to her)
-    Slash2V3 v3 np = lin VPSlash {s = AditzTrinkoak.copulaNoriNorNork ! np.agr ;
-				  prc = v3.prc ;
-				  sc = Erg ;
-				  adv = []} ;
+    Slash2V3 v3 np = lin VPSlash { s   = AditzTrinkoak.copulaNoriNorNork ! np.agr ;
+				                   prc = v3.prc ;
+                                   sc = Erg ;
+                                   adv = [] ;
+                                   ph  = v3.ph 
+                                 } ;
 
 {-
     -- : V3  -> NP -> VPSlash ;  -- give (it) to her
@@ -116,17 +118,21 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
 
 oper 
-    copulaVP : VP = lin VP {s     = AditzTrinkoak.copulaNor ; 
-  		 	    prc   = table {_ => []} ; 
-		            sc    = Abs ; 
-			    compl = table {_ => []} ; 
-			    adv   = [] } ;
+    copulaVP : VP = lin VP { s     = AditzTrinkoak.copulaNor ; 
+                             prc   = table {_ => []} ; 
+		                     sc    = Abs ; 
+                             compl = table {_ => []} ; 
+                             adv   = [] ;
+                             ph    = FinalA 
+                            } ;
 
-    copulaEgonVP : VP = lin VP {s     = AditzTrinkoak.copulaEgonNor ; 
-  		 	    prc   = table {_ => []} ; 
-		            sc    = Abs ; 
-			    compl = table {_ => []} ; 
-			    adv   = [] } ;
+    copulaEgonVP : VP = lin VP { s     = AditzTrinkoak.copulaEgonNor ; 
+                                 prc   = table {_ => []} ; 
+                                 sc    = Abs ; 
+                                 compl = table {_ => []} ; 
+                                 adv   = [] ;
+                                 ph    = FinalCons 
+                               } ;
 
 
 
