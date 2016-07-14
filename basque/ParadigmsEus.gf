@@ -49,14 +49,14 @@ oper
  				       _                 => FinalCons } 
 			       in { s = s; stem = stem ; ph = phono ; anim=Inan } ; 
 
-  mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s} ;
+  mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s ; ph = FinalCons} ;
 
   mkV2 = overload {
-   mkV2 : Str -> V2 = \s -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = Erg} ;
-   mkV2 : Str -> Case -> V2 = \s,cas -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = cas} ;
+   mkV2 : Str -> V2 = \s -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = Erg ; ph = FinalCons} ;
+   mkV2 : Str -> Case -> V2 = \s,cas -> lin V2 {s = copulaNorNork ; prc = mkPrc s ; sc = cas ; ph = FinalCons} ;
   } ;
 
-  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s } ;
+  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s ; ph = FinalCons } ;
 
   mkConj : Str -> Conj = \s -> lin Conj { s = s } ; 
 

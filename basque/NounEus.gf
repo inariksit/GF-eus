@@ -52,6 +52,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
            ph     = ap.ph ;
            anim   = cn.anim } ;
 
+    -- RelCN   : CN -> RS  -> CN ;   -- house that John bought
+--    RelCN cn rs = {}
 
     -- DetCN : Det -> CN -> NP
     DetCN det cn = {

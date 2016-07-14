@@ -1,12 +1,3 @@
--- Helper functions for lexicon generation
-module LexTrans ( transTag
-                , split
-                , absName
-                , mkEntry
-                , tags
-                ) where
-
-
 import Data.List 
 
 
