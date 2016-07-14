@@ -1,11 +1,11 @@
 concrete ConstructionEus of Construction = CatEus ** open ParadigmsEus in {
 	
---lincat
---  Timeunit = N ;
---  Weekday = N ;
---  Monthday = NP ;
---  Month = N ;
---  Year = NP ;
+lincat
+  Timeunit = N ;
+  Weekday = N ;
+  Monthday = NP ;
+  Month = N ;
+  Year = NP ;
 {-
 lin
 
