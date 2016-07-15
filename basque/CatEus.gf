@@ -1,6 +1,5 @@
-concrete CatEus of Cat = 
-  CommonX **
-  open ResEus, Prelude in {
+concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
+
   flags optimize=all_subs ;
 
   lincat
@@ -67,7 +66,7 @@ concrete CatEus of Cat =
 -- ``` Predet (QuantSg | QuantPl Num) Ord
 -- as defined in NounEus.
 
-    CN = ResEus.Noun ;
+    CN = ResEus.CNoun ;
     NP = ResEus. NounPhrase ; --{s : Case => Str ; agr : Agr} 
     Pron = ResEus.Pronoun ; --Pronouns need enough info to turn it into NP or Quant.
     Det = { s     : Case => Phono => Str ;

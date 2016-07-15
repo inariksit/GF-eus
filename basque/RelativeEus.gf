@@ -6,7 +6,7 @@ concrete RelativeEus of Relative = CatEus ** open ResEus in {
 --   lin RelCl cl = {} ;
 
 --     RelVP    : RP -> VP -> RCl ;      -- who loves John
-   lin RelVP rp vp = mkRCl rp vp ;
+   lin RelVP rp vp = lin RCl (mkRCl rp vp) ;
 
 --     RelSlash : RP -> ClSlash -> RCl ; -- whom John loves
 --   lin RelSlash rp clslash = {} ;
@@ -16,11 +16,11 @@ concrete RelativeEus of Relative = CatEus ** open ResEus in {
 -- or suffixing (depending on language) prepositional phrases or genitives.
 
 --     IdRP  : RP ;                      -- which
-   lin IdRP = {s = table { FinalCons => "en" ;
-						   FinalR    => "en" ;
-						   _         => "n"  ;						   
-						 } 
-			  } ;
+   lin IdRP = lin RP { s = table { FinalCons => "en" ;
+						           FinalR    => "en" ;
+						           _         => "n"  
+						         }  
+			         } ;
 
 --    FunRP : Prep -> NP -> RP -> RP ;  -- the mother of whom
 --   lin FunRP prep np rp = {} ;

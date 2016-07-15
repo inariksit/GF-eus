@@ -19,35 +19,36 @@ oper
   mkPrc : Str -> (Tense => Str) = \ikusi ->
     let ikus = init ikusi ;
         ikusten = ikus + "ten" ;
-	ikusiko = ikusi + "ko" ;
-    in table {Pres => ikusten ;
-	      Fut  => ikusiko ;
-              _    => ikusi } ;
+        ikusiko = ikusi + "ko" ;
+    in table { Pres => ikusten ;
+	             Fut  => ikusiko ;
+               _    => ikusi } ;
 
-  mkAdj : Str -> Adjective = \s -> let 
-                                   stem : Str = case last s of {
+  mkAdj : Str -> Adjective = \s -> 
+    let stem : Str = case last s of {
 				       "a" => init s ; 
 				       _   => s                } ;
-				   phono : Phono = case last s of {
+				phono : Phono = case last s of {
 				       "a"               => FinalA ;
 				       "r"               => FinalR ;
 				       ("e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
-			       in { s = table {Posit  => stem ;
-					       Compar => stem + "ago" ;
-					       Superl => stem + "en" } ;
-					      -- Excess => stem + "egi" } ;
-				    ph = phono } ; 
-  mkNoun : Str -> Noun = \s -> let 
-                                   stem : Str = case last s of {
+	  in { s = table { Posit  => stem ;
+					           Compar => stem + "ago" ;
+					           Superl => stem + "en" } ;
+				  	      -- Excess => stem + "egi" } ;
+				 ph = phono } ; 
+
+  mkNoun : Str -> Noun = \s ->
+    let stem : Str = case last s of {
 				       "a" => init s ; 
 				       _   => s } ;
-				   phono : Phono = case last s of {
+				phono : Phono = case last s of {
 				       "a"               => FinalA ;
 				       "r"               => FinalR ;
 				       ("e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
-			       in { s = s; stem = stem ; ph = phono ; anim=Inan } ; 
+		in { s = s;  stem = stem ; ph = phono ; anim=Inan } ; 
 
   mkV : Str -> V = \s -> lin V {s = copulaNor; prc = mkPrc s ; ph = FinalCons} ;
 

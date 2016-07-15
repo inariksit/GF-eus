@@ -14,5 +14,5 @@ concrete SentenceEus of Sentence = CatEus ** open TenseX, ResEus, VerbEus, Prelu
     UseRCl temp pol cl = {s = cl.s ! temp.t ! pol.p } ;
 
     -- RelS     : S -> RS -> S ;              -- she sleeps, which is good
-    -- RelS s rs = ;
+    RelS sent rs = {s = sent.s ++ rs.s ! Hau } ;
 }
