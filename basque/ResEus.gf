@@ -46,7 +46,7 @@ oper
 
     getNum : Agr -> Number = \np ->
       case np of {
-        (Ni|Hi|Zu|Hau)      => Sg ;
+        (Ni|Hi|Zu|Hau)  => Sg ;
         (Gu|Zuek|Hauek) => Pl 
       } ;
 
@@ -58,7 +58,17 @@ oper
       } ;
 
 -- Noun stuffs
-    Noun : Type = {s : Str ; stem : Str ; ph : Phono ; anim : Bizi} ;
+
+    Noun : Type = { s    : Str ;
+                    stem : Str ;   -- If the stem has `a', don't add the `a' for the definite article
+                    ph   : Phono ; 
+                    anim : Bizi } ;
+
+    CNoun : Type = { s    : Agr => Str ;   -- When we combine CN with RS, we introduce Agr distinction
+                     stem : Agr => Str ; 
+                     ph   : Phono ; 
+                     anim : Bizi } ;
+
     Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
     NounPhrase : Type = {s : Case => Str ; agr : Agr ; anim : Bizi ; nbr : Number } ;
 
@@ -203,16 +213,16 @@ oper
     let en  = rp.s ! vp.ph  ; --TODO phono may be different for different tenses
     in 
     { s = table {
-        tense => table {        
-            Pos => table {                             
-                agr => vp.adv ++ vp.compl ! agr                -- John 
-                              ++ vp.prc ! tense                -- maite 
-                              ++ vp.s ! tense ! agr ++ en } ;  -- duen
-            Neg => table {
-                agr => vp.adv ++ vp.compl ! agr                -- John 
-                              ++ vp.prc ! tense                -- maite 
-                              ++ "ez"                          -- ez
-                              ++ vp.s ! tense ! agr ++ en }    -- duen
+        t => table {        
+           Pos => table {                             
+             agr => vp.adv ++ vp.compl ! agr                    -- John 
+                           ++ vp.prc ! t                        -- maite 
+                           ++ vp.s ! t ! agr ++ BIND ++ en } ;  -- duen
+           Neg => table {
+             agr => vp.adv ++ vp.compl ! agr                 -- John 
+                           ++ vp.prc ! t                     -- maite 
+                           ++ "ez"                           -- ez
+                           ++ vp.s ! t ! agr ++ BIND ++ en } -- duen
             }
         }
     } ;
