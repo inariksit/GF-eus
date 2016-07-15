@@ -223,7 +223,27 @@ oper
                                       FinalVow => "rik" ;
                                       FinalCons => "ik" } 
                         }
-
           } ; 
 
+{- We can also write the artA table shorter, like this:
+
+     \\num,cas,pho => case <num,cas,pho> of {
+        <Sg,Abs,FinalR> => "ra" ;
+        <Sg,Abs,_>      => "a" ;
+        <Sg,Erg,FinalR> => "rak" ;
+        <Sg,Erg,_>      => "ak" ;
+        <Sg,Dat,FinalA> => "ri" ;
+        <Sg,Dat,FinalR> => "rari" ;
+        <Sg,Dat,_>      => "ari" ;
+        <Pl,Abs,FinalR> => "rak" ;
+        <Pl,Abs,_>      => "ak" ;
+        <Pl,Erg,FinalE> => "rek" ;
+        <Pl,Erg,_>      => "ek" ;
+        <Pl,Dat,FinalR> => "rei" ;
+        <Pl,Det,_>      => "ei" ;
+        <(Sg|Pl),Par,FinalR>    => "rarik" ;
+        <(Sg|Pl),Par,FinalCons> => "ik" ;
+        <(Sg|Pl),Par,_>         => "rik" ;
+      } ; 
+-}
 }
