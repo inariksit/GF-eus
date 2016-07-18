@@ -69,22 +69,23 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     CN = ResEus.CNoun ;
     NP = ResEus. NounPhrase ; --{s : Case => Str ; agr : Agr} 
     Pron = ResEus.Pronoun ; --Pronouns need enough info to turn it into NP or Quant.
-    Det = { s     : Case => Phono => Str ;
-            nbr   : Number ;
-            isPre : Bool } ;
-    Predet = {s : Str} ; -- predeterminer (prefixed Quant)      e.g. "all"
-    Quant = { s : Number => Case => Phono => Str ;
-              isPre : Bool } ;
-    Num = {s : Str ; n : Number ; isNum : Bool} ;
-    Card, Ord, DAP = {s : Str} ;
+    Det = { s     : Case => Phono => Str ;   -- hauek
+            pref  : Str ;                    -- nire
+            nbr   : Number } ;
+    Predet = {s : Str} ; 
+    Quant = { s    : Number => Case => Phono => Str ;
+              pref : Str } ;
+    Num = { s : Str ; n : Number ; isNum : Bool } ;
+    Card, Ord = { s : Str ; n : Number } ;
+    DAP = {s : Str} ;
 
 
 --2 Numerals
 
 -- Constructed in NumeralEus.
 
-    Numeral = {s : Str}; -- cardinal or ordinal in words       e.g. "five/fifth"
-    Digits = {s : Str} ;  -- cardinal or ordinal in digits      e.g. "1,000/1,000th"
+    Numeral = { s : Str ; n : Number } ; 
+    Digits  = { s : Str ; n : Number } ; 
 
 
 
