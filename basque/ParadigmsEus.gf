@@ -28,10 +28,12 @@ oper
 
     mkV : Str -> V = \s -> lin V (mkVerb1 s) ;
 
-    mkV : Str -> Str -> V = \lo,egin -> 
-      lin V (mkVerb1 lo ** { prc = \\t => lo ++ mkPrc egin ! t }) ;
+    mkV : Str -> V -> V = \lo,egin -> 
+      lin V (egin ** { prc = \\t => lo ++ egin.prc ! t }) ;
 
   } ;
+
+--  egin_V : V = mkV "egin" ;
 
 
   mkV2 = overload {
@@ -39,8 +41,11 @@ oper
 
     mkV2 : Str -> Case -> V2 = \s,cas -> lin V2 (mkVerb2 s ** { sc = cas }) ;
 
-    mkV2 : Str -> Str -> V2 = \lo,egin -> 
-      lin V2 (mkVerb2 lo ** { prc = \\t => lo ++ mkPrc egin ! t }) ;
+    mkV2 : Str -> V -> V2 = \lo,egin -> 
+      lin V2 { s   = copulaNorNork ;
+               prc = \\t => lo ++ egin.prc ! t ;
+               sc  = Erg ;
+               ph  = FinalCons } ;
 
   } ;
 
