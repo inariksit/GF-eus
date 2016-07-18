@@ -12,15 +12,13 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   lin without_Prep = mkPrep "gabe" ParNP False | mkPrep "gabe" AbsNP False ; 
 
 
-  lin i_Pron = mkPron "ni" "niri" "nik" Ni ;
-  lin we_Pron = mkPron "gu" "guri" "guk" Gu ;
-  lin youSg_Pron = mkPron "zu" "zuri" "zuk" Zu ; -- TODO: hi/hire
-  lin youPl_Pron = mkPron "zuek" "zuei" "zuen" Zuek ;
-  lin he_Pron = mkPron "hau" "honi" "honek" Hau ; -- TODO: the others
-  lin she_Pron = mkPron "hau" "honi" "honek" Hau ; -- TODO: the others
-  lin it_Pron = mkPron "hau" "honi" "honek" Hau ; -- TODO: the others
-  lin they_Pron = mkPron "hauek" "hauei" "hauek" Hauek ; -- TODO: the others
-
-
+  lin i_Pron = mkPron "ni" "niri" "nik" "nire" Ni ;
+  lin we_Pron = mkPron "gu" "guri" "guk" "gure" Gu ;
+  lin youSg_Pron = mkPron "zu" "zuri" "zuk" "zure" Zu ; -- TODO: hi/hire
+  lin youPl_Pron = mkPron "zuek" "zuei" "zuen" "zuen" Zuek ;
+  lin he_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
+  lin she_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
+  lin it_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
+  lin they_Pron = mkPron "hauek" "hauei" "hauek" "beren" Hauek ; -- TODO: the others
   
 }

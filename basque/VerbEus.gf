@@ -94,19 +94,23 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
     -- Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
 
-    CompAP  ap  = lin Comp {s = table { agr => ap.stem ++ DefArt.s ! getNum agr ! Abs ! ap.ph } ;
-                            copula = Izan 
+--  CompAP   : AP  -> Comp ;
+    CompAP  ap  = lin Comp { s = table { agr => ap.stem ++ DefArt.s ! getNum agr ! Abs ! ap.ph } ;
+                             copula = Izan 
                            };
-
-    CompNP  np  = lin Comp {s = table {_ => np.s ! Abs} ; 
-                            copula = Izan 
+--  CompNP   : NP  -> Comp ;
+    CompNP  np  = lin Comp { s = table {_ => np.s ! Abs} ; 
+                             copula = Izan 
                            } ; 
-
-    CompAdv adv = lin Comp {s = table {_ => adv.s} ; 
-                            copula = Egon 
+--  CompAdv  : Adv  -> Comp ;
+    CompAdv adv = lin Comp { s = table {_ => adv.s} ; 
+                             copula = Egon 
                            } ;
 
---    CompCN   : CN  -> Comp ;            -- (be) a man/men
+--  CompCN   : CN  -> Comp ;
+    CompCN cn   = lin Comp { s = cn.s ;
+                             copula = Izan 
+                           } ; 
 
 -- Copula alone
 
