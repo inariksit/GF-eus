@@ -17,15 +17,15 @@ param
 
       diru gabe [ComplType = AbsNP]
       dirurik gabe [ComplType = ParNP]
-      horma ren kontra [ComplType = GenNP]
+      hormaren kontra [ComplType = GenNP]
 -}
     ComplType = ParNP | GenNP | AbsNP ;  
 
 {-
    Type of adjectival phrase, e.g.
  
-      kale txiki a [APType = Bare]
-      itsaso ra ko kale a [APType = Ko]
+      kale txiki+a [APType = Bare]
+      itsaso+ra+ko kale+a [APType = Ko]
 -}
     APType = Ko | Bare ; 
 
@@ -91,17 +91,18 @@ oper
 
 -- Pronoun stuffs
 
-    Pronoun : Type = NounPhrase ;
+    Pronoun : Type = NounPhrase ** { poss : Str };
 
-    mkPron : Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,a->
+    mkPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,poss,a->
      { s = table { Erg => nork ;
                    Abs => nor ;
                    Dat => nori ;
                    Par => Prelude.nonExist 
                  } ;
-       agr = a ;
+       agr  = a ;
        anim = Anim ;
-       nbr = getNum a 
+       nbr  = getNum a ;
+       poss = poss 
      } ;
 
 --    reflPron : NounPhrase = { s = case agr of {
@@ -155,11 +156,11 @@ oper
     {- Syntax note: 
           vp ** {adv = "hargle"} 
        means: take the original VP except for the field adv, which is replaced by "hargle"
-       Same as \vp -> {s     = vp.s ; 
-                       sc    = vp.sc ; 
-                              prc   = vp.prc ; 
-                       compl = vp.compl ;
-                       adv   = "hargle"} ;
+       Same as \vp -> { s     = vp.s ; 
+                        sc    = vp.sc ; 
+                        prc   = vp.prc ; 
+                        compl = vp.compl ;
+                        adv   = "hargle" } ;
     -}
     insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv,vp ->
       vp ** {adv = vp.adv ++ adv.s} ;

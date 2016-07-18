@@ -18,12 +18,12 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                  Sg => Hau ;
                  Pl => Hauek 
                } ;
-
-      in lin NP { s = \\cas => cn.stem ! ag ++ det.s ! cas ! cn.ph ;
-                  agr = ag ;
-                  anim = cn.anim ;
-                  nbr = det.nbr
-                } ;
+      in lin NP
+        { s = \\c => det.pref ++ cn.stem ! ag ++ det.s ! c ! cn.ph ;
+          agr = ag ;
+          anim = cn.anim ;
+          nbr = det.nbr
+        } ;
 
     --UsePN   : PN -> NP ;
     UsePN pn = lin NP  { s = table { Erg => pn.s ++ BIND ++ "ek" ; 
@@ -31,7 +31,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                                      Par => pn.s ++ BIND ++ "ik" ;
                                      Abs => pn.s } ; 
                          agr = Hau ; 
-                         anim = pn.anim ; nbr = Sg }  ;
+                         anim = pn.anim ; 
+                         nbr = Sg }  ;
 
     -- UsePron : Pron -> NP ; 
 --    UsePron pron np = lin NP {} ;
@@ -48,13 +49,15 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- Determiners can form noun phrases directly.
 
     DetNP   : Det -> NP ;  -- these five
-
--- Nouns can be used without an article as mass nouns. The resource does
--- not distinguish mass nouns from other common nouns, which can result
--- in semantically odd expressions.
-
-    MassNP     : CN -> NP ; 
 -}
+
+
+   -- MassNP     : CN -> NP ; 
+   MassNP cn = lin NP 
+     { s = \\c => cn.stem ! Hau ++ artIndef ! c ! cn.ph ;
+       agr = Hau ;
+       anim = Inan ;
+       nbr = Sg } ;
 
 
 --2 Determiners
@@ -63,11 +66,11 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- quantifier and an optional numeral can be discerned.
 
     -- DetQuant : Quant -> Num -> Det ; 
-    DetQuant quant num = 
-      lin Det { s     = \\cas,ph => quant.s ! num.n ! cas ! ph ;
-                nbr   = num.n ;
-                isPre = quant.isPre
-              } ;
+    DetQuant quant num = lin Det
+     { s     = \\c,ph => quant.s ! num.n ! c ! ph ;
+       pref  = quant.pref ++ num.s ;
+       nbr   = num.n ;
+     } ;
 
     -- DetQuantOrd : Quant -> Num -> Ord -> Det ;  -- these five best
 --     DetQuantOrd quant num ord = lin Det {} ;
@@ -79,14 +82,18 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- the "kernel" of a determiner. It is, however, the $Num$ that determines
 -- the inherent number.
 
-    NumSg        = { s = [] ; n = Sg ; isNum = False} ; 
-    NumPl        = { s = [] ; n = Pl ; isNum = False} ; 
+    NumSg = lin Num { s = [] ; n = Sg ; isNum = False } ; 
+    NumPl = lin Num { s = [] ; n = Pl ; isNum = False } ; 
 
-    --  NumCard : Card -> Num ;
-{-    NumCard card = { s = card.s ; n = isNum = True } ;
+    -- NumCard : Card -> Num ;
+    NumCard card = lin Num (card ** { isNum = True }) ;
 
-    NumDigits  : Digits  -> Card ;  -- 51
-    NumNumeral : Numeral -> Card ;  -- fifty-one
+    -- NumDigits  : Digits  -> Card ;
+    NumDigits dig = lin Num (dig ** { isNum = True }) ;
+
+    -- NumNumeral : Numeral -> Card ;
+    NumNumeral num = lin Num (num ** { isNum = True }) ;
+{-
     AdNum : AdN -> Card -> Card ;   -- almost 51
 
     OrdDigits  : Digits  -> Ord ;  -- 51st
@@ -110,14 +117,19 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --                  table { Abs =>
     --                           table { FinalA = BIND ++ "a" ;
     --                                   FinalR = BIND ++ "ra" ; ...
-    DefArt, IndefArt = 
-      lin Quant { s     = \\n,c,p => BIND ++ artA ! n ! c ! p ;
-                  isPre = False } ;
+    DefArt = 
+      lin Quant { s    = \\n,c,p => artA ! n ! c ! p ;
+                  pref = [] } ;
 
+    IndefArt =
+      lin Quant { s    = \\n,c,p => artIndef ! c ! p ;
+                  pref = [] } ;
 
+    --TODO add actual possessive forms into pronouns
     --PossPron : Pron -> Quant
-    PossPron pron = lin Quant { s     = \\n,c,p => pron.s ! c ; --TODO number?
-                                isPre = True } ;
+    PossPron pron = 
+      lin Quant { s    = \\n,c,p => artA ! n ! c ! p ;
+                  pref = pron.poss } ;
 
 --2 Common nouns
 
@@ -195,7 +207,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
 oper
   artA : Number => Case => Phono => Str =
-   table { Sg => table {Abs => table {FinalA   => "a"  ;
+   let withoutBind : Number => Case => Phono => Str =
+    table { Sg => table {Abs => table {FinalA   => "a"  ;
                                       FinalR   => "ra" ;
                                       _        => "a" } ;
                         Erg => table {FinalA   => "ak"  ;
@@ -218,32 +231,24 @@ oper
                                       _      => "ek" } ;
                         Dat => table {FinalR => "rei" ;
                                       _      => "ei" } ;
+                        --TODO: make the partitive force singular agr
                         Par => table {FinalA   => "rik" ;
                                       FinalR   => "rarik" ;
                                       FinalVow => "rik" ;
                                       FinalCons => "ik" } 
-                        }
-          } ; 
+                       }
+          } ;
+    in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
 
-{- We can also write the artA table shorter, like this:
-
-     \\num,cas,pho => case <num,cas,pho> of {
-        <Sg,Abs,FinalR> => "ra" ;
-        <Sg,Abs,_>      => "a" ;
-        <Sg,Erg,FinalR> => "rak" ;
-        <Sg,Erg,_>      => "ak" ;
-        <Sg,Dat,FinalA> => "ri" ;
-        <Sg,Dat,FinalR> => "rari" ;
-        <Sg,Dat,_>      => "ari" ;
-        <Pl,Abs,FinalR> => "rak" ;
-        <Pl,Abs,_>      => "ak" ;
-        <Pl,Erg,FinalE> => "rek" ;
-        <Pl,Erg,_>      => "ek" ;
-        <Pl,Dat,FinalR> => "rei" ;
-        <Pl,Det,_>      => "ei" ;
-        <(Sg|Pl),Par,FinalR>    => "rarik" ;
-        <(Sg|Pl),Par,FinalCons> => "ik" ;
-        <(Sg|Pl),Par,_>         => "rik" ;
+ artIndef : Case => Phono => Str = 
+     \\cas,pho => BIND ++ case <cas,pho> of {
+        <Abs,_>      => "" ;
+        <Erg,FinalR> => "rek" ;
+        <Erg,_>      => "ek" ;
+        <Dat,FinalR> => "rei" ;
+        <Dat,_>      => "ei" ;
+        <Par,FinalR>    => "rarik" ;
+        <Par,FinalCons> => "ik" ;
+        <Par,_>         => "rik" 
       } ; 
--}
 }
