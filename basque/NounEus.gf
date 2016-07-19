@@ -19,7 +19,10 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                  Pl => Hauek 
                } ;
       in lin NP
-        { s = \\c => det.pref ++ cn.stem ! ag ++ det.s ! c ! cn.ph ;
+        { s = \\c => cn.heavyMod ! ag
+                     ++ det.pref 
+                     ++ cn.stem ! ag 
+                     ++ det.s ! c ! cn.ph ;
           agr = ag ;
           anim = cn.anim ;
           nbr = det.nbr
@@ -51,7 +54,9 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
    -- MassNP     : CN -> NP ; 
    MassNP cn = lin NP 
-     { s = \\c => cn.stem ! Hau ++ artIndef ! c ! cn.ph ;
+     { s = \\c => cn.heavyMod ! Hau 
+                 ++ cn.stem ! Hau 
+                 ++ artIndef ! c ! cn.ph ;
        agr = Hau ;
        anim = Inan ;
        nbr = Sg } ;
@@ -102,28 +107,21 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     OrdNumeralSuperl : Numeral -> A -> Ord ; -- third largest
 -}
 
-
     DefArt, IndefArt = 
       lin Quant { s    = artA ;
                   pref = [] } ;
-{-
-    IndefArt =           --artIndef has no number distinction
-      lin Quant { s    = \\n,c,p => artIndef ! c ! p ;
-                  pref = [] } ;
--}
 
     --PossPron : Pron -> Quant
     PossPron pron = 
-      lin Quant { s    = \\n,c,p => artA ! n ! c ! p ;
+      lin Quant { s    = artA ;
                   pref = pron.poss } ;
 
 --2 Common nouns
 
     --UseN : N -> CN
-    UseN n = lin CN { s    = \\_ => n.s ;
-                      stem = \\_ => n.stem ;
-                      ph   = n.ph ;
-                      anim = n.anim } ;
+    UseN n = lin CN ( n ** { s    = \\_ => n.s ;
+                             stem = \\_ => n.stem ;
+                             heavyMod = \\_ => [] } );
 
 {-
 -- Relational nouns take one or two arguments.
@@ -146,25 +144,20 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                      Ko => \\agr => ap.stem ++ cn.s ! agr; 
                      Bare => \\agr => cn.s ! agr ++ ap.stem 
                    } ;
-      in lin CN { s,stem = result ;
-                  ph     = ap.ph ; --AP goes rightmost
-                  anim   = cn.anim } ;
+      in lin CN (cn ** { s,stem = result ;
+                         ph     = ap.ph } ) ; --AP goes rightmost
 
     -- RelCN : CN -> RS  -> CN ;
-    RelCN cn rs = lin CN { s,stem = \\agr => rs.s ! agr ++ cn.s ! agr  ;
-                           ph     = cn.ph ; --CN stays rightmost
-                           anim   = cn.anim } ;
+    RelCN cn rs = lin CN (cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ rs.s ! agr }) ;
 
 
     -- AdvCN   : CN -> Adv -> CN ;
-    AdvCN cn adv = lin CN { s,stem = \\agr => adv.s ++ cn.s ! agr ;
-                            ph     = cn.ph ; --CN stays rightmost
-                            anim   = cn.anim } ; 
+    AdvCN cn adv = lin CN (cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ adv.s }) ;
 
 {-
 -- Nouns can also be modified by embedded sentences and questions.
 -- For some nouns this makes little sense, but we leave this for applications
--- to decide. Sentential complements are defined in [Verb Verb.html].
+-- to decide. Sentential complements are defined in VerbEus.
 
     SentCN  : CN -> SC  -> CN ;   -- question where she sleeps
 
@@ -189,55 +182,4 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     DetDAP : Det -> DAP ;          -- this (or that) 
 -}
 
-oper
-  artA : Number => Case => Phono => Str =
-   let withoutBind : Number => Case => Phono => Str =
-    table { Sg => table {Abs => table {FinalA   => "a"  ;
-                                      FinalR   => "ra" ;
-                                      _        => "a" } ;
-                        Erg => table {FinalA   => "ak"  ;
-                                      FinalR   => "rak" ;
-                                      _        => "ak" } ;
-                        Dat => table {FinalA   => "ri" ;
-                                      FinalR   => "rari" ;
-                                      _        => "ari" } ;
-                        Par => table {FinalA   => "rik" ;
-                                      FinalR   => "rarik" ;
-                                      FinalVow => "rik" ;
-                                      FinalCons => "ik" } 
-                        }; 
-
-           Pl => table {Abs => table {FinalA => "ak"  ;
-                                      FinalR => "rak" ;
-                                      _      => "ak" } ;
-                        Erg => table {FinalA => "ek"  ;
-                                      FinalR => "rek" ;
-                                      _      => "ek" } ;
-                        Dat => table {FinalR => "rei" ;
-                                      _      => "ei" } ;
-                        --TODO: make the partitive force singular agr
-                        Par => table {FinalA   => "rik" ;
-                                      FinalR   => "rarik" ;
-                                      FinalVow => "rik" ;
-                                      FinalCons => "ik" } 
-                       }
-          } ;
-    in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
-
-
- artIndef : Case => Phono => Str = 
-   \\cas,pho => case <cas,pho> of {
-        <Abs,_>   => [] ;
-        <c,ph>  => artA ! Pl ! c ! ph } ;
-   --     \\cas,pho => 
-   --case <cas,pho> of {
-   --     <Abs,_>      => "" ;
-   --     <Erg,FinalR> => "rek" ;
-   --     <Erg,_>      => "ek" ;
-   --     <Dat,FinalR> => "rei" ;
-   --     <Dat,_>      => "ei" ;
-   --     <Par,FinalR>    => "rarik" ;
-   --     <Par,FinalCons> => "ik" ;
-   --     <Par,_>         => "rik" 
-   --   } ; 
 }

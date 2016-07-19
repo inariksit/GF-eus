@@ -7,8 +7,8 @@ param
 {-
    Type of copula used, e.g. 
  
-     Miren lorategi a n dago [CopulaType = Egon]
-     Miren irakasle a da [CopulaType = Izan]
+     Miren lorategi+a+n dago [CopulaType = Egon]
+     Miren irakasle+a da [CopulaType = Izan]
 -}
     CopulaType = Egon | Izan  ; 
 
@@ -57,6 +57,50 @@ oper
         (Hau|Hauek)  => P3
       } ;
 
+
+-- Articles 
+  artA : Number => Case => Phono => Str =
+   let withoutBind : Number => Case => Phono => Str =
+    table { Sg => table {Abs => table {FinalA   => "a"  ;
+                                      FinalR   => "ra" ;
+                                      _        => "a" } ;
+                        Erg => table {FinalA   => "ak"  ;
+                                      FinalR   => "rak" ;
+                                      _        => "ak" } ;
+                        Dat => table {FinalA   => "ri" ;
+                                      FinalR   => "rari" ;
+                                      _        => "ari" } ;
+                        Par => table {FinalA   => "rik" ;
+                                      FinalR   => "rarik" ;
+                                      FinalVow => "rik" ;
+                                      FinalCons => "ik" } 
+                        }; 
+
+           Pl => table {Abs => table {FinalA => "ak"  ;
+                                      FinalR => "rak" ;
+                                      _      => "ak" } ;
+                        Erg => table {FinalA => "ek"  ;
+                                      FinalR => "rek" ;
+                                      _      => "ek" } ;
+                        Dat => table {FinalR => "rei" ;
+                                      _      => "ei" } ;
+                        --TODO: make the partitive force singular agr
+                        Par => table {FinalA   => "rik" ;
+                                      FinalR   => "rarik" ;
+                                      FinalVow => "rik" ;
+                                      FinalCons => "ik" } 
+                       }
+          } ;
+    in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
+
+
+ artIndef : Case => Phono => Str = 
+   \\cas,pho => case <cas,pho> of {
+        <Abs,_> => [] ;
+        <c,ph>  => artA ! Pl ! c ! ph } ;
+
+
+
 -- Noun stuffs
 
     Noun : Type = { s    : Str ;
@@ -64,13 +108,20 @@ oper
                     ph   : Phono ; 
                     anim : Bizi } ;
 
-    CNoun : Type = { s    : Agr => Str ;   -- When we combine CN with RS, we introduce Agr distinction
+    CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
                      stem : Agr => Str ; 
                      ph   : Phono ; 
-                     anim : Bizi } ;
+                     anim : Bizi ;
+                     heavyMod : Agr => Str } ; -- Relative clause or adverbial
+                                        -- If it's "heavy", numbers and possessives come after.
+                                        -- "Light" modifiers attach directly to the s and stem.
 
-    Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
-    NounPhrase : Type = {s : Case => Str ; agr : Agr ; anim : Bizi ; nbr : Number } ;
+    Complement : Type = { s : Agr => Str ; copula : CopulaType } ;
+
+    NounPhrase : Type = { s    : Case => Str ;
+                          agr  : Agr ;
+                          anim : Bizi ; 
+                          nbr  : Number } ;
 
 -- NounPhrase is a record
 -- a record is a thing with fields ^__^
