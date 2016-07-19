@@ -33,8 +33,13 @@ oper
 
   } ;
 
---  egin_V : V = mkV "egin" ;
+  izanV : Str -> V = \maite -> 
+    let maiteV = mkVerb1 maite ;
+    in lin V (maiteV ** { prc = \\_ => maite }) ;
 
+  ukanV2 : Str -> V2 = \maite -> 
+    let maiteV2 = mkVerb2 maite ;
+    in lin V2 (maiteV2 ** { prc = \\_ => maite }) ;
 
   mkV2 = overload {
     mkV2 : Str -> V2 = \s -> lin V2 (mkVerb2 s) ;
