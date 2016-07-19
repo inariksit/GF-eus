@@ -13,8 +13,8 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
                             -- but agreement may depend on the CN/NP it modifies:
                             -- `gorriak diren txakurrak' vs. `gorria den txakurra'
 
-    Cl = ResEus.Clause ;    -- declarative clause, with all tenses e.g. "she looks at this"
-    ClSlash = {s : Str} ;   -- clause missing NP (S/NP in GPSG)    e.g. "she looks at"
+    Cl = ResEus.Clause ; 
+    ClSlash = ResEus.ClSlash ;
     SSlash  = {s : Str} ;   -- sentence missing NP                 e.g. "she has looked at"
     Imp     = {s : Str} ;   -- imperative                          e.g. "look at this"
 
