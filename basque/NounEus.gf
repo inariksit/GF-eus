@@ -26,16 +26,13 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
         } ;
 
     --UsePN   : PN -> NP ;
-    UsePN pn = lin NP  { s = table { Erg => pn.s ++ BIND ++ "ek" ; 
-                                     Dat => pn.s ++ BIND ++ "i" ;
-                                     Par => pn.s ++ BIND ++ "ik" ;
-                                     Abs => pn.s } ; 
-                         agr = Hau ; 
+    UsePN pn = lin NP  { s    = \\c => pn.s ++ artIndef ! c ! pn.ph;
+                         agr  = Hau ; 
                          anim = pn.anim ; 
-                         nbr = Sg }  ;
+                         nbr  = Sg } ;
 
     -- UsePron : Pron -> NP ; 
---    UsePron pron np = lin NP {} ;
+    UsePron pron = lin NP pron ;
 
 -- A noun phrase can also be postmodified by the past participle of a
 -- verb, by an adverb, or by a relative clause
@@ -106,34 +103,21 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -}
 
 
-    --DefArt, IndefArt : Quant
-    --Notation explanation: The string in s will start with BIND,
-    --and a string from artA. The parameters n,c,p (number, case, phonology) 
-    --will eventually come
-    --from later functions, and they will be used to extract the wanted
-    --string from artA.
-    --This is equivalent to having written
-    --  artA = table { Sg =>
-    --                  table { Abs =>
-    --                           table { FinalA = BIND ++ "a" ;
-    --                                   FinalR = BIND ++ "ra" ; ...
-    DefArt = 
-      lin Quant { s    = \\n,c,p => artA ! n ! c ! p ;
+    DefArt, IndefArt = 
+      lin Quant { s    = artA ;
                   pref = [] } ;
-
-    IndefArt =
+{-
+    IndefArt =           --artIndef has no number distinction
       lin Quant { s    = \\n,c,p => artIndef ! c ! p ;
                   pref = [] } ;
+-}
 
-    --TODO add actual possessive forms into pronouns
     --PossPron : Pron -> Quant
     PossPron pron = 
       lin Quant { s    = \\n,c,p => artA ! n ! c ! p ;
                   pref = pron.poss } ;
 
 --2 Common nouns
-
--- Simple nouns can be used as nouns outright.
 
     --UseN : N -> CN
     UseN n = lin CN { s    = \\_ => n.s ;
@@ -240,15 +224,20 @@ oper
           } ;
     in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
 
+
  artIndef : Case => Phono => Str = 
-     \\cas,pho => BIND ++ case <cas,pho> of {
-        <Abs,_>      => "" ;
-        <Erg,FinalR> => "rek" ;
-        <Erg,_>      => "ek" ;
-        <Dat,FinalR> => "rei" ;
-        <Dat,_>      => "ei" ;
-        <Par,FinalR>    => "rarik" ;
-        <Par,FinalCons> => "ik" ;
-        <Par,_>         => "rik" 
-      } ; 
+   \\cas,pho => case <cas,pho> of {
+        <Abs,_>   => [] ;
+        <c,ph>  => artA ! Pl ! c ! ph } ;
+   --     \\cas,pho => 
+   --case <cas,pho> of {
+   --     <Abs,_>      => "" ;
+   --     <Erg,FinalR> => "rek" ;
+   --     <Erg,_>      => "ek" ;
+   --     <Dat,FinalR> => "rei" ;
+   --     <Dat,_>      => "ei" ;
+   --     <Par,FinalR>    => "rarik" ;
+   --     <Par,FinalCons> => "ik" ;
+   --     <Par,_>         => "rik" 
+   --   } ; 
 }
