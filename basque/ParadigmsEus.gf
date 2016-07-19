@@ -33,6 +33,7 @@ oper
 
   } ;
 
+
   izanV : Str -> V = \maite -> 
     let maiteV = mkVerb1 maite ;
     in lin V (maiteV ** { prc = \\_ => maite }) ;
@@ -60,13 +61,12 @@ oper
 
 
   mkPrc : Str -> (Tense => Str) = \ikusi ->
-    let egi = init ikusi ;
-        egite = case last ikusi of {
-                      "n" => egi + "te" ;
-                      _   => egi
-                 } ;
+    let egi = init ikusi ; 
+        egite = egi + "te" ;
         ikusten = egite + "n" ;
-        ikusiko = egite + "ko" ;
+        ikusiko = case last ikusi of {
+                    "n" => egite + "ko" ;
+                    _   => ikusi + "ko" }
     in table { Pres => ikusten ;
 	             Fut  => ikusiko ;
                _    => ikusi } ;

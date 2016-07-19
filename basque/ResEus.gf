@@ -44,6 +44,13 @@ param
 
 oper 
 
+
+    sgAgr : Agr -> Agr = \agr ->
+       case agr of { Gu    => Ni ;
+                     Zuek  => Zu ;
+                     Hauek => Hau ;
+                     agr   => agr } ;
+
     getNum : Agr -> Number = \np ->
       case np of {
         (Ni|Hi|Zu|Hau)  => Sg ;
@@ -121,7 +128,8 @@ oper
     NounPhrase : Type = { s    : Case => Str ;
                           agr  : Agr ;
                           anim : Bizi ; 
-                          nbr  : Number } ;
+                          nbr  : Number ;
+                          isDef : Bool } ;
 
 -- NounPhrase is a record
 -- a record is a thing with fields ^__^
@@ -134,7 +142,11 @@ oper
 ---      { Abs => "hargle"; Erg => "bargle" }
 -- the field .agr. is of type Agr.   
 
-    buru_NP : NounPhrase = {s = \\_ => "buru" ; agr = Hau ; anim = Anim ; nbr = Sg } ;
+    buru_NP : NounPhrase = { s = \\_ => "buru" ;
+                             agr = Hau ; 
+                             anim = Anim ; 
+                             nbr = Sg ;
+                             isDef = True } ;
 
 -- 
 
@@ -153,6 +165,7 @@ oper
        agr  = a ;
        anim = Anim ;
        nbr  = getNum a ;
+       isDef = True ;
        poss = poss 
      } ;
 
@@ -189,20 +202,26 @@ oper
     Verb3 : Type = Verb ; --copula is always nor-nori-nork, and sc is Erg.
 
     VerbPhrase : Type = 
-       Verb ** { s     : Tense => Agr => Str ; --head of VP
+       Verb ** { s     : Polarity -- Negative forces object agreement into Sg
+                         => Tense 
+                         => Agr -- Subject agreement
+                         => Str ; --head of VP
                  sc    : Case ; -- subject case can be Erg or Dat
-                 compl : Agr => Str ;  -- complement case will be always Abs; 
-                                       -- need Agr for AP to agree with subject.
+                 compl : Polarity -- Negative forces complement case into Par 
+                         => Agr   -- If complement is AP, we need Agr to agree with subject.
+                         => Str ;  
+                 
+                 
                  adv   : Str ;
                } ; 
 
-    VPSlash : Type = Verb2 ** {adv : Str}; --TODO do we need something else?
+    VPSlash : Type = Verb2 ** {adv : Str}; 
 
 
-    predV : Verb1 -> VerbPhrase = \v -> { s     = v.s ; 
+    predV : Verb1 -> VerbPhrase = \v -> { s     = \\pol => v.s ;  -- TODO is this true: neg doesn't force singular in Verb1
                                           sc    = Abs ; 
                                           prc   = v.prc ; 
-                                          compl = table {_ => []}; 
+                                          compl = \\_,_ => []; 
                                           adv   = [] ;
                                           ph    = v.ph } ;
 
@@ -216,19 +235,29 @@ oper
                         adv   = "hargle" } ;
     -}
     insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv,vp ->
-      vp ** {adv = vp.adv ++ adv.s} ;
+      vp ** { adv = vp.adv ++ adv.s } ;
 
 
     insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp,vp ->
-      vp ** {compl = table {agr => vp.compl ! agr ++ comp.s ! agr}} ;
+      vp ** { compl = \\pol,agr => vp.compl ! pol ! agr ++ comp.s ! agr } ;
 
     complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
-      {s     = vps.s ! np.agr ; --(Agr => Agr => Str) to (Agr => Str) 
-       prc   = vps.prc ;
-       sc    = vps.sc ;
-       compl = table {_ => np.s ! Abs} ;
-       adv   = [] ;
-       ph    = vps.ph } ;
+      let posVerb = vps.s ! np.agr ;
+          negVerb = if_then_else (Tense => Agr => Str) 
+                                  np.isDef
+                                  posVerb
+                                 (vps.s ! sgAgr np.agr) ;
+          posComp = np.s ! Abs ;
+          negComp = if_then_Str np.isDef posComp (np.s ! Par) ;
+
+      in { s     = table { Pos => posVerb ; --(Agr => Agr) to (Polarity => Agr) 
+                           Neg => negVerb } ;
+           prc   = vps.prc ;
+           sc    = vps.sc ;
+           compl = table { Pos => \\_ => posComp ;
+                           Neg => \\_ => negComp } ;
+           adv   = [] ;
+           ph    = vps.ph } ;
 
   
 
@@ -243,15 +272,25 @@ oper
     --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
     Clause : Type = {s : Tense => Polarity => Str} ; 
 
-    mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp ->
+    mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
       let
-        subject : Str = np.s ! vp.sc ;
+        subject : Str = subj.s ! vp.sc ;
+
       in 
       { s = table {
           tense => table {
-              Pos => vp.adv ++ subject ++ vp.compl ! np.agr ++ vp.prc ! tense ++ vp.s ! tense ! np.agr | 
-                     subject ++ vp.compl ! np.agr ++ vp.prc ! tense ++ vp.s ! tense ! np.agr ++ vp.adv ;
-              Neg => vp.adv ++ subject ++ "ez" ++ vp.s ! tense ! np.agr ++ vp.prc ! tense ++ vp.compl ! np.agr
+              Pos => vp.adv 
+                    ++ subject 
+                    ++ vp.compl ! Pos ! subj.agr 
+                    ++ vp.prc ! tense 
+                    ++ vp.s ! Pos ! tense ! subj.agr  ;
+              Neg => vp.adv 
+                     ++ subject 
+                     ++ "ez" 
+                     ++ vp.s ! Neg ! tense ! subj.agr 
+                     ++ vp.compl ! Neg ! subj.agr 
+                     ++ vp.prc ! tense 
+
               }
           }
       } ;
@@ -281,10 +320,10 @@ oper
     { s = table {
         tense => table {        
            pol => table {
-             agr => vp.adv ++ vp.compl ! agr             -- John 
+             agr => vp.adv ++ vp.compl ! pol  ! agr      -- John 
                            ++ vp.prc ! tense             -- maite 
                            ++ ez ! pol                   -- (ez)
-                           ++ vp.s ! tense ! agr ++ en ! tense } -- duen
+                           ++ vp.s ! pol ! tense ! agr ++ en ! tense } -- duen
             }
         }
     } ;

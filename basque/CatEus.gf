@@ -71,10 +71,12 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     Pron = ResEus.Pronoun ; --Pronouns need enough info to turn it into NP or Quant.
     Det = { s     : Case => Phono => Str ;   -- hauek
             pref  : Str ;                    -- nire
-            nbr   : Number } ;
+            nbr   : Number ;
+            isDef : Bool } ;
     Predet = {s : Str} ; 
     Quant = { s    : Number => Case => Phono => Str ;
-              pref : Str } ;
+              pref : Str ;
+              isDef : Bool } ;
     Num = { s : Str ; n : Number ; isNum : Bool } ;
     Card, Ord = { s : Str ; n : Number } ;
     DAP = {s : Str} ;

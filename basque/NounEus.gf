@@ -25,14 +25,16 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                      ++ det.s ! c ! cn.ph ;
           agr = ag ;
           anim = cn.anim ;
-          nbr = det.nbr
+          nbr = det.nbr ;
+          isDef = det.isDef ;
         } ;
 
     --UsePN   : PN -> NP ;
     UsePN pn = lin NP  { s    = \\c => pn.s ++ artIndef ! c ! pn.ph;
                          agr  = Hau ; 
                          anim = pn.anim ; 
-                         nbr  = Sg } ;
+                         nbr  = Sg ;
+                         isDef = True } ; --in Extra : add UsePNIndef to allow "hemen ez dago Olatzik"
 
     -- UsePron : Pron -> NP ; 
     UsePron pron = lin NP pron ;
@@ -57,9 +59,10 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
      { s = \\c => cn.heavyMod ! Hau 
                  ++ cn.stem ! Hau 
                  ++ artIndef ! c ! cn.ph ;
-       agr = Hau ;
-       anim = Inan ;
-       nbr = Sg } ;
+       agr   = Hau ;
+       anim  = Inan ;
+       nbr   = Sg ;
+       isDef = False } ;
 
 
 --2 Determiners
@@ -72,6 +75,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
      { s     = \\c,ph => quant.s ! num.n ! c ! ph ;
        pref  = quant.pref ++ num.s ;
        nbr   = num.n ;
+       isDef = orB quant.isDef num.isNum ;
      } ;
 
     -- DetQuantOrd : Quant -> Num -> Ord -> Det ;  -- these five best
@@ -107,14 +111,20 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     OrdNumeralSuperl : Numeral -> A -> Ord ; -- third largest
 -}
 
-    DefArt, IndefArt = 
-      lin Quant { s    = artA ;
-                  pref = [] } ;
+    DefArt =
+      lin Quant { s     = artA ;
+                  pref  = [] ;
+                  isDef = True } ; 
+    IndefArt = 
+      lin Quant { s     = artA ;
+                  pref  = [] ;
+                  isDef = False } ; --has suffix, but turns into partitive in negative!
 
     --PossPron : Pron -> Quant
     PossPron pron = 
       lin Quant { s    = artA ;
-                  pref = pron.poss } ;
+                  pref = pron.poss ;
+                  isDef = True } ;
 
 --2 Common nouns
 

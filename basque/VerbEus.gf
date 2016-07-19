@@ -74,15 +74,17 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
     AdVVP adv vp = lin VP (insertAdv adv vp) ;
 
     -- : VPSlash -> Adv -> VPSlash ;  -- use (it) here
-    AdvVPSlash vps adv = lin VPSlash (vps ** {adv=adv.s}) ;
+    AdvVPSlash vps adv = lin VPSlash (vps ** { adv = adv.s }) ;
 
     -- : AdV -> VPSlash -> VPSlash ;  -- always use (it)
-    AdVVPSlash adv vps = lin VPSlash (vps ** {adv=adv.s}) ;
+    AdVVPSlash adv vps = lin VPSlash (vps ** { adv = adv.s }) ;
 
     --- VPSlash assumes that complement is a core complement;
     --- TODO: generalise the type and allow adverbial complements to be inserted
     -- : VP -> Prep -> VPSlash ;  -- live in (it)
-    VPSlashPrep vp prep = lin VPSlash (vp ** {s = copulaNorNork; compl = \\agr => vp.compl ! agr ++ BIND ++ prep.s }) ;
+    VPSlashPrep vp prep = lin VPSlash 
+      (vp ** { s     = copulaNorNork; 
+               compl = \\agr => vp.compl ! agr ++ BIND ++ prep.s }) ;
 
 
 --2 Complements to copula
@@ -96,21 +98,17 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
 --  CompAP   : AP  -> Comp ;
     CompAP  ap  = lin Comp { s = table { agr => ap.stem ++ DefArt.s ! getNum agr ! Abs ! ap.ph } ;
-                             copula = Izan 
-                           };
+                             copula = Izan };
 --  CompNP   : NP  -> Comp ;
     CompNP  np  = lin Comp { s = table {_ => np.s ! Abs} ; 
-                             copula = Izan 
-                           } ; 
+                             copula = Izan } ; 
 --  CompAdv  : Adv  -> Comp ;
     CompAdv adv = lin Comp { s = table {_ => adv.s} ; 
-                             copula = Egon 
-                           } ;
+                             copula = Egon } ;
 
 --  CompCN   : CN  -> Comp ;
     CompCN cn   = lin Comp { s = cn.s ;
-                             copula = Izan 
-                           } ; 
+                             copula = Izan } ; 
 
 -- Copula alone
 
@@ -122,23 +120,21 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
 
 oper 
-    copulaVP : VP = lin VP { s     = AditzTrinkoak.copulaNor ; 
+    copulaVP : VP = lin VP { s     = \\pol => AditzTrinkoak.copulaNor ; 
                              prc   = table {_ => []} ; 
 		                     sc    = Abs ; 
-                             compl = table {_ => []} ; 
+                             compl = table {_ => table {_ => []}} ; 
                              adv   = [] ;
                              ph    = FinalA 
                             } ;
 
-    copulaEgonVP : VP = lin VP { s     = AditzTrinkoak.copulaEgonNor ; 
+    copulaEgonVP : VP = lin VP { s     = \\pol => AditzTrinkoak.copulaEgonNor ; 
                                  prc   = table {_ => []} ; 
                                  sc    = Abs ; 
-                                 compl = table {_ => []} ; 
+                                 compl = table {_ => table {_ => []}} ; 
                                  adv   = [] ;
                                  ph    = FinalCons 
                                } ;
-
-
 
 
 }

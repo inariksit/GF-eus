@@ -10,11 +10,11 @@ concrete SentenceEus of Sentence = CatEus ** open TenseX, ResEus, VerbEus, Prelu
     --UseCl  : Temp -> Pol -> Cl -> S ;
     UseCl temp pol cl = {s = cl.s ! temp.t ! pol.p } ;
 
-    -- UseRCl   : Temp -> Pol -> RCl -> RS ;  -- that had not slept
+    -- UseRCl   : Temp -> Pol -> RCl -> RS ;
     UseRCl temp pol cl = {s = cl.s ! temp.t ! pol.p } ;
 
     -- RelS     : S -> RS -> S ;              -- she sleeps, which is good
-    RelS sent rs = {s = sent.s ++ rs.s ! Hau } ;
+    --RelS sent rs = {s = sent.s ++ rs.s ! Hau } ;
 
     -- SlashVP   : NP -> VPSlash -> ClSlash ;
     SlashVP np vps = mkClSlash np vps ;
