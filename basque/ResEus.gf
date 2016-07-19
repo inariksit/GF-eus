@@ -31,9 +31,9 @@ param
 
     Bizi = Inan | Anim ;
 
-    Case = Erg | Abs | Dat | Par ;
+    Case = Abs | Erg | Dat | Par ;
 
---    Gender = Masc | Fem ; 
+--    Gender = Masc | Fem ; -- We will need this for hika
 --    Degree = Posit | Compar | Superl | Excess ;
 --    CardOrd = NCard | NOrd ;
 --    DForm = unit | teen | ten  ;
@@ -73,7 +73,7 @@ oper
     NounPhrase : Type = {s : Case => Str ; agr : Agr ; anim : Bizi ; nbr : Number } ;
 
 -- NounPhrase is a record
--- a record is a thing with fields
+-- a record is a thing with fields ^__^
 -- fields can be any type
 -- exempelvis, NounPhrase is a record with two fields
 -- the two fields are .s. and .agr.
@@ -97,7 +97,7 @@ oper
      { s = table { Erg => nork ;
                    Abs => nor ;
                    Dat => nori ;
-                   Par => Prelude.nonExist 
+                   Par => []  
                  } ;
        agr  = a ;
        anim = Anim ;
@@ -130,28 +130,30 @@ oper
     Verb : Type = { prc : Tense => Str ;
                     ph  : Phono  --for relative clause
                   } ;
-    Verb1 : Type = Verb ** {s : Tense => Agr => Str} ;
-    Verb2 : Type = Verb ** {s : Agr => Tense => Agr => Str ; sc : Case} ; --grammatical subject can be nork or nori
-    Verb3 : Type = Verb ; --for Verb3, verb is always nor nori nork, and sc is Erg
+    Verb1 : Type = Verb ** { s : Tense => Agr => Str } ;
 
-    VerbPhrase : Type = { s     : Tense => Agr => Str ; --head of VP
-                          prc   : Tense => Str ;
-                          sc    : Case ; -- subject case can be Erg or Dat
-                          compl : Agr => Str ;  -- complement case will be always Abs; 
-                                               -- need Agr for AP to agree with subject.
-                          adv   : Str ;
-                          ph    : Phono --for making relative clause
-                        } ; 
+    Verb2 : Type = Verb ** { s  : Agr => Tense => Agr => Str ; 
+                             sc : Case } ; --grammatical subject can be nork or nori
+
+    Verb3 : Type = Verb ; --copula is always nor-nori-nork, and sc is Erg.
+
+    VerbPhrase : Type = 
+       Verb ** { s     : Tense => Agr => Str ; --head of VP
+                 sc    : Case ; -- subject case can be Erg or Dat
+                 compl : Agr => Str ;  -- complement case will be always Abs; 
+                                       -- need Agr for AP to agree with subject.
+                 adv   : Str ;
+               } ; 
 
     VPSlash : Type = Verb2 ** {adv : Str}; --TODO do we need something else?
 
 
-    predV : Verb1 -> VerbPhrase = \v -> {s     = v.s ; 
-                                         sc    = Abs ; 
-                                         prc   = v.prc ; 
-                                         compl = table {_ => []}; 
-                                         adv   = [] ;
-                                         ph    = v.ph } ;
+    predV : Verb1 -> VerbPhrase = \v -> { s     = v.s ; 
+                                          sc    = Abs ; 
+                                          prc   = v.prc ; 
+                                          compl = table {_ => []}; 
+                                          adv   = [] ;
+                                          ph    = v.ph } ;
 
     {- Syntax note: 
           vp ** {adv = "hargle"} 
@@ -186,6 +188,7 @@ oper
 
 
 -- Clause stuffs
+
     --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
     Clause : Type = {s : Tense => Polarity => Str} ; 
 
@@ -202,32 +205,51 @@ oper
           }
       } ;
 
+    ------------------------------------------------
+    -- ClSlash: has verb and object, missing subject
+    ClSlash : Type = VPSlash ** { subj : Str ; subjAgr : Agr } ;
+ 
 
+    mkClSlash : NounPhrase -> VPSlash -> ClSlash = \np,vps ->
+      vps ** { subj = np.s ! vps.sc ;
+               subjAgr = np.agr } ;
+
+    ------------------------------------------------
     -- Relative clause
     -- We need to keep agreement, because a RS may be attached to a CN or NP,
     -- and we need to produce correct agreement:
-    -- `gorria den tzakurra' vs. `gorriak diren tzakurrak'
+    -- `gorria den txakurra' vs. `gorriak diren txakurrak'
 
     RClause : Type = {s : Tense => Polarity => Agr => Str} ;
 
     mkRCl : {s : Phono => Str} -> VerbPhrase -> RClause = \rp,vp ->
-    let en  = rp.s ! vp.ph  ; --TODO phono may be different for different tenses
+    let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
+                     _    => BIND ++ rp.s ! vp.ph } ; --TODO: phono should differ between individual forms
+        ez = table { Pos => "" ; Neg => "ez" } ;
     in 
     { s = table {
-        t => table {        
-           Pos => table {                             
-             agr => vp.adv ++ vp.compl ! agr                    -- John 
-                           ++ vp.prc ! t                        -- maite 
-                           ++ vp.s ! t ! agr ++ BIND ++ en } ;  -- duen
-           Neg => table {
-             agr => vp.adv ++ vp.compl ! agr                 -- John 
-                           ++ vp.prc ! t                     -- maite 
-                           ++ "ez"                           -- ez
-                           ++ vp.s ! t ! agr ++ BIND ++ en } -- duen
+        tense => table {        
+           pol => table {
+             agr => vp.adv ++ vp.compl ! agr             -- John 
+                           ++ vp.prc ! tense             -- maite 
+                           ++ ez ! pol                   -- (ez)
+                           ++ vp.s ! tense ! agr ++ en ! tense } -- duen
             }
         }
     } ;
 
+    mkRClSlash : {s : Phono => Str} -> ClSlash -> RClause = \rp,cls ->
+    let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
+                     _    => BIND ++ rp.s ! cls.ph } ; 
+        ez = table { Pos => "" ; Neg => "ez" } ;
+    in 
+    { s = \\tns,pol,objAgr => cls.adv 
+                              ++ cls.subj                      -- Johnek
+                              ++ cls.prc ! tns                 -- maite 
+                              ++ ez ! pol                      -- (ez)
+                              ++ cls.s ! objAgr ! tns ! cls.subjAgr -- d(it)u
+                              ++ en ! tns                      -- en
+    } ;
 
 }
 
