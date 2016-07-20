@@ -31,19 +31,21 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
                          nbr  = Sg } ;
   lin whoPl_IP = (mkIP "nortzuk" "nortzuei" "nortzuek")
                     ** { agr  = Hauek ;
-                         anim = Bizi ;
+                         anim = Anim ;
                          nbr  = Pl } ;
   lin whoSg_IP = (mkIP "nor" "nori" "nork")
                     ** { agr  = Hau ;
-                         anim = Bizi ;
+                         anim = Anim ;
                          nbr  = Sg } ;
 
 
 
 oper 
+  mkIP : Str -> Str -> Str -> {s : Case => Str ; isDef : Bool} ;
   mkIP nor nori nork = { s = table { Abs => nor ;
                                      Dat => nori ;
                                      Erg => nork ;
                                      Part => []} ;
                          isDef = True
                        } ;
+}

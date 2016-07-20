@@ -22,8 +22,9 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
 -- Constructed in QuestionEus.
 
-{-    QCl ;   -- question clause, with all tenses    e.g. "why does she walk"
-    IP ;    -- interrogative pronoun               e.g. "who"
+    QCl = ResEus.QClause ;
+    IP = ResEus.NounPhrase ;
+{-    IComp ; -- interrogative complement of copula  e.g. "where"
     IComp ; -- interrogative complement of copula  e.g. "where"
     IDet ;  -- interrogative determiner            e.g. "how many"
     IQuant; -- interrogative quantifier            e.g. "which"
