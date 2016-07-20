@@ -51,6 +51,3 @@ concrete ConjunctionEus of Conjunction =
 
 
 }
-
-
-UseCl (TTAnt TPres ASimul) PNeg (PredVP (DetCN (DetQuant ? ?) (UseN boy_N)) (ComplSlash (SlashV2a drink_V2) (DetCN (DetQuant ArtDef ?) (UseN beer_N))))

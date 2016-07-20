@@ -4,6 +4,8 @@ resource ResEus = ParamX ** open TenseX, Prelude in {
   coding=utf8 ;
 
 param 
+    ClType = Dir | Qst ;
+
 {-
    Type of copula used, e.g. 
  
@@ -69,33 +71,33 @@ oper
   artA : Number => Case => Phono => Str =
    let withoutBind : Number => Case => Phono => Str =
     table { Sg => table {Abs => table {FinalA   => "a"  ;
-                                      FinalR   => "ra" ;
-                                      _        => "a" } ;
+                                  FinalR   => "ra" ;
+                                  _        => "a" } ;
                         Erg => table {FinalA   => "ak"  ;
-                                      FinalR   => "rak" ;
-                                      _        => "ak" } ;
+                                  FinalR   => "rak" ;
+                                  _        => "ak" } ;
                         Dat => table {FinalA   => "ri" ;
-                                      FinalR   => "rari" ;
-                                      _        => "ari" } ;
+                                  FinalR   => "rari" ;
+                                  _        => "ari" } ;
                         Par => table {FinalA   => "rik" ;
-                                      FinalR   => "rarik" ;
-                                      FinalVow => "rik" ;
-                                      FinalCons => "ik" } 
+                                  FinalR   => "rarik" ;
+                                  FinalVow => "rik" ;
+                                  FinalCons => "ik" } 
                         }; 
 
            Pl => table {Abs => table {FinalA => "ak"  ;
-                                      FinalR => "rak" ;
-                                      _      => "ak" } ;
+                                  FinalR => "rak" ;
+                                  _      => "ak" } ;
                         Erg => table {FinalA => "ek"  ;
-                                      FinalR => "rek" ;
-                                      _      => "ek" } ;
+                                  FinalR => "rek" ;
+                                  _      => "ek" } ;
                         Dat => table {FinalR => "rei" ;
-                                      _      => "ei" } ;
+                                  _      => "ei" } ;
                         --TODO: make the partitive force singular agr
                         Par => table {FinalA   => "rik" ;
-                                      FinalR   => "rarik" ;
-                                      FinalVow => "rik" ;
-                                      FinalCons => "ik" } 
+                                  FinalR   => "rarik" ;
+                                  FinalVow => "rik" ;
+                                  FinalCons => "ik" } 
                        }
           } ;
     in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
@@ -120,8 +122,8 @@ oper
                      ph   : Phono ; 
                      anim : Bizi ;
                      heavyMod : Agr => Str } ; -- Relative clause or adverbial
-                                        -- If it's "heavy", numbers and possessives come after.
-                                        -- "Light" modifiers attach directly to the s and stem.
+                                    -- If it's "heavy", numbers and possessives come after.
+                                    -- "Light" modifiers attach directly to the s and stem.
 
     Complement : Type = { s : Agr => Str ; copula : CopulaType } ;
 
@@ -219,11 +221,11 @@ oper
 
 
     predV : Verb1 -> VerbPhrase = \v -> { s     = \\pol => v.s ;  -- TODO is this true: neg doesn't force singular in Verb1
-                                          sc    = Abs ; 
-                                          prc   = v.prc ; 
-                                          compl = \\_,_ => []; 
-                                          adv   = [] ;
-                                          ph    = v.ph } ;
+                                      sc    = Abs ; 
+                                      prc   = v.prc ; 
+                                      compl = \\_,_ => []; 
+                                      adv   = [] ;
+                                      ph    = v.ph } ;
 
     {- Syntax note: 
           vp ** {adv = "hargle"} 
@@ -244,8 +246,8 @@ oper
     complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
       let posVerb = vps.s ! np.agr ;
           negVerb = if_then_else (Tense => Agr => Str) 
-                                  np.isDef
-                                  posVerb
+                              np.isDef
+                              posVerb
                                  (vps.s ! sgAgr np.agr) ;
           posComp = np.s ! Abs ;
           negComp = if_then_Str np.isDef posComp (np.s ! Par) ;
@@ -270,29 +272,41 @@ oper
 -- Clause stuffs
 
     --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
-    Clause : Type = {s : Tense => Polarity => Str} ; 
+    Clause : Type = {s : ClType => Tense => Polarity => Str} ; 
+
+-- ez al duzu katu beltza ikusi? / ez al duzu katu beltzik ikusi? (MassNP)
+-- ez dut katu beltza ikusi / ez dut katu beltzik ikusi (MassNP)
+-- ibiltzen al zara ;  garagardoa edaten al duzu? 
+-- mutilari garagardoa ematen al diozu?
+--  txakurrari abesten al diozu?
+
+
+    QClause : Type = {s : Tense => Polarity => Str} ; 
+
+
 
     mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
       let
         subject : Str = subj.s ! vp.sc ;
+        al : ClType => Str = table { Dir => [] ; 
+                                 Qst => "al" } ;
 
       in 
-      { s = table {
-          tense => table {
-              Pos => vp.adv 
-                    ++ subject 
-                    ++ vp.compl ! Pos ! subj.agr 
-                    ++ vp.prc ! tense 
-                    ++ vp.s ! Pos ! tense ! subj.agr  ;
-              Neg => vp.adv 
-                     ++ subject 
-                     ++ "ez" 
-                     ++ vp.s ! Neg ! tense ! subj.agr 
-                     ++ vp.compl ! Neg ! subj.agr 
-                     ++ vp.prc ! tense 
-
-              }
-          }
+      { s = \\ct,t => 
+               table { Pos => vp.adv 
+                           ++ subject 
+                           ++ vp.compl ! Pos ! subj.agr 
+                           ++ vp.prc ! t
+                           ++ al ! ct
+                           ++ vp.s ! Pos ! t ! subj.agr  ;
+                       Neg => vp.adv 
+                           ++ subject 
+                           ++ "ez" 
+                           ++ al ! ct
+                           ++ vp.s ! Neg ! t ! subj.agr 
+                           ++ vp.compl ! Neg ! subj.agr 
+                           ++ vp.prc ! t
+                     }          
       } ;
 
     ------------------------------------------------

@@ -8,7 +8,7 @@ concrete SentenceEus of Sentence = CatEus ** open TenseX, ResEus, VerbEus, Prelu
     PredVP np vp = mkClause np vp ;
 
     --UseCl  : Temp -> Pol -> Cl -> S ;
-    UseCl temp pol cl = {s = cl.s ! temp.t ! pol.p } ;
+    UseCl temp pol cl = {s = cl.s ! Dir ! temp.t ! pol.p } ;
 
     -- UseRCl   : Temp -> Pol -> RCl -> RS ;
     UseRCl temp pol cl = {s = cl.s ! temp.t ! pol.p } ;
