@@ -20,5 +20,30 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   lin she_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
   lin it_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
   lin they_Pron = mkPron "hauek" "hauei" "hauek" "beren" Hauek ; -- TODO: the others
-  
-}
+ 
+  lin whatPl_IP = (mkIP "zertzuk" "zertzuei" "zertzuek")
+                    ** { agr  = Hauek ;
+                         anim = Inan ;
+                         nbr  = Pl } ;
+  lin whatSg_IP = (mkIP "zer" "zeri" "zerk")
+                    ** { agr  = Hau ;
+                         anim = Inan ;
+                         nbr  = Sg } ;
+  lin whoPl_IP = (mkIP "nortzuk" "nortzuei" "nortzuek")
+                    ** { agr  = Hauek ;
+                         anim = Bizi ;
+                         nbr  = Pl } ;
+  lin whoSg_IP = (mkIP "nor" "nori" "nork")
+                    ** { agr  = Hau ;
+                         anim = Bizi ;
+                         nbr  = Sg } ;
+
+
+
+oper 
+  mkIP nor nori nork = { s = table { Abs => nor ;
+                                     Dat => nori ;
+                                     Erg => nork ;
+                                     Part => []} ;
+                         isDef = True
+                       } ;
