@@ -160,7 +160,7 @@ oper
 
     Pronoun : Type = NounPhrase ;
 
-    mkPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,nore,a->
+    persPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,nore,a->
      { s = table { Erg => nork ;
                    Abs => nor ;
                    Dat => nori ;
@@ -172,6 +172,9 @@ oper
        nbr  = getNum a ;
        isDef = True 
      } ;
+
+    inanPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \zer,zeri,zerk,zere,a ->
+      persPron zer zeri zerk zere a ** { anim = Inan } ;
 
 --    reflPron : NounPhrase = { s = case agr of {
 --        Ni => "nire buru" ;

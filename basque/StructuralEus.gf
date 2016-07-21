@@ -6,9 +6,6 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
 
 
 
-
-
-
   lin above_Prep = mkPrep "gainean" Abs False ;
  -- lin after_Prep : Prep ;
   lin before_Prep = mkPrep "gabe" Abs False ;
@@ -32,42 +29,18 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   lin without_Prep = mkPrep "gabe" Abs False ; 
 
 
-  lin i_Pron = mkPron "ni" "niri" "nik" "nire" Ni ;
-  lin we_Pron = mkPron "gu" "guri" "guk" "gure" Gu ;
-  lin youSg_Pron = mkPron "zu" "zuri" "zuk" "zure" Zu ; -- TODO: hi/hire
-  lin youPl_Pron = mkPron "zuek" "zuei" "zuen" "zuen" Zuek ;
-  lin he_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
-  lin she_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
-  lin it_Pron = mkPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
-  lin they_Pron = mkPron "hauek" "hauei" "hauek" "beren" Hauek ; -- TODO: the others
+  lin i_Pron = persPron "ni" "niri" "nik" "nire" Ni ;
+  lin we_Pron = persPron "gu" "guri" "guk" "gure" Gu ;
+  lin youSg_Pron = persPron "zu" "zuri" "zuk" "zure" Zu ; -- TODO: hi/hire
+  lin youPl_Pron = persPron "zuek" "zuei" "zuen" "zuen" Zuek ;
+  lin he_Pron = persPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
+  lin she_Pron = persPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
+  lin it_Pron = persPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
+  lin they_Pron = persPron "hauek" "hauei" "hauek" "beren" Hauek ; -- TODO: the others
  
-  lin whatPl_IP = (mkIP "zertzuk" "zertzuei" "zertzuek" "zertzuk.GEN")
-                    ** { agr  = Hauek ;
-                         anim = Inan ;
-                         nbr  = Pl } ;
-  lin whatSg_IP = (mkIP "zer" "zeri" "zerk" "zeren")
-                    ** { agr  = Hau ;
-                         anim = Inan ;
-                         nbr  = Sg } ;
-  lin whoPl_IP = (mkIP "nortzuk" "nortzuei" "nortzuek" "nortzuk.GEN")
-                    ** { agr  = Hauek ;
-                         anim = Anim ;
-                         nbr  = Pl } ;
-  lin whoSg_IP = (mkIP "nor" "nori" "nork" "noren")
-                    ** { agr  = Hau ;
-                         anim = Anim ;
-                         nbr  = Sg } ;
+  lin whatPl_IP = inanPron "zertzuk" "zertzuei" "zertzuek" "zertzuen" Hauek ;
+  lin whatSg_IP = inanPron "zer" "zeri" "zerk" "zeren" Hau ;
+  lin whoPl_IP = persPron "nortzuk" "nortzuei" "nortzuek" "nortzuen" Hauek ;
+  lin whoSg_IP = persPron "nor" "nori" "nork" "noren" Hau ;
 
-
-
-oper 
-  mkIP : (_,_,_,x4 : Str) -> {s : Case => Str ; isDef : Bool} ;
-  mkIP nor nori nork noren  = { s = table
-                                   { Abs => nor ;
-                                     Dat => nori ;
-                                     Erg => nork ;
-                                     Gen => noren ;
-                                     Part => []} ;
-                         isDef = True
-                       } ;
 }
