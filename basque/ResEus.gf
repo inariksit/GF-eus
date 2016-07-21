@@ -14,14 +14,6 @@ param
 -}
     CopulaType = Egon | Izan  ; 
 
-{-
-   Type of the complement of a postposition. e.g.
-
-      diru gabe [ComplType = AbsNP]
-      dirurik gabe [ComplType = ParNP]
-      hormaren kontra [ComplType = GenNP]
--}
-    ComplType = ParNP | GenNP | AbsNP ;  
 
 {-
    Type of adjectival phrase, e.g.
@@ -33,12 +25,12 @@ param
 
     Bizi = Inan | Anim ;
 
-    Case = Abs | Erg | Dat | Par ;
+    Case = Abs | Erg | Dat | Par | Gen ;
 
 --    Gender = Masc | Fem ; -- We will need this for hika
 --    Degree = Posit | Compar | Superl | Excess ;
 --    CardOrd = NCard | NOrd ;
---    DForm = unit | teen | ten  ;
+
 
     Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
     AgrValency = Nor | NorNork | NorNori | NorNoriNork ;
@@ -71,14 +63,17 @@ oper
   artA : Number => Case => Phono => Str =
    let withoutBind : Number => Case => Phono => Str =
     table { Sg => table {Abs => table {FinalA   => "a"  ;
-                                  FinalR   => "ra" ;
-                                  _        => "a" } ;
+                                       FinalR   => "ra" ;
+                                       _        => "a" } ;
                         Erg => table {FinalA   => "ak"  ;
-                                  FinalR   => "rak" ;
-                                  _        => "ak" } ;
+                                      FinalR   => "rak" ;
+                                      _        => "ak" } ;
                         Dat => table {FinalA   => "ri" ;
-                                  FinalR   => "rari" ;
-                                  _        => "ari" } ;
+                                      FinalR   => "rari" ;
+                                      _        => "ari" } ;
+                        Gen => table {FinalR   => "en" ;
+                                      FinalCons => "aren" ; --TODO ????
+                                      _        => "ren" } ;
                         Par => table {FinalA   => "rik" ;
                                   FinalR   => "rarik" ;
                                   FinalVow => "rik" ;
@@ -86,18 +81,20 @@ oper
                         }; 
 
            Pl => table {Abs => table {FinalA => "ak"  ;
-                                  FinalR => "rak" ;
-                                  _      => "ak" } ;
+                                      FinalR => "rak" ;
+                                      _      => "ak" } ;
                         Erg => table {FinalA => "ek"  ;
-                                  FinalR => "rek" ;
-                                  _      => "ek" } ;
+                                      FinalR => "rek" ;
+                                      _      => "ek" } ;
                         Dat => table {FinalR => "rei" ;
-                                  _      => "ei" } ;
-                        --TODO: make the partitive force singular agr
+                                      _      => "ei" } ;
+                        Gen => table {FinalR   => "en" ;
+                                      FinalCons => "aren" ; --TODO ????
+                                      _        => "ren" } ;
                         Par => table {FinalA   => "rik" ;
-                                  FinalR   => "rarik" ;
-                                  FinalVow => "rik" ;
-                                  FinalCons => "ik" } 
+                                      FinalR   => "rarik" ;
+                                      FinalVow => "rik" ;
+                                      FinalCons => "ik" } 
                        }
           } ;
     in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
@@ -152,23 +149,28 @@ oper
 
 -- 
 
-   Postposizio : Type = {s : Str ; complType : ComplType ; attached : Bool } ;
+
+   Postposizio : Type = { s : Phono => Str ;  --TODO: implement this
+                          complCase : Case ; -- diru gabe : Abs
+                                             -- dirurik gabe : Par 
+                                             -- hormaren kontra : Gen
+                          attached : Bool } ;
 
 -- Pronoun stuffs
 
-    Pronoun : Type = NounPhrase ** { poss : Str };
+    Pronoun : Type = NounPhrase ;
 
-    mkPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,poss,a->
+    mkPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,nore,a->
      { s = table { Erg => nork ;
                    Abs => nor ;
                    Dat => nori ;
+                   Gen => nore ;
                    Par => []  
                  } ;
        agr  = a ;
        anim = Anim ;
        nbr  = getNum a ;
-       isDef = True ;
-       poss = poss 
+       isDef = True 
      } ;
 
 --    reflPron : NounPhrase = { s = case agr of {

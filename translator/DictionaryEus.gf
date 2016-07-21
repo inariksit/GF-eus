@@ -32,9 +32,9 @@ lin towards_Prep = mkPrep "antz" ;
       argument and specify the case of their complement.
 -}
 
-lin without_Prep = mkPrep "gabe" ParNP False | mkPrep "gabe" AbsNP False ; 
-lin against_Prep = mkPrep "kontra" GenNP False ;
-lin in_favour_of_Prep = mkPrep "alde" GenNP False ;
+lin without_Prep = mkPrep "gabe" Par False | mkPrep "gabe" Abs False ; 
+lin against_Prep = mkPrep "kontra" Gen False ;
+lin in_favour_of_Prep = mkPrep "alde" Gen False ;
 
 -- SECTION: Pronouns
 

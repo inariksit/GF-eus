@@ -117,24 +117,23 @@ oper
 
 --2 Prepositions
 
-  mkPrep = overload {
- 
-    mkPrep : Str -> ComplType -> Bool -> Prep = \s,compl,konf -> 
-       lin Prep { s = s ; 
-                  complType = compl ; 
-                  attached = konf } ;
+  mkPrep = overload { 
+    mkPrep : Str -> Case -> Bool -> Prep = \s,compl,konf -> 
+       lin Prep (mkPreposition s ** { complCase = compl ;
+                                      attached = konf } ) ; 
 
-    mkPrep : Str -> ComplType -> Prep = \s,compl -> 
-       lin Prep { s = s ; 
-                  complType = compl ; 
-                  attached = True } ;
+    mkPrep : Str -> Case -> Prep = \s,compl -> 
+       lin Prep (mkPreposition s ** { complCase = compl } ) ; 
 
     mkPrep : Str -> Prep = \s -> 
-       lin Prep { s = s ; 
-                  complType = AbsNP ; 
-                  attached = True } ;
-
+       lin Prep (mkPreposition s) ;
   } ; 
 
+  mkPreposition : Str -> Postposizio = \s ->
+   { s = table { FinalCons => "e" + s ; 
+                 FinalR    => "e" + s ;
+                 _         => s } ;
+     complCase = Abs ; 
+     attached = True } ;
 }
 

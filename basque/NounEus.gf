@@ -26,7 +26,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
           agr = ag ;
           anim = cn.anim ;
           nbr = det.nbr ;
-          isDef = det.isDef ;
+          isDef = det.isDef 
         } ;
 
     --UsePN   : PN -> NP ;
@@ -54,7 +54,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -}
 
 
-   -- MassNP     : CN -> NP ; 
+   -- MassNP : CN -> NP ; 
    MassNP cn = lin NP 
      { s = \\c => cn.heavyMod ! Hau 
                  ++ cn.stem ! Hau 
@@ -62,7 +62,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
        agr   = Hau ;
        anim  = Inan ;
        nbr   = Sg ;
-       isDef = False } ;
+       isDef = False ;
+       isPrn = False } ;
 
 
 --2 Determiners
@@ -123,7 +124,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     --PossPron : Pron -> Quant
     PossPron pron = 
       lin Quant { s    = artA ;
-                  pref = pron.poss ;
+                  pref = pron.s ! Gen ;
                   isDef = True } ;
 
 --2 Common nouns
