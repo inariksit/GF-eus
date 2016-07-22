@@ -129,6 +129,9 @@ oper
        lin Prep (mkPreposition s) ;
   } ; 
 
+  casePrep : Case -> Prep = \cas ->
+    mkPrep [] cas False ; -- choose given case, add empty string without BIND
+
   mkPreposition : Str -> Postposizio = \s ->
    { s = table { FinalCons => "e" + s ; 
                  FinalR    => "e" + s ;
