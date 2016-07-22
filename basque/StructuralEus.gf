@@ -29,18 +29,18 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   lin without_Prep = mkPrep "gabe" Abs False ; 
 
 
-  lin i_Pron = persPron "ni" "niri" "nik" "nire" Ni ;
-  lin we_Pron = persPron "gu" "guri" "guk" "gure" Gu ;
-  lin youSg_Pron = persPron "zu" "zuri" "zuk" "zure" Zu ; -- TODO: hi/hire
-  lin youPl_Pron = persPron "zuek" "zuei" "zuen" "zuen" Zuek ;
-  lin he_Pron = persPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
-  lin she_Pron = persPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
-  lin it_Pron = persPron "hau" "honi" "honek" "bere" Hau ; -- TODO: the others
-  lin they_Pron = persPron "hauek" "hauei" "hauek" "beren" Hauek ; -- TODO: the others
+  lin i_Pron = persPron "ni" "niri" "nik" "nire" "nitaz" Ni ;
+  lin we_Pron = persPron "gu" "guri" "guk" "gure" "gutaz" Gu ;
+  lin youSg_Pron = persPron "zu" "zuri" "zuk" "zure" "zutaz" Zu ; -- TODO: hi/hire
+  lin youPl_Pron = persPron "zuek" "zuei" "zuen" "zuen" "zuetaz" Zuek ;
+  lin he_Pron = persPron "hura" "hari" "hark" "haren" "hartaz" Hau ;
+  lin she_Pron = persPron "hura" "hari" "hark" "haren" "hartaz" Hau ;
+  lin it_Pron = persPron "hau" "honi" "honek" "bere" "honetaz" Hau ;
+  lin they_Pron = persPron "hauek" "hauei" "hauek" "beren" "hauetaz" Hauek ; -- TODO: the others
  
-  lin whatPl_IP = inanPron "zertzuk" "zertzuei" "zertzuek" "zertzuen" Hauek ;
-  lin whatSg_IP = inanPron "zer" "zeri" "zerk" "zeren" Hau ;
-  lin whoPl_IP = persPron "nortzuk" "nortzuei" "nortzuek" "nortzuen" Hauek ;
-  lin whoSg_IP = persPron "nor" "nori" "nork" "noren" Hau ;
+  lin whatPl_IP = inanPron "zertzuk" "zertzuei" "zertzuek" "zertzuen" "zertzuetaz" Hauek ;
+  lin whatSg_IP = inanPron "zer" "zeri" "zerk" "zeren" "zertaz" Hau ;
+  lin whoPl_IP = persPron "nortzuk" "nortzuei" "nortzuek" "nortzuen" "nortzuetaz" Hauek ;
+  lin whoSg_IP = persPron "nor" "nori" "nork" "noren" "zertaz" Hau ;
 
 }

@@ -152,11 +152,17 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     AdjCN ap cn =
       let result : Agr => Str 
            = case ap.typ of {
-                     Ko => \\agr => ap.stem ++ cn.s ! agr; 
+                     Ko => \\agr => ap.s ++ cn.s ! agr; 
+                     Bare => \\agr => cn.s ! agr ++ ap.s 
+                   } ;
+          resStem : Agr => Str 
+           = case ap.typ of {
+                     Ko => \\agr => ap.s ++ cn.stem ! agr; 
                      Bare => \\agr => cn.s ! agr ++ ap.stem 
                    } ;
-      in lin CN (cn ** { s,stem = result ;
-                         ph     = ap.ph } ) ; --AP goes rightmost
+      in lin CN (cn ** { s    = result ;
+                         stem = resStem ;
+                         ph   = ap.ph } ) ; --AP goes rightmost
 
     -- RelCN : CN -> RS  -> CN ;
     RelCN cn rs = lin CN (cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ rs.s ! agr }) ;

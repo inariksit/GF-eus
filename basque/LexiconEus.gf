@@ -6,7 +6,7 @@ lin blood_N = mkN "odol" ;
 lin blue_A = mkA "urdin" ;
 lin beer_N = mkN "garagardo" ;
 lin boy_N  = mkN "mutil" ;
---lin have_V2 = { s = AditzTrinkoak.eduki_V2 } ** { prc = mkPrc "" ; sc = Erg } ;
+lin girl_N  = mkN "neska" ;
 
 lin blow_V = mkV "putz" egin_V ;
 lin sleep_V = mkV "lo"  egin_V ;

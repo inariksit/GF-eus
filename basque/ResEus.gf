@@ -25,7 +25,9 @@ param
 
     Bizi = Inan | Anim ;
 
-    Case = Abs | Erg | Dat | Par | Gen ;
+    Case = Abs | Erg | Dat | Par  -- Core argument cases
+         | Gen | Soc | Ins | LocStem ;  -- Those with irregular stem; 
+          -- LocStem is Loc without -an; many other cases use same stem!
 
 --    Gender = Masc | Fem ; -- We will need this for hika
 --    Degree = Posit | Compar | Superl | Excess ;
@@ -34,6 +36,7 @@ param
 
     Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
     AgrValency = Nor | NorNork | NorNori | NorNoriNork ;
+
     Phono = FinalA | FinalR | FinalCons | FinalVow ; 
 
 oper 
@@ -71,13 +74,19 @@ oper
                         Dat => table {FinalA   => "ri" ;
                                       FinalR   => "rari" ;
                                       _        => "ari" } ;
-                        Gen => table {FinalR   => "en" ;
-                                      FinalCons => "aren" ; --TODO ????
-                                      _        => "ren" } ;
                         Par => table {FinalA   => "rik" ;
-                                  FinalR   => "rarik" ;
-                                  FinalVow => "rik" ;
-                                  FinalCons => "ik" } 
+                                      FinalR   => "rarik" ;
+                                      FinalVow => "rik" ;
+                                      FinalCons => "ik" } ;
+                        Gen => table {FinalA   => "ren" ;
+                                      _        => "aren" } ;
+                        Soc => table {FinalA   => "rekin" ;
+                                      _        => "arekin" } ;
+                        Ins => table {FinalA   => "z" ;
+                                      _        => "az" } ;
+                        LocStem => table {FinalCons => "e" ;
+                                          FinalR    => "e" ;
+                                          _         => [] } 
                         }; 
 
            Pl => table {Abs => table {FinalA => "ak"  ;
@@ -88,14 +97,17 @@ oper
                                       _      => "ek" } ;
                         Dat => table {FinalR => "rei" ;
                                       _      => "ei" } ;
-                        Gen => table {FinalR   => "en" ;
-                                      FinalCons => "aren" ; --TODO ????
-                                      _        => "ren" } ;
                         Par => table {FinalA   => "rik" ;
                                       FinalR   => "rarik" ;
-                                      FinalVow => "rik" ;
-                                      FinalCons => "ik" } 
-                       }
+                                      FinalVow  => "rik" ;
+                                      FinalCons => "ik" } ;
+                        Gen => table {_      => "en" } ;
+                        Soc => table {_      => "ekin" };
+                        Ins => table {_      => "ez" } ;
+                        LocStem => table {FinalCons => "e" ;
+                                          FinalR    => "e" ;
+                                          _         => [] } 
+                       } 
           } ;
     in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
 
@@ -160,12 +172,15 @@ oper
 
     Pronoun : Type = NounPhrase ;
 
-    persPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \nor,nori,nork,nore,a->
+    persPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \nor,nori,nork,nore,zertaz,a->
      { s = table { Erg => nork ;
                    Abs => nor ;
                    Dat => nori ;
+                   Par => [] ;
                    Gen => nore ;
-                   Par => []  
+                   Soc => nore + "kin" ;
+                   Ins => zertaz ;
+                   LocStem => init zertaz 
                  } ;
        agr  = a ;
        anim = Anim ;
@@ -173,8 +188,8 @@ oper
        isDef = True 
      } ;
 
-    inanPron : Str -> Str -> Str -> Str -> Agr -> Pronoun = \zer,zeri,zerk,zere,a ->
-      persPron zer zeri zerk zere a ** { anim = Inan } ;
+    inanPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \zer,zeri,zerk,zere,zertaz,a ->
+      persPron zer zeri zerk zere zertaz a ** { anim = Inan } ;
 
 --    reflPron : NounPhrase = { s = case agr of {
 --        Ni => "nire buru" ;

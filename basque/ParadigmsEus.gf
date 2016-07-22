@@ -76,9 +76,9 @@ oper
 				       "a" => init s ; 
 				       _   => s                } ;
 				phono : Phono = case last s of {
-				       "a"               => FinalA ;
+				       --"a"               => FinalA ;
 				       "r"               => FinalR ;
-				       ("e"|"i"|"o"|"u") => FinalVow ;
+				       ("a"|"e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
 	  in { s = table { Posit  => stem ;
 					           Compar => stem + "ago" ;
@@ -91,9 +91,9 @@ oper
 				       "a" => init s ; 
 				       _   => s } ;
 				phono : Phono = case last s of {
-				       "a"               => FinalA ;
+				       --"a"               => FinalA ;
 				       "r"               => FinalR ;
-				       ("e"|"i"|"o"|"u") => FinalVow ;
+				       ("a"|"e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
 		in { s = s;  stem = stem ; ph = phono ; anim=Inan } ; 
 
