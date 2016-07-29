@@ -21,7 +21,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
       in lin NP
         { s = \\c => cn.heavyMod ! ag
                      ++ det.pref 
-                     ++ cn.stem ! ag 
+--                     ++ cn.stem ! ag 
+                     ++ cn.s ! ag 
                      ++ det.s ! c ! cn.ph ;
           agr = ag ;
           anim = cn.anim ;
@@ -57,7 +58,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
    -- MassNP : CN -> NP ; 
    MassNP cn = lin NP 
      { s = \\c => cn.heavyMod ! Hau 
-                 ++ cn.stem ! Hau 
+                 ++ cn.s ! Hau 
                  ++ artIndef ! c ! cn.ph ;
        agr   = Hau ;
        anim  = Inan ;
@@ -131,7 +132,6 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
     --UseN : N -> CN
     UseN n = lin CN ( n ** { s    = \\_ => n.s ;
-                             stem = \\_ => n.stem ;
                              heavyMod = \\_ => [] } );
 
 {-
@@ -155,13 +155,13 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                      Ko => \\agr => ap.s ++ cn.s ! agr; 
                      Bare => \\agr => cn.s ! agr ++ ap.s 
                    } ;
-          resStem : Agr => Str 
+{-          resStem : Agr => Str 
            = case ap.typ of {
                      Ko => \\agr => ap.s ++ cn.stem ! agr; 
                      Bare => \\agr => cn.s ! agr ++ ap.stem 
-                   } ;
+                   } ; -}
       in lin CN (cn ** { s    = result ;
-                         stem = resStem ;
+                         --stem = resStem ;
                          ph   = ap.ph } ) ; --AP goes rightmost
 
     -- RelCN : CN -> RS  -> CN ;

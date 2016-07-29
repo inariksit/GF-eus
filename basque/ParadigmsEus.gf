@@ -76,9 +76,9 @@ oper
 				       "a" => init s ; 
 				       _   => s                } ;
 				phono : Phono = case last s of {
-				       --"a"               => FinalA ;
+				       "a"               => FinalA ;
 				       "r"               => FinalR ;
-				       ("a"|"e"|"i"|"o"|"u") => FinalVow ;
+				       ("e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
 	  in { s = table { Posit  => stem ;
 					           Compar => stem + "ago" ;
@@ -91,11 +91,11 @@ oper
 				       "a" => init s ; 
 				       _   => s } ;
 				phono : Phono = case last s of {
-				       --"a"               => FinalA ;
+				       "a"               => FinalA ;
 				       "r"               => FinalR ;
-				       ("a"|"e"|"i"|"o"|"u") => FinalVow ;
+				       ("e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
-		in { s = s;  stem = stem ; ph = phono ; anim=Inan } ; 
+		in { s = stem ; ph = phono ; anim=Inan } ; 
 
   mkVerb1 : Str -> Verb1 = \s -> { s   = copulaNor; 
                                    prc = mkPrc s ;
@@ -119,23 +119,25 @@ oper
 
   mkPrep = overload { 
     mkPrep : Str -> Case -> Bool -> Prep = \s,compl,konf -> 
-       lin Prep (mkPreposition s ** { complCase = compl ;
+       lin Prep (mkPreposition s s ** { complCase = compl ;
                                       attached = konf } ) ; 
 
     mkPrep : Str -> Case -> Prep = \s,compl -> 
-       lin Prep (mkPreposition s ** { complCase = compl } ) ; 
+       lin Prep (mkPreposition s s ** { complCase = compl } ) ; 
 
     mkPrep : Str -> Prep = \s -> 
-       lin Prep (mkPreposition s) ;
+       lin Prep (mkPreposition s s) ;
+
+    mkPrep : Str -> Str -> Case -> Prep = \n,an,compl -> 
+       lin Prep (mkPreposition n an ** { complCase = compl } ) ;
   } ; 
 
   casePrep : Case -> Prep = \cas ->
     mkPrep [] cas False ; -- choose given case, add empty string without BIND
 
-  mkPreposition : Str -> Postposizio = \s ->
-   { s = table { FinalCons => "e" + s ; 
-                 FinalR    => "e" + s ;
-                 _         => s } ;
+  mkPreposition : Str -> Str -> Postposizio = \an,n ->
+   { s = table { Sg => an ;
+                 Pl => n } ;
      complCase = Abs ; 
      attached = True } ;
 }

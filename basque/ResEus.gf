@@ -26,8 +26,8 @@ param
     Bizi = Inan | Anim ;
 
     Case = Abs | Erg | Dat | Par  -- Core argument cases
-         | Gen | Soc | Ins | LocStem ;  -- Those with irregular stem; 
-          -- LocStem is Loc without -an; many other cases use same stem!
+         | Gen | Soc | Ins | Ine -- Irregular stems
+         | LocStem ;  -- LocStem is inessive without -an; many other cases use same stem!
 
 --    Gender = Masc | Fem ; -- We will need this for hika
 --    Degree = Posit | Compar | Superl | Excess ;
@@ -63,76 +63,65 @@ oper
 
 
 -- Articles 
-  artA : Number => Case => Phono => Str =
-   let withoutBind : Number => Case => Phono => Str =
-    table { Sg => table {Abs => table {FinalA   => "a"  ;
-                                       FinalR   => "ra" ;
-                                       _        => "a" } ;
-                        Erg => table {FinalA   => "ak"  ;
-                                      FinalR   => "rak" ;
-                                      _        => "ak" } ;
-                        Dat => table {FinalA   => "ri" ;
-                                      FinalR   => "rari" ;
-                                      _        => "ari" } ;
-                        Par => table {FinalA   => "rik" ;
-                                      FinalR   => "rarik" ;
-                                      FinalVow => "rik" ;
-                                      FinalCons => "ik" } ;
-                        Gen => table {FinalA   => "ren" ;
-                                      _        => "aren" } ;
-                        Soc => table {FinalA   => "rekin" ;
-                                      _        => "arekin" } ;
-                        Ins => table {FinalA   => "z" ;
-                                      _        => "az" } ;
-                        LocStem => table {FinalCons => "e" ;
-                                          FinalR    => "e" ;
-                                          _         => [] } 
-                        }; 
 
-           Pl => table {Abs => table {FinalA => "ak"  ;
-                                      FinalR => "rak" ;
-                                      _      => "ak" } ;
-                        Erg => table {FinalA => "ek"  ;
-                                      FinalR => "rek" ;
-                                      _      => "ek" } ;
-                        Dat => table {FinalR => "rei" ;
-                                      _      => "ei" } ;
-                        Par => table {FinalA   => "rik" ;
-                                      FinalR   => "rarik" ;
-                                      FinalVow  => "rik" ;
-                                      FinalCons => "ik" } ;
-                        Gen => table {_      => "en" } ;
-                        Soc => table {_      => "ekin" };
-                        Ins => table {_      => "ez" } ;
-                        LocStem => table {FinalCons => "e" ;
-                                          FinalR    => "e" ;
-                                          _         => [] } 
+  artA : Number => Case => Phono => Str =
+    let artASg = table {Abs => finalR "a" ; --itsaso+a ; txakur+ra
+                        Erg => finalR "ak" ;
+                        Dat => finalR "ari" ;
+                        Gen => finalR "aren"  ;
+                        Soc => finalR "arekin" ;
+                        Ins => finalR "az" ;
+
+                        Par => table {FinalA    => BIND ++ "arik" ; --nesk+arik
+                                      FinalCons => BIND ++ "ik" ;  --mutil+ik
+                                      _         => BIND ++ "rik" } ; --txakur+rik, itsaso+rik
+
+                        Ine => table {FinalCons => BIND ++ "ean" ; --mutil+ean
+                                      FinalR    => BIND ++ "rean" ; --txakur+rean
+                                      _         => BIND ++ "an" } ;--itsaso+an, nesk+an
+
+                        LocStem => table {FinalCons => BIND ++ "e" ; --mutile+tik
+                                          FinalR    => BIND ++ "re" ; --txakurre+tik
+                                          FinalA    => BIND ++ "a" ; --neska+tik
+                                          _         => [] } --itsaso+tik 
+                       }; 
+     in table {Sg => artASg ;
+               Pl => table {Abs => finalR "ak" ;
+                            Erg => finalR "ek" ;
+                            Dat => finalR "ei" ;
+                            Gen => finalR "en" ;
+                            Soc => finalR "ekin" ;
+                            Ins => finalR "ez" ;
+                            Ine => finalR "etan" ;
+                            LocStem => finalR "eta" ; --txakur+ret+atik
+                            c => artASg ! c 
                        } 
           } ;
-    in \\n,c,p => BIND ++ withoutBind ! n ! c ! p  ;
+
+  artIndef : Case => Phono => Str = 
+    \\cas,pho => case <cas,pho> of {
+         <Abs,FinalA> => artA ! Sg ! Abs ! FinalA ; --TODO: added this to fix MassNP; may break other things
+         <Abs,_>      => [] ;
+         <c,ph>       => artA ! Pl ! c ! ph } ;
 
 
- artIndef : Case => Phono => Str = 
-   \\cas,pho => case <cas,pho> of {
-        <Abs,_> => [] ;
-        <c,ph>  => artA ! Pl ! c ! ph } ;
-
-
+ finalR : Str -> (Phono => Str) = \ak ->
+   let rak : Str = "r" + ak ;
+   in  table {FinalR => BIND ++ rak ;
+              _      => BIND ++ ak } ;
 
 -- Noun stuffs
 
-    Noun : Type = { s    : Str ;
-                    stem : Str ;   -- If the stem has `a', don't add the `a' for the definite article
-                    ph   : Phono ; 
+    Noun : Type = { s    : Str ; --for nouns ending in -a, we chop off the -a, and add it in the article + cases.
+                    ph   : Phono ;
                     anim : Bizi } ;
 
     CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
-                     stem : Agr => Str ; 
                      ph   : Phono ; 
                      anim : Bizi ;
                      heavyMod : Agr => Str } ; -- Relative clause or adverbial
                                     -- If it's "heavy", numbers and possessives come after.
-                                    -- "Light" modifiers attach directly to the s and stem.
+                                    -- "Light" modifiers attach directly to the s.
 
     Complement : Type = { s : Agr => Str ; copula : CopulaType } ;
 
@@ -143,7 +132,7 @@ oper
                           isDef : Bool } ;
 
 -- NounPhrase is a record
--- a record is a thing with fields ^__^
+-- a record is a thing with fields
 -- fields can be any type
 -- exempelvis, NounPhrase is a record with two fields
 -- the two fields are .s. and .agr.
@@ -162,7 +151,7 @@ oper
 -- 
 
 
-   Postposizio : Type = { s : Phono => Str ;  --TODO: implement this
+   Postposizio : Type = { s : Number => Str ; 
                           complCase : Case ; -- diru gabe : Abs
                                              -- dirurik gabe : Par 
                                              -- hormaren kontra : Gen
@@ -180,6 +169,7 @@ oper
                    Gen => nore ;
                    Soc => nore + "kin" ;
                    Ins => zertaz ;
+                   Ine => init zertaz + "n" ;
                    LocStem => init zertaz 
                  } ;
        agr  = a ;
@@ -309,7 +299,7 @@ oper
       let
         subject : Str = subj.s ! vp.sc ;
         al : ClType => Str = table { Dir => [] ; 
-                                 Qst => "al" } ;
+                                     Qst => "al" } ;
 
       in 
       { s = \\ct,t => 
