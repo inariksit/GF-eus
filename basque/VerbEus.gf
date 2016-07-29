@@ -7,8 +7,9 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 {-
     ComplVV  : VV  -> VP -> VP ;  -- want to run
     ComplVS  : VS  -> S  -> VP ;  -- say that she runs
-    ComplVQ  : VQ  -> QS -> VP ;  -- wonder who runs
 -}
+    -- : VQ -> QS -> VP ;  -- wonder who runs
+--    ComplVQ vq qs = lin VP (insertComp )
 
     -- : VA -> AP -> VP ;  -- they become red
     ComplVA v ap = lin VP (insertComp (CompAP ap) (predV v)) ;

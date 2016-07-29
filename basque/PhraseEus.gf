@@ -4,7 +4,7 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
     PhrUtt pconj utt voc = {s = pconj.s ++ utt.s ++ voc.s} ;
 
     UttS s = s ;
-    UttQS qs = qs ;
+    UttQS qs = { s = qs.s ! Qst } ;
 {-    UttImpSg pol imp = {s = pol.s ++ imp.s ! pol.p ! ImpF Sg False} ;
     UttImpPl pol imp = {s = pol.s ++ imp.s ! pol.p ! ImpF Pl False} ;
     UttImpPol pol imp = {s = pol.s ++ imp.s ! pol.p ! ImpF Sg True} ;

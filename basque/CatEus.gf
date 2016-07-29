@@ -8,7 +8,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 -- Constructed in SentenceEus, and also in IdiomEus
 
     S  = {s : Str} ;
-    QS = {s : Str} ;
+    QS = {s : ClType => Str} ;
     RS = {s : Agr => Str} ; -- relative sentence. Tense and polarity fixed,
                             -- but agreement may depend on the CN/NP it modifies:
                             -- `gorriak diren txakurrak' vs. `gorria den txakurra'
@@ -22,7 +22,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
 -- Constructed in QuestionEus.
 
-    QCl = ResEus.QClause ;
+    QCl = ResEus.Clause ;
     IP = ResEus.NounPhrase ;
 {-    IComp ; -- interrogative complement of copula  e.g. "where"
     IComp ; -- interrogative complement of copula  e.g. "where"
