@@ -112,24 +112,24 @@ oper
 
 -- Noun stuffs
 
-    Noun : Type = { s    : Str ; --for nouns ending in -a, we chop off the -a, and add it in the article + cases.
-                    ph   : Phono ;
-                    anim : Bizi } ;
+  Noun : Type = { s    : Str ; --for nouns ending in -a, we chop off the -a, and add it in the article + cases.
+                  ph   : Phono ;
+                  anim : Bizi } ;
 
-    CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
-                     ph   : Phono ; 
-                     anim : Bizi ;
-                     heavyMod : Agr => Str } ; -- Relative clause or adverbial
+  CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
+                   ph   : Phono ; 
+                   anim : Bizi ;
+                   heavyMod : Agr => Str } ; -- Relative clause or adverbial
                                     -- If it's "heavy", numbers and possessives come after.
                                     -- "Light" modifiers attach directly to the s.
 
-    Complement : Type = { s : Agr => Str ; copula : CopulaType } ;
+  Complement : Type = { s : Agr => Str ; copula : CopulaType } ;
 
-    NounPhrase : Type = { s    : Case => Str ;
-                          agr  : Agr ;
-                          anim : Bizi ; 
-                          nbr  : Number ;
-                          isDef : Bool } ;
+  NounPhrase : Type = { s    : Case => Str ;
+                        agr  : Agr ;
+                        anim : Bizi ; 
+                        nbr  : Number ;
+                        isDef : Bool } ;
 
 -- NounPhrase is a record
 -- a record is a thing with fields
@@ -142,27 +142,27 @@ oper
 ---      { Abs => "hargle"; Erg => "bargle" }
 -- the field .agr. is of type Agr.   
 
-    buru_NP : NounPhrase = { s = \\_ => "buru" ;
-                             agr = Hau ; 
-                             anim = Anim ; 
-                             nbr = Sg ;
-                             isDef = True } ;
+  buru_NP : NounPhrase = { s = \\_ => "buru" ;
+                           agr = Hau ; 
+                           anim = Anim ; 
+                           nbr = Sg ;
+                           isDef = True } ;
 
 -- 
 
 
-   Postposizio : Type = { s : Number => Str ; 
-                          complCase : Case ; -- diru gabe : Abs
+  Postposizio : Type = { s : Number => Str ; 
+                         complCase : Case ; -- diru gabe : Abs
                                              -- dirurik gabe : Par 
                                              -- hormaren kontra : Gen
-                          attached : Bool } ;
+                         attached : Bool } ;
 
 -- Pronoun stuffs
 
-    Pronoun : Type = NounPhrase ;
+  Pronoun : Type = NounPhrase ;
 
-    persPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \nor,nori,nork,nore,zertaz,a->
-     { s = table { Erg => nork ;
+  persPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \nor,nori,nork,nore,zertaz,a->
+    { s = table { Erg => nork ;
                    Abs => nor ;
                    Dat => nori ;
                    Par => [] ;
@@ -172,14 +172,13 @@ oper
                    Ine => init zertaz + "n" ;
                    LocStem => init zertaz 
                  } ;
-       agr  = a ;
-       anim = Anim ;
-       nbr  = getNum a ;
-       isDef = True 
-     } ;
+      agr  = a ;
+      anim = Anim ;
+      nbr  = getNum a ;
+      isDef = True } ;
 
-    inanPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \zer,zeri,zerk,zere,zertaz,a ->
-      persPron zer zeri zerk zere zertaz a ** { anim = Inan } ;
+  inanPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \zer,zeri,zerk,zere,zertaz,a ->
+    persPron zer zeri zerk zere zertaz a ** { anim = Inan } ;
 
 --    reflPron : NounPhrase = { s = case agr of {
 --        Ni => "nire buru" ;
@@ -197,29 +196,29 @@ oper
 
 -- Adjective stuffs
 
-    Adjective : Type = {s : Degree => Str ; ph : Phono} ;
+  Adjective : Type = {s : Degree => Str ; ph : Phono} ;
 
 
 
 -- Verb stuffs
 
-    Verb : Type = { prc : Tense => Str ;
-                    ph  : Phono  --for relative clause
-                  } ;
-    Verb1 : Type = Verb ** { s : Tense => Agr => Str } ;
+  Verb : Type = { prc : Tense => Str ;
+                  ph  : Phono  --for relative clause
+                } ;
+  Verb1 : Type = Verb ** { s : Tense => Agr => Str } ;
 
-    Verb2 : Type = Verb ** { s  : Agr => Tense => Agr => Str ; 
-                             sc : Case } ; --grammatical subject can be nork or nori
+  Verb2 : Type = Verb ** { s  : Agr => Tense => Agr => Str ; 
+                           sc : Case } ; --grammatical subject can be nork or nori
 
-    Verb3 : Type = Verb ; --copula is always nor-nori-nork, and sc is Erg.
+  Verb3 : Type = Verb ; --copula is always nor-nori-nork, and sc is Erg.
 
-    VerbPhrase : Type = 
-       Verb ** { s     : Polarity -- Negative forces object agreement into Sg
+  VerbPhrase : Type = 
+       Verb ** { s     : Polarity -- Negative indefinite forces object agreement into Sg
                          => Tense 
                          => Agr -- Subject agreement
                          => Str ; --head of VP
                  sc    : Case ; -- subject case can be Erg or Dat
-                 compl : Polarity -- Negative forces complement case into Par 
+                 compl : Polarity -- Negative indefinite forces complement case into Par 
                          => Agr   -- If complement is AP, we need Agr to agree with subject.
                          => Str ;  
                  
@@ -227,10 +226,10 @@ oper
                  adv   : Str ;
                } ; 
 
-    VPSlash : Type = Verb2 ** {adv : Str}; 
+  VPSlash : Type = Verb2 ** {adv : Str}; 
 
 
-    predV : Verb1 -> VerbPhrase = \v -> { s     = \\pol => v.s ;  -- TODO is this true: neg doesn't force singular in Verb1
+  predV : Verb1 -> VerbPhrase = \v -> { s   = \\pol => v.s ;  -- TODO is this true: neg doesn't force singular in Verb1
                                       sc    = Abs ; 
                                       prc   = v.prc ; 
                                       compl = \\_,_ => []; 
@@ -246,28 +245,30 @@ oper
                         compl = vp.compl ;
                         adv   = "hargle" } ;
     -}
-    insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv,vp ->
-      vp ** { adv = vp.adv ++ adv.s } ;
+  insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv,vp ->
+    vp ** { adv = vp.adv ++ adv.s } ;
 
 
-    insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp,vp ->
-      vp ** { compl = \\pol,agr => vp.compl ! pol ! agr ++ comp.s ! agr } ;
+  insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp,vp ->
+    vp ** { compl = \\pol,agr => vp.compl ! pol ! agr ++ comp.s ! agr } ;
 
-    complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
-      let posVerb = vps.s ! np.agr ;
-          negVerb = if_then_else (Tense => Agr => Str) 
-                              np.isDef
-                              posVerb
-                                 (vps.s ! sgAgr np.agr) ;
-          posComp = np.s ! Abs ;
-          negComp = if_then_Str np.isDef posComp (np.s ! Par) ;
+  complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
+      let pos : { verb : Tense => Agr => Str ; comp : Str} =
+                           { verb = vps.s ! np.agr ;
+                             comp = np.s ! Abs } ;
+          neg : { verb : Tense => Agr => Str ; comp : Str} =
+            case np.isDef of {
+                  True  => { verb = pos.verb ; comp = pos.comp } ;
+                  False => { verb = vps.s ! sgAgr np.agr ;
+                             comp = np.s ! Par }
+          }    
 
-      in { s     = table { Pos => posVerb ; --(Agr => Agr) to (Polarity => Agr) 
-                           Neg => negVerb } ;
+      in { s     = table { Pos => pos.verb ; --(Agr => Agr) to (Polarity => Agr) 
+                           Neg => neg.verb } ;
            prc   = vps.prc ;
            sc    = vps.sc ;
-           compl = table { Pos => \\_ => posComp ;
-                           Neg => \\_ => negComp } ;
+           compl = table { Pos => \\_ => pos.comp ;
+                           Neg => \\_ => neg.comp } ;
            adv   = [] ;
            ph    = vps.ph } ;
 
@@ -282,7 +283,7 @@ oper
 -- Clause stuffs
 
     --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
-    Clause : Type = {s : ClType => Tense => Polarity => Str} ; 
+    Clause : Type = {s : Tense => Anteriority => Polarity => ClType => Str} ; 
 
 -- ez al duzu katu beltza ikusi? / ez al duzu katu beltzik ikusi? (MassNP)
 -- ez dut katu beltza ikusi / ez dut katu beltzik ikusi (MassNP)
@@ -291,73 +292,74 @@ oper
 --  txakurrari abesten al diozu?
 
 
-    QClause : Type = {s : Tense => Polarity => Str} ; 
+    --QClause : Type = {s : Tense => Anteriority => Polarity => Str} ; 
 
 
 
-    mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
-      let
-        subject : Str = subj.s ! vp.sc ;
-        al : ClType => Str = table { Dir => [] ; 
-                                     Qst => "al" } ;
+  mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
+    { s = \\t,a,pol =>
+            let auxPrc : Tense -> Tense -> {aux : Str ; prc : Str}  = 
+                  \tnsAux,tnsPrc -> { aux = vp.s ! pol ! tnsAux ! subj.agr ;
+                                      prc = vp.prc ! tnsPrc } ;
+                v = case <t,a> of {
+                   <Pres,Simul> => auxPrc Pres Pres ;
+                   <Pres,Anter> => auxPrc Pres Past ;
+                   <Past,Simul> => auxPrc Past Pres ;
+                   <Past,Anter> => auxPrc Past Past ;
+                   <Fut,Simul>  => auxPrc Pres Fut ;
+                   <Fut,Anter>  => auxPrc Past Fut ;
+                   <Cond,Simul> => auxPrc Cond Fut ;
+                   <Cond,Anter> => auxPrc Cond Past 
+                } ;
+               in wordOrder pol
+                            vp.adv 
+                            (subj.s ! vp.sc)
+                            (vp.compl ! pol ! subj.agr)
+                            v.prc
+                            v.aux 
+    } ;
 
-      in 
-      { s = \\ct,t => 
-               table { Pos => vp.adv 
-                           ++ subject 
-                           ++ vp.compl ! Pos ! subj.agr 
-                           ++ vp.prc ! t
-                           ++ al ! ct
-                           ++ vp.s ! Pos ! t ! subj.agr  ;
-                       Neg => vp.adv 
-                           ++ subject 
-                           ++ "ez" 
-                           ++ al ! ct
-                           ++ vp.s ! Neg ! t ! subj.agr 
-                           ++ vp.compl ! Neg ! subj.agr 
-                           ++ vp.prc ! t
-                     }          
-      } ;
+  wordOrder : Polarity -> (x1,_,_,_,x5 : Str) -> (ClType => Str) = \pol,adv,subj,compl,prc,aux -> 
+    \\ct => 
+      let al = table { Qst => "al" ; Dir => [] } ! ct ;
+      in case pol of {
+           Pos => adv ++ subj ++ compl ++ prc ++ al ++ aux ;
+           Neg => adv ++ subj ++ "ez" ++ al ++ aux ++ compl ++ prc 
+         } ;
 
-    ------------------------------------------------
-    -- ClSlash: has verb and object, missing subject
-    ClSlash : Type = VPSlash ** { subj : Str ; subjAgr : Agr } ;
+------------------------------------------------
+-- ClSlash: has verb and object, missing subject
+  ClSlash : Type = VPSlash ** { subj : Str ; subjAgr : Agr } ;
  
 
-    mkClSlash : NounPhrase -> VPSlash -> ClSlash = \np,vps ->
+  mkClSlash : NounPhrase -> VPSlash -> ClSlash = \np,vps ->
       vps ** { subj = np.s ! vps.sc ;
                subjAgr = np.agr } ;
 
-    ------------------------------------------------
-    -- Relative clause
-    -- We need to keep agreement, because a RS may be attached to a CN or NP,
-    -- and we need to produce correct agreement:
-    -- `gorria den txakurra' vs. `gorriak diren txakurrak'
+------------------------------------------------
+-- Relative clause
+-- We need to keep agreement, because a RS may be attached to a CN or NP,
+-- and we need to produce correct agreement:
+-- `gorria den txakurra' vs. `gorriak diren txakurrak'
 
-    RClause : Type = {s : Tense => Polarity => Agr => Str} ;
+  RClause : Type = {s : Tense => Polarity => Agr => Str} ;
 
-    mkRCl : {s : Phono => Str} -> VerbPhrase -> RClause = \rp,vp ->
-    let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
-                     _    => BIND ++ rp.s ! vp.ph } ; --TODO: phono should differ between individual forms
-        ez = table { Pos => "" ; Neg => "ez" } ;
-    in 
-    { s = table {
-        tense => table {        
-           pol => table {
-             agr => vp.adv ++ vp.compl ! pol  ! agr      -- John 
-                           ++ vp.prc ! tense             -- maite 
-                           ++ ez ! pol                   -- (ez)
-                           ++ vp.s ! pol ! tense ! agr ++ en ! tense } -- duen
-            }
-        }
+  mkRCl : {s : Phono => Str} -> VerbPhrase -> RClause = \rp,vp ->
+  let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
+                   _    => BIND ++ rp.s ! vp.ph } ; --TODO: phono should differ between individual forms
+      ez = table { Pos => "" ; Neg => "ez" } ;
+  in { s = \\tns,pol,agr => vp.adv 
+                           ++ vp.compl ! pol ! agr                -- John 
+                           ++ vp.prc ! tns                        -- maite 
+                           ++ ez ! pol                            -- (ez)
+                           ++ vp.s ! pol ! tns ! agr ++ en ! tns  -- duen
     } ;
 
-    mkRClSlash : {s : Phono => Str} -> ClSlash -> RClause = \rp,cls ->
-    let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
-                     _    => BIND ++ rp.s ! cls.ph } ; 
-        ez = table { Pos => "" ; Neg => "ez" } ;
-    in 
-    { s = \\tns,pol,objAgr => cls.adv 
+  mkRClSlash : {s : Phono => Str} -> ClSlash -> RClause = \rp,cls ->
+  let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
+                   _    => BIND ++ rp.s ! cls.ph } ; 
+      ez = table { Pos => "" ; Neg => "ez" } ;
+  in { s = \\tns,pol,objAgr => cls.adv 
                               ++ cls.subj                      -- Johnek
                               ++ cls.prc ! tns                 -- maite 
                               ++ ez ! pol                      -- (ez)
