@@ -40,7 +40,7 @@ concrete ConjunctionEus of Conjunction =
 
     -- FIXME: The agreement should be sensible like 
     --         "Ni eta Inari itsasoan gaude."
-    ConjNP conj ss = conjunctTable Case conj ss ** { agr = Hauek ; anim = Inan ; nbr = Pl ; isDef = True } ; 
+    ConjNP conj ss = conjunctNPTable conj ss ** { agr = Hauek ; anim = Inan ; nbr = Pl ; isDef = True } ; 
 
     ConjAP co as = {s = conjunctX co as ; ph=FinalA ; stem = as.s2 ; typ = as.typ } ; 
 
@@ -49,5 +49,13 @@ concrete ConjunctionEus of Conjunction =
     [AP] = {s1,s2 : Str ; stem : Str ; ph : Phono ; typ : APType } ;
     [NP] = {s1,s2 : Case => Str ; agr : Agr ; anim : Bizi ; nbr : Number } ;
 
+oper
 
+ -- Like conjunctTable from prelude/Coordination.gf, but specialised for Case, 
+ -- and forces the first argument into absolutive.
+  conjunctNPTable : Conjunction -> ListTable Case -> {s : Case => Str} = 
+    \or,xs ->
+    {s = table {Erg => xs.s1 ! Erg ++ or.s ++ xs.s2 ! Erg ;
+                cas => xs.s1 ! Abs ++ or.s ++ xs.s2 ! cas } 
+    } ;
 }
