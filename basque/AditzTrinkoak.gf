@@ -12,21 +12,28 @@ oper
 
     copulaNor : Tense => Agr => Str =
       table {Past => table {Ni => "nintzen" ; 
-                    Hi => "hintzen" ; 
-                    Zu => "zinen" ; 
-                    Hau => "zen" ; 
-                    Gu => "ginen" ; 
-                    Zuek => "zineten" ; 
-                    Hauek => "ziren" } ;
-             -- TODO: Cond
+                            Hi => "hintzen" ; 
+                            Zu => "zinen" ; 
+                            Hau => "zen" ; 
+                            Gu => "ginen" ; 
+                            Zuek => "zineten" ; 
+                            Hauek => "ziren" } ;
+
+             Cond => table {Ni => "nintzateke" ; 
+                            Hi => "hintzateke" ; 
+                            Zu => "zinateke" ; 
+                            Hau => "litzateke" ; 
+                            Gu => "ginateke" ; 
+                            Zuek => "zinatekete" ; 
+                            Hauek => "lirateke" } ;
              -- Present and future are identical
-	     _ =>  table {Ni => "naiz" ; 
-                    Hi => "haiz" ; 
-                    Zu => "zara" ; 
-                    Hau => "da" ; 
-                    Gu => "gara" ; 
-                    Zuek => "zarete" ; 
-                    Hauek => "dira" }
+	           _     => table {Ni => "naiz" ; 
+                             Hi => "haiz" ; 
+                             Zu => "zara" ; 
+                             Hau => "da" ; 
+                             Gu => "gara" ; 
+                             Zuek => "zarete" ; 
+                             Hauek => "dira" }
        } ;
 
    -- copulaNorNoriNork : Agr => Agr => Tense => Agr => Str = 
