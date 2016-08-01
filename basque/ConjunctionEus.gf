@@ -91,20 +91,15 @@ oper
 
  -- Like conjunctTable from prelude/Coordination.gf,
  -- but forces the first argument into absolutive.
-  conjunctNPTable : Conjunction -> ListTable Case -> {s : Case => Str} = 
-    \conj,xs ->
-    {s = table {Erg => xs.s1 ! Erg ++ conj.s ++ xs.s2 ! Erg ;
-                cas => xs.s1 ! Abs ++ conj.s ++ xs.s2 ! cas } 
-    } ;
+  conjunctNPTable : Conjunction -> ListTable Case -> {s : Case => Str} = \co,xs ->
+   { s = table { Erg => xs.s1 ! Erg ++ co.s ++ xs.s2 ! Erg ;
+                 cas => xs.s1 ! Abs ++ co.s ++ xs.s2 ! cas } } ;
 
-  conjAgr : Agr -> Number -> Agr = \xAgr,yNum ->
-    case yNum of { Pl => plAgr xAgr ;
-                   Sg => xAgr  } ;
+  conjAgr : Agr -> Number -> Agr = \a,n ->
+    case n of { Pl => plAgr a ; _  => a } ;
 
-  conjNbr : Number -> Number -> Number = \xNum,yNum ->
-    case <xNum,yNum> of { <Pl,_> => Pl ;
-                          <_,Pl> => Pl ;
-                          _      => Sg } ;
+  conjNbr : Number -> Number -> Number = \n,m ->
+    case n of { Pl => Pl ; _ => m } ;
 
 
 
