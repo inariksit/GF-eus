@@ -50,12 +50,11 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     Comp = ResEus.Complement ;
 
 
-
 --2 Adjectival phrases
 
 -- Constructed in AdjectiveEus.
 
-    AP = {s : Str ; stem : Str ; ph : Phono ; typ : APType } ; 
+    AP = ResEus.AdjPhrase ; 
 
 
 --2 Nouns and noun phrases
@@ -68,7 +67,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 -- as defined in NounEus.
 
     CN = ResEus.CNoun ;
-    NP = ResEus. NounPhrase ; --{s : Case => Str ; agr : Agr} 
+    NP = ResEus.NounPhrase ; --{s : Case => Str ; agr : Agr} 
     Pron = ResEus.Pronoun ; --Pronouns need enough info to turn it into NP or Quant.
     Det = { s     : Case => Phono => Str ;   -- hauek
             pref  : Str ;                    -- nire
@@ -96,8 +95,8 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
 -- Constructed in StructuralEus.
 
-    Conj = {s : Str} ;
-    Subj = {s : Str} ;
+    Conj = { s : Str ; nbr : Number } ; --Ni eta Inari gara/*naiz ; Fran edo Mikel da/*dira
+    Subj = { s : Str } ;
     Prep = ResEus.Postposizio ;
 
 
