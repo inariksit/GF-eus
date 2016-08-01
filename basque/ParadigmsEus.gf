@@ -107,7 +107,7 @@ oper
                                    ph  = FinalCons } ; 
 
 
-  mkConj : Str -> Conj = \s -> lin Conj { s = s } ; 
+  mkConj : Str -> Number -> Conj = \s,num -> lin Conj { s = s ; nbr = num } ; 
 
   mkAdv : Str -> Adv = \s -> lin Adv {s = s} ;
 
