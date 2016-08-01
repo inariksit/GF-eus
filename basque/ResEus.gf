@@ -48,6 +48,13 @@ oper
                      Hauek => Hau ;
                      agr   => agr } ;
 
+    plAgr : Agr -> Agr = \agr ->
+       case agr of { Ni  => Gu ;
+                     Zu  => Zuek ;
+                     Hi  => Zuek ;
+                     Hau => Hauek ;
+                     agr   => agr } ;
+
     getNum : Agr -> Number = \np ->
       case np of {
         (Ni|Hi|Zu|Hau)  => Sg ;
@@ -94,7 +101,7 @@ oper
                             Ins => finalR "ez" ;
                             Ine => finalR "etan" ;
                             LocStem => finalR "eta" ; --txakur+ret+atik
-                            c => artASg ! c 
+                            Par => artASg ! Par --invariant number in partitive
                        } 
           } ;
 
@@ -105,7 +112,7 @@ oper
          <c,ph>       => artA ! Pl ! c ! ph } ;
 
 
- finalR : Str -> (Phono => Str) = \ak ->
+  finalR : Str -> (Phono => Str) = \ak ->
    let rak : Str = "r" + ak ;
    in  table {FinalR => BIND ++ rak ;
               _      => BIND ++ ak } ;
@@ -163,14 +170,14 @@ oper
 
   persPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \nor,nori,nork,nore,zertaz,a->
     { s = table { Erg => nork ;
-                   Abs => nor ;
-                   Dat => nori ;
-                   Par => [] ;
-                   Gen => nore ;
-                   Soc => nore + "kin" ;
-                   Ins => zertaz ;
-                   Ine => init zertaz + "n" ;
-                   LocStem => init zertaz 
+                  Abs => nor ;
+                  Dat => nori ;
+                  Par => [] ;
+                  Gen => nore ;
+                  Soc => nore + "kin" ;
+                  Ins => zertaz ;
+                  Ine => init zertaz + "n" ;
+                  LocStem => init zertaz 
                  } ;
       agr  = a ;
       anim = Anim ;
@@ -198,7 +205,7 @@ oper
 
   Adjective : Type = {s : Degree => Str ; ph : Phono} ;
 
-
+  AdjPhrase : Type = {s : Str ; ph : Phono ; typ : APType} ; 
 
 -- Verb stuffs
 

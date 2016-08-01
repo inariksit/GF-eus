@@ -66,10 +66,10 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
 -}
     -- : VP -> Adv -> VP ;  -- sleep here
-    AdvVP vp adv = lin VP (insertAdv adv vp) ;
+    AdvVP vp adv = vp ** { adv = vp.adv ++ adv.s } ;
 
     -- : VP -> Adv -> VP ;  -- sleep , even though ...
-    ExtAdvVP vp adv = lin VP (insertAdv (postfixSS "," adv) vp) ;
+    ExtAdvVP vp adv = vp ** { adv = vp.adv ++ "," ++ adv.s } ;
 
     -- : AdV -> VP -> VP ;  -- always sleep
     AdVVP adv vp = lin VP (insertAdv adv vp) ;
@@ -98,7 +98,7 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
     -- Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
 
 --  CompAP   : AP  -> Comp ;
-    CompAP  ap  = lin Comp { s = table { agr => ap.stem ++ DefArt.s ! getNum agr ! Abs ! ap.ph } ;
+    CompAP  ap  = lin Comp { s = table { agr => ap.s ++ DefArt.s ! getNum agr ! Abs ! ap.ph } ;
                              copula = Izan };
 --  CompNP   : NP  -> Comp ;
     CompNP  np  = lin Comp { s = table {_ => np.s ! Abs} ; 
