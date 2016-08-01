@@ -1,8 +1,8 @@
 concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, ParadigmsEus in {
 
-  lin and_Conj = mkConj "eta" ; 
-  lin or_Conj  = mkConj "edo" | mkConj "ala" ; 
-  lin but_PConj    = lin PConj (ss "baina") ;
+  lin and_Conj = mkConj "eta" Pl ; 
+  lin or_Conj  = mkConj "edo" Sg | mkConj "ala" Sg ; 
+  lin but_PConj  = lin PConj (ss "baina") ;
 
 
 
@@ -22,7 +22,7 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   lin on_Prep = mkPrep "gainean" Gen False ; 
   lin part_Prep = casePrep Par ; 
   lin possess_Prep = casePrep Gen ;
-  lin through_Prep = mkPrep "an barrena" LocStem ; -- ?
+  lin through_Prep = mkPrep "barrena" Ine False ; -- ?
   lin to_Prep = casePrep Dat ; --"I gave it to Fran", not "I went to school"
   lin under_Prep = mkPrep "azpian" Gen False ;
   lin with_Prep = casePrep Soc ;
@@ -31,12 +31,12 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
 
   lin i_Pron = persPron "ni" "niri" "nik" "nire" "nitaz" Ni ;
   lin we_Pron = persPron "gu" "guri" "guk" "gure" "gutaz" Gu ;
-  lin youSg_Pron = persPron "zu" "zuri" "zuk" "zure" "zutaz" Zu ; -- TODO: hi/hire
+  lin youSg_Pron = persPron "zu" "zuri" "zuk" "zure" "zutaz" Zu ; -- in Extra: hi/hire
   lin youPl_Pron = persPron "zuek" "zuei" "zuen" "zuen" "zuetaz" Zuek ;
   lin he_Pron = persPron "hura" "hari" "hark" "haren" "hartaz" Hau ;
   lin she_Pron = persPron "hura" "hari" "hark" "haren" "hartaz" Hau ;
   lin it_Pron = persPron "hau" "honi" "honek" "bere" "honetaz" Hau ;
-  lin they_Pron = persPron "hauek" "hauei" "hauek" "beren" "hauetaz" Hauek ; -- TODO: the others
+  lin they_Pron = persPron "hauek" "hauei" "hauek" "beren" "hauetaz" Hauek ; -- in Extra: the others
  
   lin whatPl_IP = inanPron "zertzuk" "zertzuei" "zertzuek" "zertzuen" "zertzuetaz" Hauek ;
   lin whatSg_IP = inanPron "zer" "zeri" "zerk" "zeren" "zertaz" Hau ;
