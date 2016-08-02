@@ -9,8 +9,11 @@ oper
   Izan [NOR]
   =============================================================================
 -}
+    IntransV : Type = Tense => Agr => Str ;
+    TransV   : Type = Agr => IntransV ;
+    DitransV : Type = Agr => TransV ;
 
-    copulaNor : Tense => Agr => Str =
+    copulaNor : IntransV =
       table {Past => table {Ni => "nintzen" ; 
                             Hi => "hintzen" ; 
                             Zu => "zinen" ; 
@@ -36,18 +39,13 @@ oper
                              Hauek => "dira" }
        } ;
 
-   -- copulaNorNoriNork : Agr => Agr => Tense => Agr => Str = 
-   -- table {
-   --     _ => copulaNoriNork  --TODO hauria d'existir?
-   -- } ;
-
 {-
   =============================================================================
   Ukan [NOR] [NORI] [NORK]
   =============================================================================
 -}
 
-   copulaNoriNorNork : Agr => Agr => Tense => Agr => Str = 
+   copulaNoriNorNork : DitransV = 
    table {
        _ => copulaNorNork 
    } ;
@@ -57,7 +55,9 @@ oper
   Ukan [NOR] [NORK]
   =============================================================================
 -}
-    copulaNorNork : Agr => Tense => Agr => Str = table {
+
+
+    copulaNorNork : TransV = table {
        -- Nor,Nork
               Ni => table {
                      Past => table {
@@ -207,7 +207,7 @@ oper
   =============================================================================
 -}
 
-    copulaEgonNor : Tense => Agr => Str =
+    copulaEgonNor : IntransV =
       table {Past => table {Ni => "nengoen" ; 
                     Hi => "hengoen" ; 
                     Zu => "zeunden" ; 
@@ -234,7 +234,7 @@ oper
   =============================================================================
 -}
 
-   eduki_V2 : Agr => Tense => Agr => Str = table {
+   eduki_V2 : TransV = table {
        -- Nor,Nork
               Ni => table {
                      Past => table {
