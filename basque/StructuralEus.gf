@@ -43,4 +43,10 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   lin whoPl_IP = persPron "nortzuk" "nortzuei" "nortzuek" "nortzuen" "nortzuetaz" Hauek ;
   lin whoSg_IP = persPron "nor" "nori" "nork" "noren" "zertaz" Hau ;
 
+  --lin although_Subj : Subj ;
+  lin because_Subj  = mkSubj "lako" False ;
+  lin if_Subj = mkSubj "ba" True ;
+  lin that_Subj = mkSubj "en" False ; --TODO phono
+  --lin when_Subj : Subj ;
+
 }
