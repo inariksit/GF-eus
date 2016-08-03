@@ -28,14 +28,14 @@ concrete ConjunctionEus of Conjunction =
     --}
 
 
--- Adverb, S and other simple {s : Str} types.
+-- Adverb and other simple {s : Str} types.
 lincat
-  [Adv],[AdV],[IAdv],[S] = {s1,s2 : Str} ;
+  [Adv],[AdV],[IAdv] = {s1,s2 : Str} ;
 
 lin
-  BaseAdv, BaseAdV, BaseIAdv, BaseS = twoSS ;
-  ConsAdv, ConsAdV, ConsIAdv, ConsS = consrSS comma ;
-  ConjAdv, ConjAdV, ConjIAdv, ConjS = conjunctSS ;
+  BaseAdv, BaseAdV, BaseIAdv = twoSS ;
+  ConsAdv, ConsAdV, ConsIAdv = consrSS comma ;
+  ConjAdv, ConjAdV, ConjIAdv = conjunctSS ;
 
 
 -- RS depends on agreement, otherwise exactly like previous.

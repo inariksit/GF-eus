@@ -9,7 +9,7 @@ lin
 --    ComparAdvAdjS : CAdv -> A -> S  -> Adv ; -- more warmly than he runs
 
   -- : Prep -> NP -> Adv ;
-  PrepNP post np = { s = glueIf (np.s ! post.complCase) (post.s ! np.nbr) } ;
+  PrepNP post np = { s = ResEus.applyPost post np } ;
  
 -- Adverbs can be modified by 'adadjectives', just like adjectives.
 

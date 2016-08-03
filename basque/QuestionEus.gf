@@ -5,10 +5,11 @@ concrete QuestionEus of Question = CatEus ** open ResEus in {
 
   lin
     -- : Cl -> QCl ;
-    QuestCl cl = cl ;
+    QuestCl cl = cl ; --Cl and QCl are both ResEus.Clause :
+                     -- { s : Tense => Anteriority => Polarity => Sentence } ; 
 
     -- : IP -> VP -> QCl ; 
-    QuestVP ip vp = mkClause ip vp ; -- { s = (mkClause ip vp).s ! Dir } ; --form question with mkClause, but choose the one without "al"
+    QuestVP ip vp = mkClause ip vp ; 
 {-    
     QuestSlash  : IP -> ClSlash -> QCl ; -- whom does John love
     QuestIAdv   : IAdv -> Cl -> QCl ;    -- why does John walk

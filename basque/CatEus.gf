@@ -7,11 +7,11 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 --2 Sentences and clauses
 -- Constructed in SentenceEus, and also in IdiomEus
 
-    S  = {s : Str} ;
-    QS = {s : ClType => Str} ;
-    RS = {s : Agr => Str} ; -- relative sentence. Tense and polarity fixed,
-                            -- but agreement may depend on the CN/NP it modifies:
-                            -- `gorriak diren txakurrak' vs. `gorria den txakurra'
+    S  = ResEus.Sentence ; --must keep words separate, because we may add Subj particles for Adv
+    QS = { s : ClType => Str } ;
+    RS = { s : Agr => Str } ; -- relative sentence. Tense and polarity fixed,
+                              -- but agreement may depend on the CN/NP it modifies:
+                              -- `gorriak diren txakurrak' vs. `gorria den txakurra'
 
     Cl = ResEus.Clause ; 
     ClSlash = ResEus.ClSlash ;
@@ -96,7 +96,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 -- Constructed in StructuralEus.
 
     Conj = { s : Str ; nbr : Number } ; --Ni eta Inari gara/*naiz ; Fran edo Mikel da/*dira
-    Subj = { s : Str } ;
+    Subj = { s : Str ; isPre : Bool } ; --ba+dut vs. dut+en
     Prep = ResEus.Postposizio ;
 
 
@@ -106,14 +106,14 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 -- These are constructed in LexiconEus and in 
 -- additional lexicon modules.
 
-    V  = ResEus.Verb1 ;
-    V2 = ResEus.Verb2 ;
-    V3 = ResEus.Verb3 ;
+    V  = ResEus.Verb ;
+    V2 = ResEus.Verb ;
+    V3 = ResEus.Verb ;
 
     --VV ;    -- verb-phrase-complement verb         e.g. "want"
     --VS ;    -- sentence-complement verb            e.g. "claim"
-    VQ = ResEus.Verb1 ;
-    VA = ResEus.Verb1 ;
+    VQ = ResEus.Verb ;
+    VA = ResEus.Verb ;
     --V2V ;   -- verb with NP and V complement       e.g. "cause"
     --V2S ;   -- verb with NP and S complement       e.g. "tell"
     --V2Q ;   -- verb with NP and Q complement       e.g. "ask"
@@ -126,4 +126,9 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     --N2 ;    -- relational noun                     e.g. "son"
     --N3 ;    -- three-place relational noun         e.g. "connection"
     PN = ResEus.Noun ** { nbr : Number } ; 
+
+
+linref
+
+    S = \sent -> wordOrder sent ! Stat ;
 }

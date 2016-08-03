@@ -45,21 +45,20 @@ oper
   mkV2 = overload {
     mkV2 : Str -> V2 = \s -> lin V2 (mkVerb2 s) ;
 
-    mkV2 : Str -> Case -> V2 = \s,cas -> lin V2 (mkVerb2 s ** { sc = cas }) ;
+    mkV2 : Str -> Valency -> V2 = \s,val -> lin V2 (mkVerb2 s ** { val = val }) ;
 
     mkV2 : Str -> V -> V2 = \lo,egin -> 
-      lin V2 { s   = copulaNorNork ;
-               prc = \\t => lo ++ egin.prc ! t ;
-               sc  = Erg ;
-               ph  = FinalCons } ;
+      lin V2 (egin ** { prc = \\t => lo ++ egin.prc ! t ;
+                        val = NorNork }) ;
 
   } ;
 
-  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s ; ph = FinalCons } ;
+  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s ; ph = FinalCons ; val = NorNoriNork } ;
 
 -------------------------------------------------------------------------------
 
-
+  -- ibili, ibiltzen, ibiliko
+  -- amildu, amiltzen, amilduko
   mkPrc : Str -> (Tense => Str) = \ikusi ->
     let egi = init ikusi ; 
         egite = egi + "te" ;
@@ -97,17 +96,17 @@ oper
  				       _                 => FinalCons } 
 		in { s = stem ; ph = phono ; anim=Inan } ; 
 
-  mkVerb1 : Str -> Verb1 = \s -> { s   = copulaNor; 
+  mkVerb1 : Str -> Verb = \s -> { val = Nor ;
                                    prc = mkPrc s ;
                                    ph  = FinalCons } ;  
 
-  mkVerb2 : Str -> Verb2 = \s -> { s   = copulaNorNork ; 
+  mkVerb2 : Str -> Verb = \s -> { val = NorNork ; 
                                    prc = mkPrc s ; 
-                                   sc  = Erg ; 
                                    ph  = FinalCons } ; 
 
 
   mkConj : Str -> Number -> Conj = \s,num -> lin Conj { s = s ; nbr = num } ; 
+  mkSubj : Str -> Bool -> Subj   = \s,b   -> lin Subj { s = s ; isPre = b } ;
 
   mkAdv : Str -> Adv = \s -> lin Adv {s = s} ;
 
@@ -119,26 +118,17 @@ oper
 
   mkPrep = overload { 
     mkPrep : Str -> Case -> Bool -> Prep = \s,compl,konf -> 
-       lin Prep (mkPreposition s s ** { complCase = compl ;
-                                      attached = konf } ) ; 
+       lin Prep (mkPost s compl konf) ; 
 
     mkPrep : Str -> Case -> Prep = \s,compl -> 
-       lin Prep (mkPreposition s s ** { complCase = compl } ) ; 
+       lin Prep (mkPost s compl True) ; 
 
     mkPrep : Str -> Prep = \s -> 
-       lin Prep (mkPreposition s s) ;
-
-    mkPrep : Str -> Str -> Case -> Prep = \n,an,compl -> 
-       lin Prep (mkPreposition n an ** { complCase = compl } ) ;
+       lin Prep (mkPost s Abs True) ;
   } ; 
 
   casePrep : Case -> Prep = \cas ->
     mkPrep [] cas False ; -- choose given case, add empty string without BIND
 
-  mkPreposition : Str -> Str -> Postposizio = \an,n ->
-   { s = table { Sg => an ;
-                 Pl => n } ;
-     complCase = Abs ; 
-     attached = True } ;
 }
 

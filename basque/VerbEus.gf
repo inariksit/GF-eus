@@ -1,37 +1,58 @@
-concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelude in {
+concrete VerbEus of Verb = CatEus ** open ResEus, AditzTrinkoak, Prelude in {
 
 
-  lin
-    UseV = predV ; -- {s = v.s ; sc = Abs ; prc = v.prc ; compl = []; adv = []} ; 
+lin
+  UseV = predV ; -- {s = v.s ; sc = Abs ; prc = v.prc ; compl = []; adv = []} ; 
 
 {-
     ComplVV  : VV  -> VP -> VP ;  -- want to run
     ComplVS  : VS  -> S  -> VP ;  -- say that she runs
 -}
-    -- : VQ -> QS -> VP ;  -- wonder who runs
+  -- : VQ -> QS -> VP ;  -- wonder who runs
 --    ComplVQ vq qs = lin VP (insertComp )
 
-    -- : VA -> AP -> VP ;  -- they become red
-    ComplVA v ap = lin VP (insertComp (CompAP ap) (predV v)) ;
+  -- : VA -> AP -> VP ;  -- they become red
+  ComplVA v ap = insertComp (CompAP ap) (predV v) ;
 
 
-    -- : V2 -> VPSlash
-    SlashV2a v2 = lin VPSlash (v2 ** {adv = []}) ;
+  -- : V2 -> VPSlash
+  SlashV2a v2 = v2 ** 
+   { dobj = { s = \\pol => [] ;
+              a = Hau ;
+              isDef = False } ;
+     iobj = { s = [] ;
+              a = Hau } ;
+     adv  = [] ;
+     comp = \\_ => [] ;
+     post = noPost ;
+     missing = MissingDObj } ;
 
-    -- : V3 -> NP -> VPSlash ;  -- give it (to her)
-    Slash2V3 v3 np = lin VPSlash { s   = AditzTrinkoak.copulaNoriNorNork ! np.agr ;
-				                   prc = v3.prc ;
-                                   sc = Erg ;
-                                   adv = [] ;
-                                   ph  = v3.ph 
-                                 } ;
+  -- : V3 -> NP -> VPSlash ;  -- give it (to her)
+  Slash2V3 v3 npNor = v3 **
+    { dobj = { s = table { Pos => npNor.s ! Abs ; 
+                           Neg => negDObj npNor } ;
+               a = npNor.agr ;
+               isDef = npNor.isDef } ;
+      iobj = { s = [] ;
+               a = Hau } ;
+      adv = [] ;
+      comp = \\agr => [] ;
+      post = noPost ;
+      missing = MissingIObj } ;
 
+
+  -- : V3  -> NP -> VPSlash ;  -- give (it) to her
+  Slash3V3 v3 npNori = v3 **
+    { dobj = { s = \\pol => [] ; 
+               a = Hau ;
+               isDef = False } ;
+      iobj = { s = npNori.s ! Dat ;
+               a = npNori.agr } ;
+      comp = \\agr => [] ;
+      adv = [] ;
+      post = noPost ;
+      missing = MissingDObj } ;
 {-
-    -- : V3  -> NP -> VPSlash ;  -- give (it) to her
-    Slash3V3 v3 np = lin VPSlash {s = AditzTrinkoak.copulaNorNoriNork ! np.agr ;
-    				  prc = v3.prc ;
-    				  sc = Erg } ;
-
     SlashV2V : V2V -> VP -> VPSlash ;  -- beg (her) to go
     SlashV2S : V2S -> S  -> VPSlash ;  -- answer (to him) that it is good
     SlashV2Q : V2Q -> QS -> VPSlash ;  -- ask (him) who came
@@ -39,7 +60,7 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 -}
 
     -- : VPSlash -> NP -> VP
-    ComplSlash vps np = lin VP (complSlash vps np) ;
+    ComplSlash vps np = ResEus.complSlash vps np ;
 {-
     SlashVV    : VV  -> VPSlash -> VPSlash ;       -- want to buy
     SlashV2VNP : V2V -> NP -> VPSlash -> VPSlash ; -- beg me to buy
@@ -51,42 +72,41 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 -- copula-preceded complements.
 
     -- : VPSlash -> VP ;
-    ReflVP vps = lin VP (complSlash vps buru_NP) ; ------ TODO
+    ReflVP vps = ResEus.complSlash vps buru_NP ; ------ TODO
 
     --  : Comp -> VP ;
 
-    UseComp comp = let copulaChoice = case comp.copula of { 
-                      Izan => copulaVP ; 
-                      Egon => copulaEgonVP  
-                   } in 
-                   lin VP (insertComp comp copulaChoice) ;
+    UseComp comp = let copulaChoice : VP = case comp.copula of { 
+                      Izan => copulaVP ;
+                      Egon => copulaVP } --Egon
+                   in insertComp comp copulaChoice ;
 
 {-
     PassV2   : V2 -> VP ;               -- be loved
 
 -}
     -- : VP -> Adv -> VP ;  -- sleep here
-    AdvVP vp adv = vp ** { adv = vp.adv ++ adv.s } ;
+    AdvVP vp adv = ResEus.insertAdv adv vp ;
 
     -- : VP -> Adv -> VP ;  -- sleep , even though ...
-    ExtAdvVP vp adv = vp ** { adv = vp.adv ++ "," ++ adv.s } ;
+    ExtAdvVP vp adv = ResEus.insertAdv (postfixSS "," adv) vp ;
 
     -- : AdV -> VP -> VP ;  -- always sleep
-    AdVVP adv vp = lin VP (insertAdv adv vp) ;
+    AdVVP adv vp = ResEus.insertAdv adv vp ;
 
     -- : VPSlash -> Adv -> VPSlash ;  -- use (it) here
-    AdvVPSlash vps adv = lin VPSlash (vps ** { adv = adv.s }) ;
+    AdvVPSlash vps adv = vps ** { adv = vps.adv ++ adv.s } ;
 
     -- : AdV -> VPSlash -> VPSlash ;  -- always use (it)
-    AdVVPSlash adv vps = lin VPSlash (vps ** { adv = adv.s }) ;
+    AdVVPSlash adv vps = vps ** { adv = adv.s ++ vps.adv } ;
 
-    --- VPSlash assumes that complement is a core complement;
-    --- TODO: generalise the type and allow adverbial complements to be inserted
     -- : VP -> Prep -> VPSlash ;  -- live in (it)
-    VPSlashPrep vp prep = lin VPSlash 
-      (vp ** { s     = copulaNorNork; 
-               compl = \\agr => vp.compl ! agr ++ BIND ++ prep.s }) ;
+    VPSlashPrep vp prep = vp ** 
+     { post = prep ; 
+       missing = MissingAdv } ;
 
+
+lin
 
 --2 Complements to copula
 
@@ -97,19 +117,18 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
 
     -- Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
 
---  CompAP   : AP  -> Comp ;
-    CompAP  ap  = lin Comp { s = table { agr => ap.s ++ DefArt.s ! getNum agr ! Abs ! ap.ph } ;
-                             copula = Izan };
---  CompNP   : NP  -> Comp ;
-    CompNP  np  = lin Comp { s = table {_ => np.s ! Abs} ; 
-                             copula = Izan } ; 
---  CompAdv  : Adv  -> Comp ;
-    CompAdv adv = lin Comp { s = table {_ => adv.s} ; 
-                             copula = Egon } ;
+  -- : AP  -> Comp ;
+  CompAP ap = { s = \\agr => ap.s ++ artA ! getNum agr ! Abs ! ap.ph  ;
+                copula = Izan };
+  --  NP  -> Comp ;
+  CompNP np = { s = \\agr => np.s ! Abs ; copula = Izan } ; 
 
---  CompCN   : CN  -> Comp ;
-    CompCN cn   = lin Comp { s = cn.s ;
-                             copula = Izan } ; 
+  -- : Adv  -> Comp ;
+  CompAdv adv = { s = \\agr => adv.s ; copula = Egon } ;
+
+  --: CN  -> Comp ;
+  CompCN cn = { s = \\agr => cn.s ! agr ++ artA ! getNum agr ! Abs ! cn.ph ;
+                copula = Izan } ; 
 
 -- Copula alone
 
@@ -117,25 +136,15 @@ concrete VerbEus of Verb = CatEus ** open ResEus, NounEus, AditzTrinkoak, Prelud
                             
 -- choose copula based on transitivity(argstruct) of main verb.
 
-    UseCopula = lin VP copulaVP ;
+    UseCopula = copulaVP ;
 
 
 oper 
-    copulaVP : VP = lin VP { s     = \\pol => AditzTrinkoak.copulaNor ; 
-                             prc   = table {_ => []} ; 
-		                     sc    = Abs ; 
-                             compl = table {_ => table {_ => []}} ; 
-                             adv   = [] ;
-                             ph    = FinalA 
-                            } ;
 
-    copulaEgonVP : VP = lin VP { s     = \\pol => AditzTrinkoak.copulaEgonNor ; 
-                                 prc   = table {_ => []} ; 
-                                 sc    = Abs ; 
-                                 compl = table {_ => table {_ => []}} ; 
-                                 adv   = [] ;
-                                 ph    = FinalCons 
-                               } ;
+  copulaVP : VP = lin VP (predV { prc  = \\tns => [] ; 
+                                  val  = Nor ;
+                                  ph   = FinalCons }) ;
+} 
 
 
-}
+

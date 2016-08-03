@@ -6,12 +6,12 @@ concrete GrammarEus of Grammar =
   NumeralEus,
   SentenceEus,
   QuestionEus,
-  RelativeEus,
+  --RelativeEus,
   ConjunctionEus,
   PhraseEus,
   TextX - [Pol,PPos,PNeg],
   StructuralEus,
-{-  IdiomEus,  -}
+--  IdiomEus,
   TenseX
   ** {
 

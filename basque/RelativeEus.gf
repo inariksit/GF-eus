@@ -6,10 +6,10 @@ concrete RelativeEus of Relative = CatEus ** open ResEus in {
    -- lin RelCl cl = {} ;
 
    -- RelVP    : RP -> VP -> RCl ;
-   lin RelVP rp vp = lin RCl (mkRCl rp vp) ;
+   lin RelVP rp vp = ResEus.mkRCl rp vp ;
 
    -- RelSlash : RP -> ClSlash -> RCl ; -- whom John loves
-   lin RelSlash rp cls = lin RCl (mkRClSlash rp cls) ;
+   lin RelSlash rp cls = ResEus.mkRClSlash rp cls ;
 
 
    -- IdRP  : RP ;
