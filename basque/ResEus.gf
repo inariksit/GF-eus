@@ -1,75 +1,12 @@
-resource ResEus = ParamX ** open TenseX, Prelude in {
+resource ResEus = ParamEus ** open TenseX, AditzTrinkoak, Prelude in {
 
-  flags optimize=all ;
-  coding=utf8 ;
-
-param 
-    ClType = Dir | Qst ;
-
-{-
-   Type of copula used, e.g. 
- 
-     Miren lorategi+a+n dago [CopulaType = Egon]
-     Miren irakasle+a da [CopulaType = Izan]
--}
-    CopulaType = Egon | Izan  ; 
+flags optimize=all ;
+coding=utf8 ;
 
 
-{-
-   Type of adjectival phrase, e.g.
- 
-      kale txiki+a [APType = Bare]
-      itsaso+ra+ko kale+a [APType = Ko]
--}
-    APType = Ko | Bare ; 
-
-    Bizi = Inan | Anim ;
-
-    Case = Abs | Erg | Dat | Par  -- Core argument cases
-         | Gen | Soc | Ins | Ine -- Irregular stems
-         | LocStem ;  -- LocStem is inessive without -an; many other cases use same stem!
-
---    Gender = Masc | Fem ; -- We will need this for hika
---    Degree = Posit | Compar | Superl | Excess ;
---    CardOrd = NCard | NOrd ;
-
-
-    Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
-    AgrValency = Nor | NorNork | NorNori | NorNoriNork ;
-
-    Phono = FinalA | FinalR | FinalCons | FinalVow ; 
-
-oper 
-
-
-    sgAgr : Agr -> Agr = \agr ->
-       case agr of { Gu    => Ni ;
-                     Zuek  => Zu ;
-                     Hauek => Hau ;
-                     agr   => agr } ;
-
-    plAgr : Agr -> Agr = \agr ->
-       case agr of { Ni  => Gu ;
-                     Zu  => Zuek ;
-                     Hi  => Zuek ;
-                     Hau => Hauek ;
-                     agr   => agr } ;
-
-    getNum : Agr -> Number = \np ->
-      case np of {
-        (Ni|Hi|Zu|Hau)  => Sg ;
-        (Gu|Zuek|Hauek) => Pl 
-      } ;
-
-    getPers : Agr -> Person = \np ->
-      case np of {
-        (Ni|Gu)      => P1 ;
-        (Hi|Zu|Zuek) => P2 ;
-        (Hau|Hauek)  => P3
-      } ;
-
-
+--------------------------------------------------------------------
 -- Articles 
+oper
 
   artA : Number => Case => Phono => Str =
     let artASg = table {Abs => finalR "a" ; --itsaso+a ; txakur+ra
@@ -117,7 +54,8 @@ oper
    in  table {FinalR => BIND ++ rak ;
               _      => BIND ++ ak } ;
 
--- Noun stuffs
+--------------------------------------------------------------------
+-- Nouns and NPs
 
   Noun : Type = { s    : Str ; --for nouns ending in -a, we chop off the -a, and add it in the article + cases.
                   ph   : Phono ;
@@ -130,7 +68,8 @@ oper
                                     -- If it's "heavy", numbers and possessives come after.
                                     -- "Light" modifiers attach directly to the s.
 
-  Complement : Type = { s : Agr => Str ; copula : CopulaType } ;
+  Complement : Type = { s : Agr => Str ; 
+                        copula : CopulaType } ;
 
   NounPhrase : Type = { s    : Case => Str ;
                         agr  : Agr ;
@@ -155,15 +94,26 @@ oper
                            nbr = Sg ;
                            isDef = True } ;
 
--- 
+--------------------------------------------------------------------
+-- Postpositions
 
-
-  Postposizio : Type = { s : Number => Str ; 
-                         complCase : Case ; -- diru gabe : Abs
-                                             -- dirurik gabe : Par 
+  Postposizio : Type = { s : Str ; 
+                         complCase : Case ;  -- dirurik gabe : Par 
                                              -- hormaren kontra : Gen
                          attached : Bool } ;
 
+  mkPost : Str -> Case -> Bool -> Postposizio = \an,cas,b ->
+   { s = an ; complCase = cas ; attached = b } ;
+
+  noPost : Postposizio = mkPost [] Abs False ;
+
+  glueIf : Bool -> (_,_ : Str) -> Str = \attached,a,b -> 
+    if_then_Str attached (glue a b) (a ++ b) ;
+
+  applyPost : Postposizio -> NounPhrase -> Str = \post,np ->
+    glueIf post.attached (np.s ! post.complCase) post.s ;
+
+--------------------------------------------------------------------
 -- Pronoun stuffs
 
   Pronoun : Type = NounPhrase ;
@@ -187,61 +137,53 @@ oper
   inanPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \zer,zeri,zerk,zere,zertaz,a ->
     persPron zer zeri zerk zere zertaz a ** { anim = Inan } ;
 
---    reflPron : NounPhrase = { s = case agr of {
---        Ni => "nire buru" ;
---        Hi => "hire buru" ;
---        Zu => "zure buru" ;
---        Hau => "bere buru" ;
---        Gu => "gure buru" ;
---        Zuek => "zuen buru" ;
---        Hauek => "beren buru" } ;
---      agr = agr ; 
---      anim = Anim ; 
---      nbr = Sg;
---    } ;
 
 
+--------------------------------------------------------------------
 -- Adjective stuffs
 
   Adjective : Type = {s : Degree => Str ; ph : Phono} ;
 
   AdjPhrase : Type = {s : Str ; ph : Phono ; typ : APType} ; 
 
--- Verb stuffs
+
+--------------------------------------------------------------------
+-- Verbs and VPs
+
+
+oper
 
   Verb : Type = { prc : Tense => Str ;
-                  ph  : Phono  --for relative clause
-                } ;
-  Verb1 : Type = Verb ** { s : Tense => Agr => Str } ;
+                  --ph  : Phono ; --for relative clause
+                  val : Valency --TODO: synthetic verbs
+                 } ;
 
-  Verb2 : Type = Verb ** { s  : Agr => Tense => Agr => Str ; 
-                           sc : Case } ; --grammatical subject can be nork or nori
-
-  Verb3 : Type = Verb ; --copula is always nor-nori-nork, and sc is Erg.
 
   VerbPhrase : Type = 
-       Verb ** { s     : Polarity -- Negative indefinite forces object agreement into Sg
-                         => Tense 
-                         => Agr -- Subject agreement
-                         => Str ; --head of VP
-                 sc    : Case ; -- subject case can be Erg or Dat
-                 compl : Polarity -- Negative indefinite forces complement case into Par 
-                         => Agr   -- If complement is AP, we need Agr to agree with subject.
-                         => Str ;  
-                 
-                 
-                 adv   : Str ;
-               } ; 
-
-  VPSlash : Type = Verb2 ** {adv : Str}; 
+    Verb ** { dobj : { a : Agr ; 
+                       s : Polarity => Str ;
+                       isDef : Bool } ; --Indefinite direct object turns into Partitive with negative polarity.
+              iobj : { a : Agr ; 
+                       s : Str } ; 
+              comp : Agr => Str ; -- Comps depend on Agr; Valency is always Nor.
+              adv : Str } ;
 
 
-  predV : Verb1 -> VerbPhrase = \v -> { s   = \\pol => v.s ;  -- TODO is this true: neg doesn't force singular in Verb1
-                                      sc    = Abs ; 
-                                      prc   = v.prc ; 
-                                      compl = \\_,_ => []; 
-                                      adv   = [] ;
-                                      ph    = v.ph } ;
+  VPSlash : Type = 
+    VerbPhrase ** { post : Postposizio ; --VPSlashPrep may specify a postposition to use (for adv slot)
+                    missing : MissingArg } ;  
+param 
+  MissingArg = MissingAdv | MissingDObj | MissingIObj ;
+
+oper 
+  predV : Verb -> VerbPhrase = \v -> 
+    v ** { dobj = { a = Hau ;
+                    s = \\agr => [] ; 
+                    isDef = False } ;
+           iobj = { a = Hau ;
+                    s = [] } ;
+           adv  = [] ;
+           comp = \\agr => [] } ;
 
     {- Syntax note: 
           vp ** {adv = "hargle"} 
@@ -257,40 +199,47 @@ oper
 
 
   insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp,vp ->
-    vp ** { compl = \\pol,agr => vp.compl ! pol ! agr ++ comp.s ! agr } ;
+    vp ** { comp = \\agr => vp.comp ! agr ++ comp.s ! agr  } ; 
+    --TODO: retain Izan vs. Egon difference.
+
+  negAgr : NounPhrase -> TransV -> IntransV = \np,v ->
+    case np.isDef of { True  => v ! np.agr ;
+                       False => v ! sgAgr np.agr } ;
+
+  negDObj : NounPhrase -> Str = \np ->
+    case np.isDef of { True  => np.s ! Abs ;
+                       False => np.s ! Par } ;
+
 
   complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
-      let pos : { verb : Tense => Agr => Str ; comp : Str} =
-                           { verb = vps.s ! np.agr ;
-                             comp = np.s ! Abs } ;
-          neg : { verb : Tense => Agr => Str ; comp : Str} =
-            case np.isDef of {
-                  True  => { verb = pos.verb ; comp = pos.comp } ;
-                  False => { verb = vps.s ! sgAgr np.agr ;
-                             comp = np.s ! Par }
-          }    
+    case vps.missing of {
+              MissingAdv  => vps ** { adv = applyPost vps.post np } ;
+              MissingIObj => vps ** { iobj = { s = np.s ! Dat ;
+                                               a = np.agr } } ;
+              MissingDObj => vps ** { dobj = { s = table { Pos => np.s ! Abs ;
+                                                           Neg => negDObj np } ;
+                                               a = np.agr ;
+                                               isDef = np.isDef } } 
+          } ;
 
-      in { s     = table { Pos => pos.verb ; --(Agr => Agr) to (Polarity => Agr) 
-                           Neg => neg.verb } ;
-           prc   = vps.prc ;
-           sc    = vps.sc ;
-           compl = table { Pos => \\_ => pos.comp ;
-                           Neg => \\_ => neg.comp } ;
-           adv   = [] ;
-           ph    = vps.ph } ;
 
   
 
 
--- ibili, ibiltzen, ibiliko
--- amildu, amiltzen, amilduko
 
 
+--------------------------------------------------------------------
+-- Clause and sentence 
 
--- Clause stuffs
+  Sentence : Type = { pol : Polarity ;
+                     -- ph : Phono ; --needed for Subj? 
+                      adv : Str ; --heavyAdv and lightAdv?
+                      subj : Str ;
+                      compl : Str ; --DObj/Comp and IObj together: "mutilari garagardoa"
+                      prc : Str ;
+                      aux : Str } ;
 
-    --later: something like Tense => Anteriority => Polarity => (basque-specific parameters) => Str ;
-    Clause : Type = {s : Tense => Anteriority => Polarity => ClType => Str} ; 
+  Clause : Type = { s : Tense => Anteriority => Polarity => Sentence } ; 
 
 -- ez al duzu katu beltza ikusi? / ez al duzu katu beltzik ikusi? (MassNP)
 -- ez dut katu beltza ikusi / ez dut katu beltzik ikusi (MassNP)
@@ -301,47 +250,62 @@ oper
 
     --QClause : Type = {s : Tense => Anteriority => Polarity => Str} ; 
 
-
-
   mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
     { s = \\t,a,pol =>
-            let auxPrc : Tense -> Tense -> {aux : Str ; prc : Str}  = 
-                  \tnsAux,tnsPrc -> { aux = vp.s ! pol ! tnsAux ! subj.agr ;
-                                      prc = vp.prc ! tnsPrc } ;
-                v = case <t,a> of {
-                   <Pres,Simul> => auxPrc Pres Pres ;
-                   <Pres,Anter> => auxPrc Pres Past ;
-                   <Past,Simul> => auxPrc Past Pres ;
-                   <Past,Anter> => auxPrc Past Past ;
-                   <Fut,Simul>  => auxPrc Pres Fut ;
-                   <Fut,Anter>  => auxPrc Past Fut ;
-                   <Cond,Simul> => auxPrc Cond Fut ;
-                   <Cond,Anter> => auxPrc Cond Past 
-                } ;
-               in wordOrder pol
-                            vp.adv 
-                            (subj.s ! vp.sc)
-                            (vp.compl ! pol ! subj.agr)
-                            v.prc
-                            v.aux 
+        let tns : {aux : Tense ; prc : Tense} = case <t,a> of {
+              <Pres,Simul> => {aux=Pres ; prc=Pres} ; --lo egiten da
+              <Pres,Anter> => {aux=Pres ; prc=Past} ; --lo egin da
+              <Past,Simul> => {aux=Past ; prc=Pres} ; --lo egiten nintzen
+              <Past,Anter> => {aux=Past ; prc=Past} ; --lo egin nintzen
+              <Fut,Simul>  => {aux=Pres ; prc=Fut} ; --lo egingo da 
+              <Fut,Anter>  => {aux=Past ; prc=Fut} ; --lo egingo nintzen
+              <Cond,Simul> => {aux=Cond ; prc=Fut} ; --lo egiteko nintzateke
+              <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
+            aux : Str = chooseAux vp ! t ! subj.agr ;
+            sc : Case = subjCase vp.val ;
+        in { pol = pol ;
+             adv = vp.adv ;
+             subj = subj.s ! sc ;
+             compl = vp.iobj.s               -- mutilari
+                    ++ vp.dobj.s ! pol        -- garagardoa / garagardorik
+                    ++ vp.comp ! subj.agr ; 
+             prc = vp.prc ! tns.prc ;
+             aux = negAgr2 pol aux ; -- TODO: singular agreement for 
+                                     -- negative clause with indef dObj
+            }
     } ;
 
-  wordOrder : Polarity -> (x1,_,_,_,x5 : Str) -> (ClType => Str) = \pol,adv,subj,compl,prc,aux -> 
+  chooseAux : VerbPhrase -> IntransV = \vp -> 
+    case vp.val of {
+      Nor         => AditzTrinkoak.copulaNor ;
+      NorNork     => AditzTrinkoak.copulaNorNork ! vp.dobj.a ;
+      NorNoriNork => AditzTrinkoak.copulaNoriNorNork ! vp.iobj.a ! vp.dobj.a ;
+      _  => AditzTrinkoak.copulaNor } ; ----TODO NorNori
+
+  negAgr2 : Polarity -> Str -> Str = \_,str -> str ; --TODO
+
+  wordOrder : Sentence -> (ClType => Str) = \s -> 
     \\ct => 
-      let al = table { Qst => "al" ; Dir => [] } ! ct ;
-      in case pol of {
-           Pos => adv ++ subj ++ compl ++ prc ++ al ++ aux ;
-           Neg => adv ++ subj ++ "ez" ++ al ++ aux ++ compl ++ prc 
+      let al = case ct of { Qst => "al" ; _ => [] } ;
+      in case s.pol of {
+           Pos => s.adv ++ s.subj ++ s.compl ++ s.prc ++ al ++ s.aux ;
+           Neg => s.adv ++ s.subj ++ "ez" ++ al ++ s.aux ++ s.compl ++ s.prc 
          } ;
 
+--TODO: how do we stack adverbs?
+--Lang> p "I think that she will come today"
+--PhrUtt NoPConj (UttS (UseCl (TTAnt TPres ASimul) PPos (PredVP (UsePron i_Pron) (AdvVP (UseV think_V) (SubjS that_Subj (UseCl (TTAnt TFut ASimul) PPos (PredVP (UsePron she_Pron) (AdvVP (UseV come_V) today_Adv)))))))) NoVoc
+--PhrUtt NoPConj (UttS (UseCl (TTAnt TPres ASimul) PPos (PredVP (UsePron i_Pron) (AdvVP (AdvVP (UseV think_V) (SubjS that_Subj (UseCl (TTAnt TFut ASimul) PPos (PredVP (UsePron she_Pron) (UseV come_V))))) today_Adv)))) NoVoc
+
 ------------------------------------------------
--- ClSlash: has verb and object, missing subject
-  ClSlash : Type = VPSlash ** { subj : Str ; subjAgr : Agr } ;
+-- ClSlash: has verb and subject, missing object
+  ClSlash : Type = VerbPhrase ** { subj : {s : Str ; a : Agr } } ;
  
 
   mkClSlash : NounPhrase -> VPSlash -> ClSlash = \np,vps ->
-      vps ** { subj = np.s ! vps.sc ;
-               subjAgr = np.agr } ;
+    let sc : Case = subjCase vps.val ;
+    in vps ** { subj = { s = np.s ! sc ;
+                         a = np.agr } };
 
 ------------------------------------------------
 -- Relative clause
@@ -349,29 +313,36 @@ oper
 -- and we need to produce correct agreement:
 -- `gorria den txakurra' vs. `gorriak diren txakurrak'
 
+
   RClause : Type = {s : Tense => Polarity => Agr => Str} ;
 
   mkRCl : {s : Phono => Str} -> VerbPhrase -> RClause = \rp,vp ->
   let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
-                   _    => BIND ++ rp.s ! vp.ph } ; --TODO: phono should differ between individual forms
+                   _    => BIND ++ rp.s ! FinalVow } ; --- TODO: phono should differ between individual forms
       ez = table { Pos => "" ; Neg => "ez" } ;
   in { s = \\tns,pol,agr => vp.adv 
-                           ++ vp.compl ! pol ! agr                -- John 
-                           ++ vp.prc ! tns                        -- maite 
-                           ++ ez ! pol                            -- (ez)
-                           ++ vp.s ! pol ! tns ! agr ++ en ! tns  -- duen
+                           ++ vp.iobj.s
+                           ++ vp.dobj.s ! pol              -- John 
+                           ++ vp.prc ! tns                 -- maite 
+                           ++ ez ! pol                     -- (ez)
+                           ++ chooseAux vp ! tns ! agr     -- d(it)u
+                           ++ en ! tns                     -- en
     } ;
 
   mkRClSlash : {s : Phono => Str} -> ClSlash -> RClause = \rp,cls ->
-  let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
-                   _    => BIND ++ rp.s ! cls.ph } ; 
-      ez = table { Pos => "" ; Neg => "ez" } ;
-  in { s = \\tns,pol,objAgr => cls.adv 
-                              ++ cls.subj                      -- Johnek
-                              ++ cls.prc ! tns                 -- maite 
-                              ++ ez ! pol                      -- (ez)
-                              ++ cls.s ! objAgr ! tns ! cls.subjAgr -- d(it)u
-                              ++ en ! tns                      -- en
+    { s = \\tns,pol,objAgr =>
+        let en = case tns of { Past => [] ; --past tenses end in n; 0 relative morpheme.
+                               _    => BIND ++ rp.s ! FinalCons } ; --- TODO
+            ez = case pol of { Pos => [] ;
+                               Neg => "ez" } ;
+            clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
+
+        in  cls.adv 
+            ++ cls.subj.s                               -- Johnek
+            ++ cls.prc ! tns                            -- maite 
+            ++ ez                                       -- (ez)
+            ++ chooseAux clsWithObj ! tns ! cls.subj.a  -- d(it)u
+            ++ en                                       -- en
     } ;
 
 }

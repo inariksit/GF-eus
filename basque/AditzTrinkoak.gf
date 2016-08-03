@@ -1,4 +1,4 @@
-resource AditzTrinkoak = open Prelude, ResEus, CatEus, ParamX in {
+resource AditzTrinkoak = open Prelude, ParamEus in {
 
 -- Synthetic verbs are in this module
 
