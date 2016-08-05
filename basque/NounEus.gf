@@ -26,7 +26,6 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                      ++ det.s ! c ! cn.ph ;
           agr = ag ;
           anim = cn.anim ;
-          nbr = det.nbr ;
           isDef = det.isDef 
         } ;
 
@@ -34,7 +33,6 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     UsePN pn = lin NP  { s    = \\c => pn.s ++ artIndef ! c ! pn.ph;
                          agr  = Hau ; 
                          anim = pn.anim ; 
-                         nbr  = Sg ;
                          isDef = True } ; --in Extra : add UsePNIndef to allow "hemen ez dago Olatzik"
 
     -- UsePron : Pron -> NP ; 
@@ -62,9 +60,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                  ++ artIndef ! c ! cn.ph ;
        agr   = Hau ;
        anim  = Inan ;
-       nbr   = Sg ;
-       isDef = False ;
-       isPrn = False } ;
+       isDef = False } ;
 
 
 --2 Determiners
@@ -162,11 +158,11 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                          ph = result.ph } ) ; 
 
     -- RelCN : CN -> RS  -> CN ;
-    RelCN cn rs = lin CN (cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ rs.s ! agr }) ;
+    RelCN cn rs = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ rs.s ! agr } ;
 
 
     -- AdvCN   : CN -> Adv -> CN ;
-    AdvCN cn adv = lin CN (cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ adv.s }) ;
+    AdvCN cn adv = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ adv.s } ;
 
 {-
 -- Nouns can also be modified by embedded sentences and questions.

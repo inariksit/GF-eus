@@ -73,25 +73,24 @@ lincat
   [NP] = { s1,s2 : Case => Str } ** NPLight ;
 
 lin
-  BaseNP x y = twoTable Case x y ** conjNP x y ;
-  ConsNP xs x = consrTable Case comma xs x ** conjNP xs x ;
-  ConjNP conj ss = conjunctNPTable conj ss ** conjNP ss conj ;
+  BaseNP x y = twoTable Case x y ** consNP x y ;
+  ConsNP xs x = consrTable Case comma xs x ** consNP xs x ;
+  ConjNP conj xs = conjunctNPTable conj xs ** conjNP xs conj ;
 
 oper
 
   --NP without the s field; just to avoid copypaste and make things easier to change
-  NPLight : Type = { agr  : Agr ; anim : Bizi ; nbr : Number ; isDef : Bool } ;
+  NPLight : Type = { agr  : Agr ; anim : Bizi ; isDef : Bool } ;
 
-                     --the power of subtyping ^_^
-  conjNP : NPLight -> { nbr : Number } -> NPLight = \x,y ->
-    { agr  = conjAgr x.agr y.nbr ; 
-      anim = x.anim ; -- Arbitrary: choose first argument's animacy 
-      nbr  = conjNbr x.nbr y.nbr ; 
-      isDef = x.isDef } ;
+  consNP : NPLight -> NPLight -> NPLight = \x,y ->
+    x ** { agr = conjAgr x.agr (getNum y.agr) } ;
+
+  conjNP : NPLight -> Conj -> NPLight = \xs,conj ->
+    xs ** { agr = conjAgr xs.agr conj.nbr } ;
 
  -- Like conjunctTable from prelude/Coordination.gf,
  -- but forces the first argument into absolutive.
-  conjunctNPTable : Conjunction -> ListTable Case -> {s : Case => Str} = \co,xs ->
+  conjunctNPTable : Conj -> ListTable Case -> {s : Case => Str} = \co,xs ->
    { s = table { Erg => xs.s1 ! Erg ++ co.s ++ xs.s2 ! Erg ;
                  cas => xs.s1 ! Abs ++ co.s ++ xs.s2 ! cas } } ;
 

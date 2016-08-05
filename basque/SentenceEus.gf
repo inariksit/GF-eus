@@ -11,7 +11,7 @@ lin
   UseCl = \temp,pol,cl -> cl.s ! temp.t ! temp.a ! pol.p ;
 
   -- : Temp -> Pol -> RCl -> RS ;
---  UseRCl temp pol cl = { s = cl.s ! temp.t ! pol.p } ;
+  UseRCl temp pol cl = { s = cl.s ! temp.t ! pol.p } ;
 
   -- : Temp -> Pol -> QCl -> QS ;
   UseQCl temp pol qcl = { s = wordOrder (qcl.s ! temp.t ! temp.a ! pol.p) } ;

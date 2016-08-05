@@ -74,7 +74,6 @@ oper
   NounPhrase : Type = { s    : Case => Str ;
                         agr  : Agr ;
                         anim : Bizi ; 
-                        nbr  : Number ;
                         isDef : Bool } ;
 
 -- NounPhrase is a record
@@ -91,7 +90,6 @@ oper
   buru_NP : NounPhrase = { s = \\_ => "buru" ;
                            agr = Hau ; 
                            anim = Anim ; 
-                           nbr = Sg ;
                            isDef = True } ;
 
 --------------------------------------------------------------------
@@ -131,7 +129,6 @@ oper
                  } ;
       agr  = a ;
       anim = Anim ;
-      nbr  = getNum a ;
       isDef = True } ;
 
   inanPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \zer,zeri,zerk,zere,zertaz,a ->
@@ -232,7 +229,7 @@ oper
 -- Clause and sentence 
 
   Sentence : Type = { pol : Polarity ;
-                     -- ph : Phono ; --needed for Subj? 
+                      --ph : Phono ; --needed for Subj? 
                       adv : Str ; --heavyAdv and lightAdv?
                       subj : Str ;
                       compl : Str ; --DObj/Comp and IObj together: "mutilari garagardoa"
@@ -321,12 +318,12 @@ oper
                    _    => BIND ++ rp.s ! FinalVow } ; --- TODO: phono should differ between individual forms
       ez = table { Pos => "" ; Neg => "ez" } ;
   in { s = \\tns,pol,agr => vp.adv 
-                           ++ vp.iobj.s
-                           ++ vp.dobj.s ! pol              -- John 
-                           ++ vp.prc ! tns                 -- maite 
-                           ++ ez ! pol                     -- (ez)
-                           ++ chooseAux vp ! tns ! agr     -- d(it)u
-                           ++ en ! tns                     -- en
+                          ++ vp.iobj.s
+                          ++ vp.dobj.s ! pol              -- John 
+                          ++ vp.prc ! tns                 -- maite 
+                          ++ ez ! pol                     -- (ez)
+                          ++ chooseAux vp ! tns ! agr     -- d(it)u
+                          ++ en ! tns                     -- en
     } ;
 
   mkRClSlash : {s : Phono => Str} -> ClSlash -> RClause = \rp,cls ->
@@ -335,13 +332,13 @@ oper
                                _    => BIND ++ rp.s ! FinalCons } ; --- TODO
             ez = case pol of { Pos => [] ;
                                Neg => "ez" } ;
-            clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
+            --clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
 
         in  cls.adv 
             ++ cls.subj.s                               -- Johnek
             ++ cls.prc ! tns                            -- maite 
             ++ ez                                       -- (ez)
-            ++ chooseAux clsWithObj ! tns ! cls.subj.a  -- d(it)u
+            ++ chooseAux cls ! tns ! cls.subj.a  -- d(it)u
             ++ en                                       -- en
     } ;
 
