@@ -66,7 +66,7 @@ oper
                               Ni => Prelude.nonExist ;
                               Zuek => "ninduzuen" ;
                               Hau => "ninduen" ;
-                              Hi => "ninduan" | "nindunan" ;
+                              Hi => "ninduan" ; --| "nindunan" ;
                               Zu => "ninduzun" 
                      } ;
                      _ => table { -- Pres
@@ -75,7 +75,7 @@ oper
                               Ni => Prelude.nonExist ;
                               Zuek => "nauzue" ;
                               Hau => "nau" ;
-                              Hi => "nauk" | "naun" ;
+                              Hi => "nauk" ; --| "naun" ;
                               Zu => "nauzu" 
                      }
               } ;
@@ -86,7 +86,7 @@ oper
                               Ni => Prelude.nonExist ;
                               Zuek => "gintuzuen" ;
                               Hau => "gintuen" ;
-                              Hi => "gintuan" | "gintunan" ;
+                              Hi => "gintuan" ; --| "gintunan" ;
                               Zu => "gintuzun" 
                      } ;
                      _ => table { -- Pres
@@ -95,7 +95,7 @@ oper
                               Ni => Prelude.nonExist ;
                               Zuek => "gaituzue" ;
                               Hau => "gaitu" ;
-                              Hi => "gaituk" | "gaitun" ;
+                              Hi => "gaituk" ; --| "gaitun" ;
                               Zu => "gaituzu" 
                      }
               } ;
@@ -115,7 +115,7 @@ oper
                               Ni => "ditut" ;
                               Zuek => "dituzue" ;
                               Hau => "ditu" ;
-                              Hi => "dituk" | "ditun" ;
+                              Hi => "dituk" ; --| "ditun" ;
                               Zu => "dituzu" 
                      }
               } ;
@@ -155,7 +155,7 @@ oper
                               Ni => "dut" ;
                               Zuek => "duzue" ;
                               Hau => "du" ;
-                              Hi => "duk" | "dun" ;
+                              Hi => "duk" ; --| "dun" ;
                               Zu => "duzu" 
                      }
               } ;
@@ -252,7 +252,7 @@ oper
                               Ni => Prelude.nonExist ;
                               Zuek => "naukazue" ;
                               Hau => "nauka" ;
-                              Hi => "naukan" | "naukan" ;
+                              Hi => "naukan" ; --| "naukan" ;
                               Zu => "naukazu" 
                      }
               } ;
@@ -292,7 +292,7 @@ oper
                               Ni => "dauzkat" ;
                               Zuek => "dauzkazue" ;
                               Hau => "dauzka" ;
-                              Hi => "dauzkak" | "dauzkan" ;
+                              Hi => "dauzkak" ; --| "dauzkan" ;
                               Zu => "dauzkazu" 
                      }
               } ;
@@ -332,7 +332,7 @@ oper
                               Ni => "daukat" ;
                               Zuek => "daukazue" ;
                               Hau => "dauka" ;
-                              Hi => "daukak" | "daukan" ;
+                              Hi => "daukak" ; --| "daukan" ;
                               Zu => "daukazu" 
                      }
               } ;
