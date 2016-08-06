@@ -21,13 +21,13 @@ lin
 
 -- Subordinate clauses can function as adverbs.
 
-    --: Subj -> S -> Adv ;              -- datorrenean ; ikasten baduzu 
+    --: Subj -> S -> Adv ;
   SubjS subj s = 
-  	let auxFull : Str = if_then_Str subj.isPre 
-  									(glue subj.s s.aux)
-  		 						    (glue s.aux subj.s) ; -- ! s.ph later;
-  		sent = s ** {aux = auxFull} ;
-    in { s = wordOrder sent ! Stat } ;
+  	let auxFull : Str = 
+  		if_then_Str subj.isPre (glue subj.s s.aux.indep)  -- badator
+  		 				       (glue s.aux.stem subj.s) ; -- datorrenean
+
+    in { s = s.beforeAux ++ auxFull ++ s.afterAux } ;
 
 -- Comparison adverbs also work as numeral adverbs.
 

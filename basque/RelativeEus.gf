@@ -1,4 +1,4 @@
-concrete RelativeEus of Relative = CatEus ** open ResEus in {
+concrete RelativeEus of Relative = CatEus ** open ResEus, Prelude in {
 
 
 
@@ -6,18 +6,14 @@ concrete RelativeEus of Relative = CatEus ** open ResEus in {
    -- lin RelCl cl = {} ;
 
    -- RelVP    : RP -> VP -> RCl ;
-   lin RelVP rp vp = ResEus.mkRCl rp vp ;
+   lin RelVP rp vp = ResEus.mkRCl rp.s vp ;
 
    -- RelSlash : RP -> ClSlash -> RCl ; -- whom John loves
-   lin RelSlash rp cls = ResEus.mkRClSlash rp cls ;
+   lin RelSlash rp cls = ResEus.mkRClSlash rp.s cls ;
 
 
    -- IdRP  : RP ;
-   lin IdRP = lin RP { s = table { FinalCons => "en" ;
-						           FinalR    => "en" ;
-						           _         => "n"  
-						         }  
-			         } ;
+   lin IdRP = { s = BIND ++ "n" } ;
 
    -- FunRP : Prep -> NP -> RP -> RP ;  -- the mother of whom
    --lin FunRP prep np rp = {} ;

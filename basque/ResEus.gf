@@ -228,15 +228,11 @@ oper
 --------------------------------------------------------------------
 -- Clause and sentence 
 
-  Sentence : Type = { pol : Polarity ;
-                      --ph : Phono ; --needed for Subj? 
-                      adv : Str ; --heavyAdv and lightAdv?
-                      subj : Str ;
-                      compl : Str ; --DObj/Comp and IObj together: "mutilari garagardoa"
-                      prc : Str ;
-                      aux : Str } ;
+  Sentence : Type = { beforeAux : Str ;
+                      aux : VForms ;
+                      afterAux : Str } ;
 
-  Clause : Type = { s : Tense => Anteriority => Polarity => Sentence } ; 
+  Clause : Type = { s : Tense => Anteriority => Polarity => ClType => Sentence } ; 
 
 -- ez al duzu katu beltza ikusi? / ez al duzu katu beltzik ikusi? (MassNP)
 -- ez dut katu beltza ikusi / ez dut katu beltzik ikusi (MassNP)
@@ -258,18 +254,17 @@ oper
               <Fut,Anter>  => {aux=Past ; prc=Fut} ; --lo egingo nintzen
               <Cond,Simul> => {aux=Cond ; prc=Fut} ; --lo egiteko nintzateke
               <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
-            aux : Str = chooseAux vp ! t ! subj.agr ;
+            aux : VForms = chooseAux vp ! t ! subj.agr ;
             sc : Case = subjCase vp.val ;
-        in { pol = pol ;
-             adv = vp.adv ;
-             subj = subj.s ! sc ;
-             compl = vp.iobj.s               -- mutilari
-                    ++ vp.dobj.s ! pol        -- garagardoa / garagardorik
-                    ++ vp.comp ! subj.agr ; 
-             prc = vp.prc ! tns.prc ;
-             aux = negAgr2 pol aux ; -- TODO: singular agreement for 
-                                     -- negative clause with indef dObj
-            }
+        in wordOrder  { pol = pol ;
+                        adv = vp.adv ;
+                        subj = subj.s ! sc ;
+                        compl = vp.iobj.s               -- mutilari
+                             ++ vp.dobj.s ! pol        -- garagardoa / garagardorik
+                             ++ vp.comp ! subj.agr ; 
+                        prc = vp.prc ! tns.prc ;
+                        aux = negAgr2 pol aux } -- TODO: singular agreement for 
+                                              -- negative clause with indef dObj
     } ;
 
   chooseAux : VerbPhrase -> IntransV = \vp -> 
@@ -279,15 +274,29 @@ oper
       NorNoriNork => AditzTrinkoak.copulaNoriNorNork ! vp.iobj.a ! vp.dobj.a ;
       _  => AditzTrinkoak.copulaNor } ; ----TODO NorNori
 
-  negAgr2 : Polarity -> Str -> Str = \_,str -> str ; --TODO
 
-  wordOrder : Sentence -> (ClType => Str) = \s -> 
+  negAgr2 : Polarity -> VForms -> VForms = \_,foo -> foo ; --TODO
+
+
+  wordOrder : SentenceLight -> (ClType => Sentence) = \s -> 
     \\ct => 
       let al = case ct of { Qst => "al" ; _ => [] } ;
       in case s.pol of {
-           Pos => s.adv ++ s.subj ++ s.compl ++ s.prc ++ al ++ s.aux ;
-           Neg => s.adv ++ s.subj ++ "ez" ++ al ++ s.aux ++ s.compl ++ s.prc 
+           Pos => { beforeAux = s.adv ++ s.subj ++ s.compl ++ s.prc ++ al ;
+                    aux = s.aux ;
+                    afterAux = [] } ;
+           Neg => { beforeAux = s.adv ++ s.subj ++ "ez" ++ al ;
+                    aux = s.aux ;
+                    afterAux = s.compl ++ s.prc }
          } ;
+
+  --just an internal type, to give as an argument to wordOrder
+  SentenceLight : Type = { pol : Polarity ;
+                           adv : Str ; --heavyAdv and lightAdv?
+                           subj : Str ;
+                           compl : Str ; 
+                           prc : Str ;
+                           aux : VForms } ;
 
 --TODO: how do we stack adverbs?
 --Lang> p "I think that she will come today"
@@ -313,32 +322,30 @@ oper
 
   RClause : Type = {s : Tense => Polarity => Agr => Str} ;
 
-  mkRCl : {s : Phono => Str} -> VerbPhrase -> RClause = \rp,vp ->
-  let en = table { Past => [] ; --past tenses end in n; 0 relative morpheme.
-                   _    => BIND ++ rp.s ! FinalVow } ; --- TODO: phono should differ between individual forms
-      ez = table { Pos => "" ; Neg => "ez" } ;
-  in { s = \\tns,pol,agr => vp.adv 
-                          ++ vp.iobj.s
-                          ++ vp.dobj.s ! pol              -- John 
-                          ++ vp.prc ! tns                 -- maite 
-                          ++ ez ! pol                     -- (ez)
-                          ++ chooseAux vp ! tns ! agr     -- d(it)u
-                          ++ en ! tns                     -- en
+  mkRCl : Str -> VerbPhrase -> RClause = \en,vp ->
+    { s = \\tns,pol,agr => 
+        let ez = case pol of { Pos => [] ;
+                               Neg => "ez" } ;
+        in vp.adv 
+           ++ vp.iobj.s
+           ++ vp.dobj.s ! pol              -- John 
+           ++ vp.prc ! tns                 -- maite 
+           ++ ez                           -- (ez)
+           ++ (chooseAux vp ! tns ! agr).stem   -- d(it)u
+           ++ en                           -- en
     } ;
 
-  mkRClSlash : {s : Phono => Str} -> ClSlash -> RClause = \rp,cls ->
+  mkRClSlash : Str -> ClSlash -> RClause = \en,cls ->
     { s = \\tns,pol,objAgr =>
-        let en = case tns of { Past => [] ; --past tenses end in n; 0 relative morpheme.
-                               _    => BIND ++ rp.s ! FinalCons } ; --- TODO
-            ez = case pol of { Pos => [] ;
+        let ez = case pol of { Pos => [] ;
                                Neg => "ez" } ;
-            --clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
+            clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
 
         in  cls.adv 
             ++ cls.subj.s                               -- Johnek
             ++ cls.prc ! tns                            -- maite 
             ++ ez                                       -- (ez)
-            ++ chooseAux cls ! tns ! cls.subj.a  -- d(it)u
+            ++ (chooseAux clsWithObj ! tns ! cls.subj.a).stem -- d(it)u
             ++ en                                       -- en
     } ;
 

@@ -3,8 +3,9 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
   lin
     PhrUtt pconj utt voc = {s = pconj.s ++ utt.s ++ voc.s} ;
 
-    UttS s = { s = wordOrder s ! Stat } ;
-    UttQS qs = { s = qs.s ! Qst } ;
+    UttS s = { s = s.beforeAux ++ s.aux.indep ++ s.afterAux } ;
+    UttQS qs = { s = let s = qs ! Qst 
+                     in s.beforeAux ++ s.aux.indep ++ s.afterAux } ;
 {-    UttImpSg pol imp = {s = pol.s ++ imp.s ! pol.p } ;
     UttImpPl pol imp = {s = pol.s ++ imp.s ! pol.p } ;
     UttImpPol pol imp = {s = pol.s ++ imp.s ! pol.p } ;
@@ -15,7 +16,7 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
     UttVP vp = {s = vp.adv 
                   ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
                   ++ vp.prc ! Pres 
-                  ++ chooseAux vp ! Pres ! Hau } ;
+                  ++ (chooseAux vp ! Pres ! Hau).indep } ;
     UttAdv adv = adv ;
     UttCN n = {s = n.s ! Hau ++ artA ! Sg ! Abs ! n.ph } ;
 --    UttCard n = {s = n.s ! } ;

@@ -8,16 +8,16 @@ lin
   PredVP np vp = mkClause np vp ;
 
   -- : Temp -> Pol -> Cl -> S ;
-  UseCl = \temp,pol,cl -> cl.s ! temp.t ! temp.a ! pol.p ;
+  UseCl temp pol cl = cl.s ! temp.t ! temp.a ! pol.p ! Stat ;
 
   -- : Temp -> Pol -> RCl -> RS ;
   UseRCl temp pol cl = { s = cl.s ! temp.t ! pol.p } ;
 
   -- : Temp -> Pol -> QCl -> QS ;
-  UseQCl temp pol qcl = { s = wordOrder (qcl.s ! temp.t ! temp.a ! pol.p) } ;
+  UseQCl temp pol qcl = qcl.s ! temp.t ! temp.a ! pol.p ;
 
   --  : S -> RS -> S ;              -- she sleeps, which is good
-  RelS sent rs = sent ** { adv = sent.adv ++ rs.s ! Hau } ;
+  RelS sent rs = sent ** { beforeAux = rs.s ! Hau ++ "," ++ sent.beforeAux } ;
 
   -- : NP -> VPSlash -> ClSlash ;
   SlashVP np vps = mkClSlash np vps ;

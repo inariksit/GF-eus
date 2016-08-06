@@ -9,34 +9,52 @@ oper
   Izan [NOR]
   =============================================================================
 -}
-    IntransV : Type = Tense => Agr => Str ;
+    VForms : Type = { indep : Str ; stem : Str } ;
+
+    noVForm : VForms = { indep = Prelude.nonExist ; stem = Prelude.nonExist } ;
+
+    mkVForms = overload {
+      mkVForms : Str -> VForms = \du ->
+        let due : Str = case du of {
+            _ + "en"          => init du ;        -- zen / zen
+            _ + "a"           => init du + "e" ;  -- da  / d+en
+            _ + "t"           => init du + "da" ; -- dut / duda+n
+            _ + ("e"|"i"|"o") => du ;             -- dio / dio+n
+            _                 => du + "e" }       -- du / du+en
+        in { indep = du ; stem = due } ;
+
+      mkVForms : (_,_ : Str) -> VForms = \dut,duda ->
+        { indep = dut ; stem = duda } ;
+    } ;
+
+    IntransV : Type = Tense => Agr => VForms ;
     TransV   : Type = Agr => IntransV ;
     DitransV : Type = Agr => TransV ;
 
     copulaNor : IntransV =
-      table {Past => table {Ni => "nintzen" ; 
-                            Hi => "hintzen" ; 
-                            Zu => "zinen" ; 
-                            Hau => "zen" ; 
-                            Gu => "ginen" ; 
-                            Zuek => "zineten" ; 
-                            Hauek => "ziren" } ;
+      table {Past => table {Ni => mkVForms "nintzen" ; 
+                            Hi => mkVForms "hintzen" ; 
+                            Zu => mkVForms "zinen" ; 
+                            Hau => mkVForms "zen" ; 
+                            Gu => mkVForms "ginen" ; 
+                            Zuek => mkVForms "zineten" ; 
+                            Hauek => mkVForms "ziren" } ;
 
-             Cond => table {Ni => "nintzateke" ; 
-                            Hi => "hintzateke" ; 
-                            Zu => "zinateke" ; 
-                            Hau => "litzateke" ; 
-                            Gu => "ginateke" ; 
-                            Zuek => "zinatekete" ; 
-                            Hauek => "lirateke" } ;
+             Cond => table {Ni => mkVForms "nintzateke" ; 
+                            Hi => mkVForms "hintzateke" ; 
+                            Zu => mkVForms "zinateke" ; 
+                            Hau => mkVForms "litzateke" ; 
+                            Gu => mkVForms "ginateke" ; 
+                            Zuek => mkVForms "zinatekete" ; 
+                            Hauek => mkVForms "lirateke" } ;
              -- Present and future are identical
-	           _     => table {Ni => "naiz" ; 
-                             Hi => "haiz" ; 
-                             Zu => "zara" ; 
-                             Hau => "da" ; 
-                             Gu => "gara" ; 
-                             Zuek => "zarete" ; 
-                             Hauek => "dira" }
+	           _     => table {Ni => mkVForms "naiz" ; 
+                             Hi => mkVForms "haiz" ; 
+                             Zu => mkVForms "zara" ; 
+                             Hau => mkVForms "da" ; 
+                             Gu => mkVForms "gara" ; 
+                             Zuek => mkVForms "zarete" ; 
+                             Hauek => mkVForms "dira" }
        } ;
 
 {-
@@ -61,142 +79,142 @@ oper
        -- Nor,Nork
               Ni => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => "ninduten" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "ninduzuen" ;
-                              Hau => "ninduen" ;
-                              Hi => "ninduan" ; --| "nindunan" ;
-                              Zu => "ninduzun" 
+                              Gu => noVForm ;
+                              Hauek => mkVForms "ninduten" ;
+                              Ni => noVForm ;
+                              Zuek => mkVForms "ninduzuen" ;
+                              Hau => mkVForms "ninduen" ;
+                              Hi => mkVForms "ninduan" ; --| "nindunan" ;
+                              Zu => mkVForms "ninduzun" 
                      } ;
                      _ => table { -- Pres
-                              Gu => Prelude.nonExist ;
-                              Hauek => "naute" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "nauzue" ;
-                              Hau => "nau" ;
-                              Hi => "nauk" ; --| "naun" ;
-                              Zu => "nauzu" 
+                              Gu => noVForm ;
+                              Hauek => mkVForms "naute" ;
+                              Ni => noVForm ;
+                              Zuek => mkVForms "nauzue" ;
+                              Hau => mkVForms "nau" ;
+                              Hi => mkVForms "nauk" ; --| "naun" ;
+                              Zu => mkVForms "nauzu" 
                      }
               } ;
               Gu => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => "gintuzten" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "gintuzuen" ;
-                              Hau => "gintuen" ;
-                              Hi => "gintuan" ; --| "gintunan" ;
-                              Zu => "gintuzun" 
+                              Gu => noVForm ;
+                              Hauek => mkVForms "gintuzten" ;
+                              Ni => noVForm ;
+                              Zuek => mkVForms "gintuzuen" ;
+                              Hau => mkVForms "gintuen" ;
+                              Hi => mkVForms "gintuan" ; --| "gintunan" ;
+                              Zu => mkVForms "gintuzun" 
                      } ;
                      _ => table { -- Pres
-                              Gu => Prelude.nonExist ;
-                              Hauek => "gaituzte" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "gaituzue" ;
-                              Hau => "gaitu" ;
-                              Hi => "gaituk" ; --| "gaitun" ;
-                              Zu => "gaituzu" 
+                              Gu => noVForm ;
+                              Hauek => mkVForms "gaituzte" ;
+                              Ni => noVForm ;
+                              Zuek => mkVForms "gaituzue" ;
+                              Hau => mkVForms "gaitu" ;
+                              Hi => mkVForms "gaituk" ; --| "gaitun" ;
+                              Zu => mkVForms "gaituzu" 
                      }
               } ;
               Hauek => table {
                      Past => table {
-                              Gu => "genituen" ;
-                              Hauek => "zituzten" ;
-                              Ni => "nituen" ;
-                              Zuek => "zenituzten" ;
-                              Hau => "zituen" ;
-                              Hi => "hituen" ;
-                              Zu => "zenituen" 
+                              Gu => mkVForms "genituen" ;
+                              Hauek => mkVForms "zituzten" ;
+                              Ni => mkVForms "nituen" ;
+                              Zuek => mkVForms "zenituzten" ;
+                              Hau => mkVForms "zituen" ;
+                              Hi => mkVForms "hituen" ;
+                              Zu => mkVForms "zenituen" 
                      } ;
                      _ => table { -- Pres
-                              Gu => "ditugu" ;
-                              Hauek => "dituzte" ;
-                              Ni => "ditut" ;
-                              Zuek => "dituzue" ;
-                              Hau => "ditu" ;
-                              Hi => "dituk" ; --| "ditun" ;
-                              Zu => "dituzu" 
+                              Gu => mkVForms "ditugu" ;
+                              Hauek => mkVForms "dituzte" ;
+                              Ni => mkVForms "ditut" ;
+                              Zuek => mkVForms "dituzue" ;
+                              Hau => mkVForms "ditu" ;
+                              Hi => mkVForms "dituk" ; --| "ditun" ;
+                              Zu => mkVForms "dituzu" 
                      }
               } ;
               Zuek => table {
                      Past => table {
-                              Gu => "zintuztegun" ;
-                              Hauek => "zintuzteten" ;
-                              Ni => "zintuztedan" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "zintuzten" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist
+                              Gu => mkVForms "zintuztegun" ;
+                              Hauek => mkVForms "zintuzteten" ;
+                              Ni => mkVForms "zintuztedan" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "zintuzten" ;
+                              Hi => noVForm ;
+                              Zu => noVForm
                      } ;
                      _ => table { -- Pres
-                              Gu => "zaituztegu" ;
-                              Hauek => "zaituztete" ;
-                              Ni => "zaituztet" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "zaituzte" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => mkVForms "zaituztegu" ;
+                              Hauek => mkVForms "zaituztete" ;
+                              Ni => mkVForms "zaituztet" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "zaituzte" ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      }
               } ;
               Hau => table {
                      Past => table {
-                              Gu => "genuen" ;
-                              Hauek => "zuten" ;
-                              Ni => "nuen" ;
-                              Zuek => "zenuten" ;
-                              Hau => "zuen" ;
-                              Hi => "huen" ;
-                              Zu => "zenuen" 
+                              Gu => mkVForms "genuen" ;
+                              Hauek => mkVForms "zuten" ;
+                              Ni => mkVForms "nuen" ;
+                              Zuek => mkVForms "zenuten" ;
+                              Hau => mkVForms "zuen" ;
+                              Hi => mkVForms "huen" ;
+                              Zu => mkVForms "zenuen" 
                      } ;
                      _ => table { -- Pres
-                              Gu => "dugu" ;
-                              Hauek => "dute" ;
-                              Ni => "dut" ;
-                              Zuek => "duzue" ;
-                              Hau => "du" ;
-                              Hi => "duk" ; --| "dun" ;
-                              Zu => "duzu" 
+                              Gu => mkVForms "dugu" ;
+                              Hauek => mkVForms "dute" ;
+                              Ni => mkVForms "dut" ;
+                              Zuek => mkVForms "duzue" ;
+                              Hau => mkVForms "du" ;
+                              Hi => mkVForms "duk" ; --| "dun" ;
+                              Zu => mkVForms "duzu" 
                      }
               } ;
               Hi => table {
                      Past => table {
-                              Gu => "hindugun" ;
-                              Hauek => "hinduten" ;
-                              Ni => "hindudan" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "hinduen" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => mkVForms "hindugun" ;
+                              Hauek => mkVForms "hinduten" ;
+                              Ni => mkVForms "hindudan" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "hinduen" ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => "haugu" ;
-                              Hauek => "haute" ;
-                              Ni => "haut" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "hau" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist
+                              Gu => mkVForms "haugu" ;
+                              Hauek => mkVForms "haute" ;
+                              Ni => mkVForms "haut" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "hau" ;
+                              Hi => noVForm ;
+                              Zu => noVForm
                      }
               } ;
               Zu => table {
                      Past => table {
-                              Gu => "zintugun" ;
-                              Hauek => "zintuzten" ;
-                              Ni => "zintudan" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "zintuen" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => mkVForms "zintugun" ;
+                              Hauek => mkVForms "zintuzten" ;
+                              Ni => mkVForms "zintudan" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "zintuen" ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => "zaitugu" ;
-                              Hauek => "zaituzte" ;
-                              Ni => "zaitut" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "zaitu" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => mkVForms "zaitugu" ;
+                              Hauek => mkVForms "zaituzte" ;
+                              Ni => mkVForms "zaitut" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "zaitu" ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      }
               }
    } ;
@@ -208,22 +226,22 @@ oper
 -}
 
     copulaEgonNor : IntransV =
-      table {Past => table {Ni => "nengoen" ; 
-                    Hi => "hengoen" ; 
-                    Zu => "zeunden" ; 
-                    Hau => "zegoen" ; 
-                    Gu => "geunden" ; 
-                    Zuek => "zeundeten" ; 
-                    Hauek => "zeuden" } ;
+      table {Past => table {Ni => mkVForms "nengoen" ; 
+                    Hi => mkVForms "hengoen" ; 
+                    Zu => mkVForms "zeunden" ; 
+                    Hau => mkVForms "zegoen" ; 
+                    Gu => mkVForms "geunden" ; 
+                    Zuek => mkVForms "zeundeten" ; 
+                    Hauek => mkVForms "zeuden" } ;
              -- TODO: Cond
              -- Present and future are identical
-	     _ =>  table {Ni => "nago" ; 
-                    Hi => "hago" ; 
-                    Zu => "zaude" ; 
-                    Hau => "dago" ; 
-                    Gu => "gaude" ; 
-                    Zuek => "zaudete" ; 
-                    Hauek => "daude" }
+	     _ =>  table {Ni => mkVForms "nago" ; 
+                    Hi => mkVForms "hago" ; 
+                    Zu => mkVForms "zaude" ; 
+                    Hau => mkVForms "dago" ; 
+                    Gu => mkVForms "gaude" ; 
+                    Zuek => mkVForms "zaudete" ; 
+                    Hauek => mkVForms "daude" }
        } ;
 
 
@@ -238,142 +256,142 @@ oper
        -- Nor,Nork
               Ni => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => Prelude.nonExist ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => noVForm ;
+                              Hauek => noVForm ;
+                              Ni => noVForm ;
+                              Zuek => noVForm ;
+                              Hau => noVForm ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => Prelude.nonExist ;
-                              Hauek => "naukate" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "naukazue" ;
-                              Hau => "nauka" ;
-                              Hi => "naukan" ; --| "naukan" ;
-                              Zu => "naukazu" 
+                              Gu => noVForm ;
+                              Hauek => mkVForms "naukate" ;
+                              Ni => noVForm ;
+                              Zuek => mkVForms "naukazue" ;
+                              Hau => mkVForms "nauka" ;
+                              Hi => mkVForms "naukan" ; --| "naukan" ;
+                              Zu => mkVForms "naukazu" 
                      }
               } ;
               Gu => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => Prelude.nonExist ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => noVForm ;
+                              Hauek => noVForm ;
+                              Ni => noVForm ;
+                              Zuek => noVForm ;
+                              Hau => noVForm ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => Prelude.nonExist ;
-                              Hauek => "gauzkate" ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => "gauzkazue" ;
-                              Hau => "gauzka" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => "gauzkazu" 
+                              Gu => noVForm ;
+                              Hauek => mkVForms "gauzkate" ;
+                              Ni => noVForm ;
+                              Zuek => mkVForms "gauzkazue" ;
+                              Hau => mkVForms "gauzka" ;
+                              Hi => noVForm ;
+                              Zu => mkVForms "gauzkazu" 
                      }
               } ;
               Hauek => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => Prelude.nonExist ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => noVForm ;
+                              Hauek => noVForm ;
+                              Ni => noVForm ;
+                              Zuek => noVForm ;
+                              Hau => noVForm ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => "dauzkagu" ;
-                              Hauek => "dauzkate" ;
-                              Ni => "dauzkat" ;
-                              Zuek => "dauzkazue" ;
-                              Hau => "dauzka" ;
-                              Hi => "dauzkak" ; --| "dauzkan" ;
-                              Zu => "dauzkazu" 
+                              Gu => mkVForms "dauzkagu" ;
+                              Hauek => mkVForms "dauzkate" ;
+                              Ni => mkVForms "dauzkat" ;
+                              Zuek => mkVForms "dauzkazue" ;
+                              Hau => mkVForms "dauzka" ;
+                              Hi => mkVForms "dauzkak" ; --| "dauzkan" ;
+                              Zu => mkVForms "dauzkazu" 
                      }
               } ;
               Zuek => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => Prelude.nonExist ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist
+                              Gu => noVForm ;
+                              Hauek => noVForm ;
+                              Ni => noVForm ;
+                              Zuek => noVForm ;
+                              Hau => noVForm ;
+                              Hi => noVForm ;
+                              Zu => noVForm
                      } ;
                      _ => table { -- Pres
-                              Gu => "zauzkategu" ;
-                              Hauek => "zauzkatete" ;
-                              Ni => "zauzkatet" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "zauzkate" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => mkVForms "zauzkategu" ;
+                              Hauek => mkVForms "zauzkatete" ;
+                              Ni => mkVForms "zauzkatet" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "zauzkate" ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      }
               } ;
               Hau => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => Prelude.nonExist ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => noVForm ;
+                              Hauek => noVForm ;
+                              Ni => noVForm ;
+                              Zuek => noVForm ;
+                              Hau => noVForm ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => "daukagu" ;
-                              Hauek => "daukate" ;
-                              Ni => "daukat" ;
-                              Zuek => "daukazue" ;
-                              Hau => "dauka" ;
-                              Hi => "daukak" ; --| "daukan" ;
-                              Zu => "daukazu" 
+                              Gu => mkVForms "daukagu" ;
+                              Hauek => mkVForms "daukate" ;
+                              Ni => mkVForms "daukat" ;
+                              Zuek => mkVForms "daukazue" ;
+                              Hau => mkVForms "dauka" ;
+                              Hi => mkVForms "daukak" ; --| "daukan" ;
+                              Zu => mkVForms "daukazu" 
                      }
               } ;
               Hi => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => Prelude.nonExist ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => noVForm ;
+                              Hauek => noVForm ;
+                              Ni => noVForm ;
+                              Zuek => noVForm ;
+                              Hau => noVForm ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => "haukagu" ;
-                              Hauek => "haukate" ;
-                              Ni => "haukat" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "hauka" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist
+                              Gu => mkVForms "haukagu" ;
+                              Hauek => mkVForms "haukate" ;
+                              Ni => mkVForms "haukat" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "hauka" ;
+                              Hi => noVForm ;
+                              Zu => noVForm
                      }
               } ;
               Zu => table {
                      Past => table {
-                              Gu => Prelude.nonExist ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => Prelude.nonExist ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => Prelude.nonExist ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => noVForm ;
+                              Hauek => noVForm ;
+                              Ni => noVForm ;
+                              Zuek => noVForm ;
+                              Hau => noVForm ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      } ;
                      _ => table { -- Pres
-                              Gu => "zauzkagu" ;
-                              Hauek => Prelude.nonExist ;
-                              Ni => "zauzkat" ;
-                              Zuek => Prelude.nonExist ;
-                              Hau => "zauzka" ;
-                              Hi => Prelude.nonExist ;
-                              Zu => Prelude.nonExist 
+                              Gu => mkVForms "zauzkagu" ;
+                              Hauek => noVForm ;
+                              Ni => mkVForms "zauzkat" ;
+                              Zuek => noVForm ;
+                              Hau => mkVForms "zauzka" ;
+                              Hi => noVForm ;
+                              Zu => noVForm 
                      }
               }
    } ;
