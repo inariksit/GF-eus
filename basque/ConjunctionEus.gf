@@ -50,6 +50,7 @@ lin
 
 
 -- APs and CNs. FIXME: crude first attempt, doesn't work properly.
+-- ConjCN gives `*nesk edo neskek'
 lincat
   [AP] = {s1,s2 : Str ; ph : Phono ; typ : APType } ;
 
@@ -57,7 +58,6 @@ lin
   BaseAP x y = twoSS x y ** y ; --choose all the other fields from second argument
   ConsAP as a = consrSS comma as a ** a ;
   ConjAP co as = conjunctSS co as ** as ; 
-
 
 lincat
   [CN] = {s1,s2,heavyMod : Agr => Str ; ph : Phono ; anim : Bizi } ;
