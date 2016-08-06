@@ -199,9 +199,6 @@ oper
     vp ** { comp = \\agr => vp.comp ! agr ++ comp.s ! agr  } ; 
     --TODO: retain Izan vs. Egon difference.
 
-  negAgr : NounPhrase -> TransV -> IntransV = \np,v ->
-    case np.isDef of { True  => v ! np.agr ;
-                       False => v ! sgAgr np.agr } ;
 
   negDObj : NounPhrase -> Str = \np ->
     case np.isDef of { True  => np.s ! Abs ;
@@ -219,17 +216,11 @@ oper
                                                isDef = np.isDef } } 
           } ;
 
-
-  
-
-
-
-
 --------------------------------------------------------------------
 -- Clause and sentence 
 
   Sentence : Type = { beforeAux : Str ;
-                      aux : VForms ;
+                      aux : VForms ; -- Need to keep this open for SubjS
                       afterAux : Str } ;
 
   Clause : Type = { s : Tense => Anteriority => Polarity => ClType => Sentence } ; 
@@ -254,7 +245,7 @@ oper
               <Fut,Anter>  => {aux=Past ; prc=Fut} ; --lo egingo nintzen
               <Cond,Simul> => {aux=Cond ; prc=Fut} ; --lo egiteko nintzateke
               <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
-            aux : VForms = chooseAux vp ! t ! subj.agr ;
+            aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ;
             sc : Case = subjCase vp.val ;
         in wordOrder  { pol = pol ;
                         adv = vp.adv ;
@@ -263,19 +254,24 @@ oper
                              ++ vp.dobj.s ! pol        -- garagardoa / garagardorik
                              ++ vp.comp ! subj.agr ; 
                         prc = vp.prc ! tns.prc ;
-                        aux = negAgr2 pol aux } -- TODO: singular agreement for 
-                                              -- negative clause with indef dObj
+                        aux = aux }
     } ;
 
-  chooseAux : VerbPhrase -> IntransV = \vp -> 
+  chooseAux : VerbPhrase -> IntransV = chooseAuxPol Pos ;
+
+  chooseAuxPol : Polarity -> VerbPhrase -> IntransV = \pol,vp -> 
     case vp.val of {
       Nor         => AditzTrinkoak.copulaNor ;
-      NorNork     => AditzTrinkoak.copulaNorNork ! vp.dobj.a ;
-      NorNoriNork => AditzTrinkoak.copulaNoriNorNork ! vp.iobj.a ! vp.dobj.a ;
+      NorNork     => 
+        case <pol,vp.dobj.isDef> of {
+          <Neg,False> => AditzTrinkoak.copulaNorNork ! sgAgr vp.dobj.a ;
+          _           => AditzTrinkoak.copulaNorNork ! vp.dobj.a } ; 
+      NorNoriNork => 
+        case <pol,vp.dobj.isDef> of {
+          <Neg,False> => AditzTrinkoak.copulaNoriNorNork ! vp.iobj.a ! sgAgr vp.dobj.a ;
+          _           => AditzTrinkoak.copulaNoriNorNork ! vp.iobj.a ! vp.dobj.a } ;
       _  => AditzTrinkoak.copulaNor } ; ----TODO NorNori
 
-
-  negAgr2 : Polarity -> VForms -> VForms = \_,foo -> foo ; --TODO
 
 
   wordOrder : SentenceLight -> (ClType => Sentence) = \s -> 
@@ -324,8 +320,7 @@ oper
 
   mkRCl : Str -> VerbPhrase -> RClause = \en,vp ->
     { s = \\tns,pol,agr => 
-        let ez = case pol of { Pos => [] ;
-                               Neg => "ez" } ;
+        let ez = case pol of { Neg => "ez" ; _ => [] } ;
         in vp.adv 
            ++ vp.iobj.s
            ++ vp.dobj.s ! pol              -- John 
@@ -337,8 +332,7 @@ oper
 
   mkRClSlash : Str -> ClSlash -> RClause = \en,cls ->
     { s = \\tns,pol,objAgr =>
-        let ez = case pol of { Pos => [] ;
-                               Neg => "ez" } ;
+        let ez = case pol of { Neg => "ez" ; _ => [] } ;
             clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
 
         in  cls.adv 
