@@ -47,6 +47,25 @@ lin
   ConsRS xs x = consrTable Agr comma xs x ;
   ConjRS co xs = conjunctTable Agr co xs ;
 
+-- S has three building blocks; we keep only the last one's aux open,
+-- and choose the independent form to all the rest.
+-- Produces ungrammatical results for adverbial usage of conj sentences, e.g.
+-- "when [the dog runs and you sleep], I drink beer"
+lincat
+  [S] = Sentence ** { firstSent : Str } ;
+
+lin 
+  BaseS x y = 
+    y ** { firstSent = x.beforeAux ++ x.aux.indep ++ x.afterAux } ;
+
+  ConsS x xs = 
+    let xSent = x.beforeAux ++ x.aux.indep ++ x.afterAux 
+    in xs ** { firstSent = xSent ++ "," ++ xs.firstSent } ;
+
+  -- Combine the finished sentences all into the beforeAux part of the S
+  ConjS co xs = xs ** { beforeAux = xs.firstSent ++ co.s ++ xs.beforeAux } ;
+
+
 
 
 -- APs and CNs. FIXME: crude first attempt, doesn't work properly.
