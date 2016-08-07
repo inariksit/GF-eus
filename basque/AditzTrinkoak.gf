@@ -427,6 +427,38 @@ oper
   Ibili
   =============================================================================
 -}
+  --TODO: check, this is just from Wikipedia example inflection
+
+  ibili : IntransV =
+    table {
+        Past => table {
+                    Ni => mkVForms "nenbilen" ; 
+                    Hi _ => mkVForms "henbilen" ; 
+                    Zu => mkVForms "zenbiltzan" ; 
+                    Hau => mkVForms "zebilen" ; 
+                    Gu => mkVForms "genbiltzan" ; 
+                    Zuek => mkVForms "zenbiltzaten" ; 
+                    Hauek => mkVForms "zebiltzan" } ;
+
+             -- Present and future are identical
+        Cond => table {
+                    Ni => mkVForms "nenbilke" ; 
+                    Hi _ => mkVForms "henbilke" ; 
+                    Zu => mkVForms "zenbilzke" ; 
+                    Hau => mkVForms "lebilke" ; 
+                    Gu => mkVForms "genbiltzke" ; 
+                    Zuek => mkVForms "zenbiltzketen" ; 
+                    Hauek => mkVForms "lebilzke" } ;
+
+        _ => table {Ni => mkVForms "nabil" ; 
+                    Hi _ => mkVForms "habil" ; 
+                    Zu => mkVForms "zabiltza" ; 
+                    Hau => mkVForms "dabil" ; 
+                    Gu => mkVForms "gabiltza" ; 
+                    Zuek => mkVForms "zabiltzate" ; 
+                    Hauek => mkVForms "dabiltza" }
+       } ;
+
 
 {-
   =============================================================================
