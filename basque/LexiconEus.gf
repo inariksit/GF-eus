@@ -17,6 +17,9 @@ lin see_V2  = mkV2 "ikusi" ;
 lin drink_V2 = mkV2 "edan" ;
 
 
+lin know_VQ = mkVQ "jakin" ; ---TODO synthetic verbs
+lin know_VS = ukanVS "uste" ;
+
 oper
   egin_V : V = mkV "egin" ;
 

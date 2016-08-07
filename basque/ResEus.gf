@@ -71,6 +71,10 @@ oper
   Complement : Type = { s : Agr => Str ; 
                         copula : CopulaType } ;
 
+  mkComp : Str -> Complement = \str -> 
+    { s = \\agr => str ;
+      copula = Izan } ;
+
   NounPhrase : Type = { s    : Case => Str ;
                         agr  : Agr ;
                         anim : Bizi ; 
@@ -174,7 +178,13 @@ param
 
 oper 
   predV : Verb -> VerbPhrase = \v -> 
-    v ** { dobj = { a = Hau ;
+    v ** { dobj = { a = Hau ; -- This will be used for many different verbs becoming VPs! 
+                              -- e.g. VQ, VS, ... will use a NorNork copula, but 
+                              -- the sentence complement will be stored in comp field.
+                              -- This is because of V2Q, V2S versions you need both!
+                              --
+                              -- In the VQ, VS... version, dObj agreement is always Hau. (No exceptions?)
+                              -- So this function, while looking dangerous, is doing the Right Thing.
                     s = \\agr => [] ; 
                     isDef = False } ;
            iobj = { a = Hau ;
@@ -342,6 +352,8 @@ oper
             ++ (chooseAux clsWithObj ! tns ! cls.subj.a).stem -- d(it)u
             ++ en                                       -- en
     } ;
+
+  --TODO: some nice synergy between RCl(Slash) and ComplVQ? It's the same morphology.
 
 }
 

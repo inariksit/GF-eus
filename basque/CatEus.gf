@@ -110,10 +110,10 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     V2 = ResEus.Verb ;
     V3 = ResEus.Verb ;
 
-    --VV ;    -- verb-phrase-complement verb         e.g. "want"
-    --VS ;    -- sentence-complement verb            e.g. "claim"
-    VQ = ResEus.Verb ;
-    VA = ResEus.Verb ;
+    VV = ResEus.Verb ;    -- verb-phrase-complement verb         e.g. "want"
+    VS = ResEus.Verb ;    -- sentence-complement verb            e.g. "claim"
+    VQ = ResEus.Verb ;    -- question-complement verb            e.g. "wonder"  
+    VA = ResEus.Verb ;    -- adjective-complement verb           e.g. "look"
     --V2V ;   -- verb with NP and V complement       e.g. "cause"
     --V2S ;   -- verb with NP and S complement       e.g. "tell"
     --V2Q ;   -- verb with NP and Q complement       e.g. "ask"

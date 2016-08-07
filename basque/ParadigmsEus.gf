@@ -55,6 +55,15 @@ oper
 
   mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s ; ph = FinalCons ; val = NorNoriNork } ;
 
+  mkVQ : Str -> VQ = \s -> lin VQ (mkVerb2 s) ;
+
+
+  mkVS : Str -> VS = \s -> lin VS (mkVerb2 s) ;
+  ukanVS : Str -> VS = \uste -> 
+    let usteV2 = mkVerb2 uste ;
+    in lin VS (usteV2 ** { prc = \\_ => uste }) ;
+    
+  --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerb2 s) ;
 -------------------------------------------------------------------------------
 
   -- ibili, ibiltzen, ibiliko

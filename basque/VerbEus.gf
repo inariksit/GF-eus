@@ -6,10 +6,20 @@ lin
 
 {-
     ComplVV  : VV  -> VP -> VP ;  -- want to run
-    ComplVS  : VS  -> S  -> VP ;  -- say that she runs
 -}
-  -- : VQ -> QS -> VP ;  -- wonder who runs
---    ComplVQ vq qs = lin VP (insertComp )
+
+  -- : VS  -> S  -> VP ;  -- uste dut [neska etorriko dela]
+  ComplVS vs s =
+    let auxFull : Str = glue s.aux.stem "la" ; --de+la
+        scomp : Complement = mkComp (s.beforeAux ++ auxFull ++ s.afterAux) ;
+    in insertComp scomp (predV vs) ;
+
+  -- : VQ -> QS -> VP ;   -- ez dakit [nor den]
+  ComplVQ vq qs = 
+    let q : Sentence = qs ! Stat ; -- choose the version without al
+        auxFull : Str = glue q.aux.stem "n" ; --de+n
+        qcomp : Complement = mkComp (q.beforeAux ++ auxFull ++ q.afterAux) ;
+    in insertComp qcomp (predV vq) ;
 
   -- : VA -> AP -> VP ;  -- they become red
   ComplVA v ap = insertComp (CompAP ap) (predV v) ;
