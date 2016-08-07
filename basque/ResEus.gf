@@ -242,7 +242,10 @@ oper
 --  txakurrari abesten al diozu?
 
 
-    --QClause : Type = {s : Tense => Anteriority => Polarity => Str} ; 
+  -- PresSimul : dakit
+  -- Fut Simul : jakingo dut ???
+  -- is this ugly? have aux contain forms from both jakin and ukan,
+  -- and prc be empty except for Fut.
 
   mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
     { s = \\t,a,pol =>
@@ -260,9 +263,9 @@ oper
         in wordOrder  { pol = pol ;
                         adv = vp.adv ;
                         subj = subj.s ! sc ;
-                        compl = vp.iobj.s               -- mutilari
-                             ++ vp.dobj.s ! pol        -- garagardoa / garagardorik
-                             ++ vp.comp ! subj.agr ; 
+                        compl = vp.iobj.s             -- mutilari
+                             ++ vp.dobj.s ! pol       -- garagardoa / garagardorik
+                             ++ vp.comp ! subj.agr ;  -- etorriko dela / nor den / handi(ak) / ...
                         prc = vp.prc ! tns.prc ;
                         aux = aux }
     } ;

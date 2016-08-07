@@ -53,7 +53,7 @@ oper
 
   } ;
 
-  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s ; ph = FinalCons ; val = NorNoriNork } ;
+  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s ; val = NorNoriNork } ;
 
   mkVQ : Str -> VQ = \s -> lin VQ (mkVerb2 s) ;
 
@@ -62,7 +62,7 @@ oper
   ukanVS : Str -> VS = \uste -> 
     let usteV2 = mkVerb2 uste ;
     in lin VS (usteV2 ** { prc = \\_ => uste }) ;
-    
+
   --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerb2 s) ;
 -------------------------------------------------------------------------------
 
@@ -106,12 +106,10 @@ oper
 		in { s = stem ; ph = phono ; anim=Inan } ; 
 
   mkVerb1 : Str -> Verb = \s -> { val = Nor ;
-                                   prc = mkPrc s ;
-                                   ph  = FinalCons } ;  
+                                  prc = mkPrc s } ;  
 
   mkVerb2 : Str -> Verb = \s -> { val = NorNork ; 
-                                   prc = mkPrc s ; 
-                                   ph  = FinalCons } ; 
+                                   prc = mkPrc s } ; 
 
 
   mkConj : Str -> Number -> Conj = \s,num -> lin Conj { s = s ; nbr = num } ; 
