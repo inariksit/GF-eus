@@ -17,10 +17,17 @@ lin see_V2  = mkV2 "ikusi" ;
 lin drink_V2 = mkV2 "edan" ;
 
 
-lin know_VQ = mkVQ "jakin" ; ---TODO synthetic verbs
+lin know_VQ = jakin_VQ ; -- synthetic verb
 lin know_VS = ukanVS "uste" ;
 
 oper
   egin_V : V = mkV "egin" ;
+
+  jakin_VQ : VQ = 
+  	let jakin = mkVQ "jakin" ;
+  	in  jakin ** { prc = table { Pres => [] ; -- synthetic forms for present in AditzTrinkoak.jakin!
+      							 tns  => jakin.prc ! tns } ;
+      			   val = R.NorNork R.Jakin  
+      			 } ;
 
 }

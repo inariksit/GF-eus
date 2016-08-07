@@ -5,15 +5,21 @@ param
 
   ClType = Stat | Indir | Qst ;
 
-{-
-   Type of copula used, e.g. 
- 
-     Miren lorategi+a+n dago [CopulaType = Egon]
-     Miren irakasle+a da [CopulaType = Izan]
--}
-  CopulaType = Egon | Izan  ; 
 
-  Valency = Nor | NorNork | NorNori | NorNoriNork ;
+  -- Every verb has some fully inflecting part:
+  -- if the whole verb is one of these synthetic verbs, then there won't be a participle
+  -- (or it's only in some tenses/persons/something).
+  -- Also some of these verbs have different conjugations in NorNork and NorNoriNork.
+  -- AditzTrinkoak has all the inflection tables fully spelt out, 
+  -- and here we just make nice neat set of parameters that go into the verbs.
+  SyntVerb1 = Egon | Izan | Ibili ;
+  SyntVerb2 = Ukan | Jakin | Eduki ; --TODO others
+
+
+
+  Valency = Nor SyntVerb1 
+          | NorNork SyntVerb2 
+          | NorNori | NorNoriNork ;  --always Ukan ?
 
 {-
    Type of adjectival phrase, e.g.
@@ -43,7 +49,6 @@ param
 
 oper 
  -- Opers to manipulate params.
- -- Probably better to have Agr as Ag Number Person (and Hi, if wanted).
 
   sgAgr : Agr -> Agr = \agr ->
        case agr of { Gu    => Ni ;
@@ -60,8 +65,8 @@ oper
 
   getNum : Agr -> Number = \np ->
     case np of {
-        (Ni|Hi _|Zu|Hau)  => Sg ;
-        (Gu|Zuek|Hauek) => Pl 
+        (Ni|Hi _|Zu|Hau) => Sg ;
+        (Gu|Zuek|Hauek)  => Pl 
     } ;
 
   getPers : Agr -> Person = \np ->
@@ -73,8 +78,9 @@ oper
 
   subjCase : Valency -> Case = \val ->
     case val of {
-      Nor     => Abs ;
-      NorNori => Dat ;
-      _       => Erg  } ;
+      Nor _    => Abs ;
+      NorNori  => Dat ;
+      _        => Erg  } ;
+
 
 }

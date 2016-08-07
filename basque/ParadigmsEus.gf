@@ -49,7 +49,7 @@ oper
 
     mkV2 : Str -> V -> V2 = \lo,egin -> 
       lin V2 (egin ** { prc = \\t => lo ++ egin.prc ! t ;
-                        val = NorNork }) ;
+                        val = NorNork Ukan }) ;
 
   } ;
 
@@ -105,10 +105,10 @@ oper
  				       _                 => FinalCons } 
 		in { s = stem ; ph = phono ; anim=Inan } ; 
 
-  mkVerb1 : Str -> Verb = \s -> { val = Nor ;
+  mkVerb1 : Str -> Verb = \s -> { val = Nor Izan ;
                                   prc = mkPrc s } ;  
 
-  mkVerb2 : Str -> Verb = \s -> { val = NorNork ; 
+  mkVerb2 : Str -> Verb = \s -> { val = NorNork Ukan ; 
                                    prc = mkPrc s } ; 
 
 

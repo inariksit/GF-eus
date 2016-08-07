@@ -69,7 +69,7 @@ oper
                                     -- "Light" modifiers attach directly to the s.
 
   Complement : Type = { s : Agr => Str ; 
-                        copula : CopulaType } ;
+                        copula : SyntVerb1 } ;
 
   mkComp : Str -> Complement = \str -> 
     { s = \\agr => str ;
@@ -184,9 +184,9 @@ oper
                               -- This is because of V2Q, V2S versions you need both!
                               --
                               -- In the VQ, VS... version, dObj agreement is always Hau. (No exceptions?)
-                              -- So this function, while looking dangerous, is doing the Right Thing.
+                              -- So this function, while looking dangerous, should do the Right Thing.
                     s = \\agr => [] ; 
-                    isDef = False } ;
+                    isDef = True } ; --so that we don't choose singular agreement with negative polarity
            iobj = { a = Hau ;
                     s = [] } ;
            adv  = [] ;
@@ -206,7 +206,7 @@ oper
 
 
   insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp,vp ->
-    vp ** { comp = \\agr => vp.comp ! agr ++ comp.s ! agr  } ; 
+    vp ** { comp = \\agr => vp.comp ! agr ++ comp.s ! agr } ; 
     --TODO: retain Izan vs. Egon difference.
 
 
@@ -242,8 +242,8 @@ oper
 --  txakurrari abesten al diozu?
 
 
-  -- PresSimul : dakit
-  -- Fut Simul : jakingo dut ???
+  -- Pres Simul : dakit
+  -- Fut  Simul : jakingo dut ???
   -- is this ugly? have aux contain forms from both jakin and ukan,
   -- and prc be empty except for Fut.
 
@@ -254,9 +254,9 @@ oper
               <Pres,Anter> => {aux=Pres ; prc=Past} ; --lo egin da
               <Past,Simul> => {aux=Past ; prc=Pres} ; --lo egiten nintzen
               <Past,Anter> => {aux=Past ; prc=Past} ; --lo egin nintzen
-              <Fut,Simul>  => {aux=Pres ; prc=Fut} ; --lo egingo da 
-              <Fut,Anter>  => {aux=Past ; prc=Fut} ; --lo egingo nintzen
-              <Cond,Simul> => {aux=Cond ; prc=Fut} ; --lo egiteko nintzateke
+              <Fut,Simul>  => {aux=Pres ; prc=Fut} ;  --lo egingo da 
+              <Fut,Anter>  => {aux=Past ; prc=Fut} ;  --lo egingo nintzen
+              <Cond,Simul> => {aux=Cond ; prc=Fut} ;  --lo egiteko nintzateke
               <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
             aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ;
             sc : Case = subjCase vp.val ;
@@ -272,18 +272,26 @@ oper
 
   chooseAux : VerbPhrase -> IntransV = chooseAuxPol Pos ;
 
+  --TODO: add other synthetic transitive verbs
   chooseAuxPol : Polarity -> VerbPhrase -> IntransV = \pol,vp -> 
     case vp.val of {
-      Nor         => AditzTrinkoak.copulaNor ;
-      NorNork     => 
-        case <pol,vp.dobj.isDef> of {
-          <Neg,False> => AditzTrinkoak.copulaNorNork ! sgAgr vp.dobj.a ;
-          _           => AditzTrinkoak.copulaNorNork ! vp.dobj.a } ; 
+      Nor Izan  => AditzTrinkoak.izanNor ;
+      Nor Egon  => AditzTrinkoak.egonNor ;
+      Nor Ibili => AditzTrinkoak.ibiliNor ;
+      NorNori   => AditzTrinkoak.ukanNoriNor ! vp.iobj.a ; --are there other NorNori verbs?
+
       NorNoriNork => 
         case <pol,vp.dobj.isDef> of {
-          <Neg,False> => AditzTrinkoak.copulaNoriNorNork ! vp.iobj.a ! sgAgr vp.dobj.a ;
-          _           => AditzTrinkoak.copulaNoriNorNork ! vp.iobj.a ! vp.dobj.a } ;
-      _  => AditzTrinkoak.copulaNor } ; ----TODO NorNori
+          <Neg,False> => AditzTrinkoak.ukanNoriNorNork ! vp.iobj.a ! sgAgr vp.dobj.a ;
+          _           => AditzTrinkoak.ukanNoriNorNork ! vp.iobj.a ! vp.dobj.a } ;
+
+      NorNork x   => 
+        let aux = AditzTrinkoak.syntTransVerb (NorNork x) 
+        in case <pol,vp.dobj.isDef> of {
+             <Neg,False> => aux ! sgAgr vp.dobj.a ;
+             _           => aux ! vp.dobj.a } 
+
+} ;
 
 
 

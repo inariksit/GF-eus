@@ -16,9 +16,9 @@ lin
 
   -- : VQ -> QS -> VP ;   -- ez dakit [nor den]
   ComplVQ vq qs = 
-    let q : Sentence = qs ! Indir ; -- choose the version without al
-        auxFull : Str = glue q.aux.stem "n" ; --de+n
-        qcomp : Complement = mkComp (q.beforeAux ++ auxFull ++ q.afterAux) ;
+    let qi : Sentence = qs ! Indir ; -- choose the version without al
+        auxFull : Str = glue qi.aux.stem "n" ; --de+n
+        qcomp : Complement = mkComp (qi.beforeAux ++ auxFull ++ qi.afterAux) ;
     in insertComp qcomp (predV vq) ;
 
   -- : VA -> AP -> VP ;  -- they become red
@@ -69,11 +69,7 @@ lin
     ReflVP vps = ResEus.complSlash vps buru_NP ; ------ TODO
 
     --  : Comp -> VP ;
-
-    UseComp comp = let copulaChoice : VP = case comp.copula of { 
-                      Izan => copulaVP ;
-                      Egon => copulaVP } --Egon
-                   in insertComp comp copulaChoice ;
+    UseComp comp = insertComp comp (copulaVP comp.copula) ;
 
 {-
     PassV2   : V2 -> VP ;               -- be loved
@@ -109,7 +105,7 @@ lin
     -- the house is big   = etxea handia da
     -- the houses are big = etxeak handiak dira
 
-    -- Complement : Type = {s : Agr => Str ; copula : CopulaType } ;
+    -- Complement : Type = {s : Agr => Str ; copula : SyntVerb } ;
 
   -- : AP  -> Comp ;
   CompAP ap = { s = \\agr => ap.s ++ artA ! getNum agr ! Abs ! ap.ph  ;
@@ -125,13 +121,14 @@ lin
                 copula = Izan } ; 
 
 -- Copula alone; intransitive and Izan by default
-    UseCopula = copulaVP ;
+  UseCopula = copulaVP Izan ;
 
 
 oper 
 
-  copulaVP : VP = lin VP (predV { prc = \\tns => [] ; 
-                                  val = Nor }) ;
+  copulaVP : SyntVerb1 -> VP = \izan ->
+    lin VP (predV { prc = \\tns => [] ; 
+                    val = Nor izan }) ;
 } 
 
 
