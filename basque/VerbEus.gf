@@ -28,7 +28,7 @@ lin
   -- : V2 -> VPSlash
   SlashV2a v2 = predV v2 ** 
     { post = noPost ;
-     missing = MissingDObj } ;
+      missing = MissingDObj } ;
 
   -- : V3 -> NP -> VPSlash ;  -- give it (to her)
   Slash2V3 v3 npNor = predV v3 **

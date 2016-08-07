@@ -20,6 +20,9 @@ lin drink_V2 = mkV2 "edan" ;
 lin know_VQ = jakin_VQ ; -- synthetic verb
 lin know_VS = ukanVS "uste" ;
 
+--lin answer_V2S = ;
+--lin ask_V2Q = ;
+
 oper
   egin_V : V = mkV "egin" ;
 

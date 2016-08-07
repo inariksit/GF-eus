@@ -156,10 +156,33 @@ oper
 oper
 
   Verb : Type = { prc : Tense => Str ;
-                  --ph  : Phono ; --for relative clause
-                  val : Valency --TODO: synthetic verbs
-                 } ;
+                  val : Valency 
+                } ;
 
+  -- Verb has only two fields, and furthermore, all V* are of the same type.
+  -- The Valency parameter actually tells which inflecting verb/auxiliary to choose.
+  -- We could also add just the inflecting verb directly to all V*s, but for most of them
+  -- it's all same.
+  -- In addition, the 3-dimensional inflection makes it difficult with Slash categories.
+  -- For VP and VPSlash, the type is the same for all: this makes it possible that the verb may
+  -- come from NorNoriNork and missing Nor, Nori or Adv; NorNori or NorNork missing Nor or Adv;
+  -- or Nor missing Adv.
+  -- Hence, we cannot keep the actual verb table in VP(Slash) and ClSlash, because they are of different types. 
+  -- Alternatively, we could make Nor, NorNork and NorNori 3-dimensional with dummy parameters -- this would
+  -- get rid of the issue of different types. But there are other reasons for this choice:
+  -- 
+  -- 1) It is less error-prone to do all the manipulation of the verb tables in one function.
+  -- Even if we had all verbs artificially 3-dimensional, we would have to access different branches
+  -- of the tables in many different functions; in effect, to rewrite the table every time we add an argument
+  -- to the VP. This means we would have to repeat the selection in all the SlashV* functions.
+  -- In contrast, now each SlashV* function just adds the new argument into a field in the VPSlash.
+  --
+  -- 2) We cannot choose the direct object agreement in the VP phase:
+  -- negative polarity together with indefinite direct object forces the verb to have singular form:
+  -- Garagardoak edaten ditut   `I drink (the) beers'
+  -- Ez dut garagardorik edaten `I don't drink (the) beer/beers'
+  -- *Ez ditut garagardorik edaten `I don't drink (the) beers
+  -- Only once we know the polarity of the sentence, we can choose the right form of the verb.
 
   VerbPhrase : Type = 
     Verb ** { dobj : { a : Agr ; 
@@ -179,7 +202,7 @@ param
 
 oper 
   predV : Verb -> VerbPhrase = \v -> 
-    v ** { dobj = { a = Hau ; -- This will be used for many different verbs becoming VPs! 
+    v ** { dobj = { a = Hau ; -- This will be used for *all* V* becoming VP! 
                               -- e.g. VQ, VS, ... will use a NorNork copula, but 
                               -- the sentence complement will be stored in comp field.
                               -- This is because of V2Q, V2S versions you need both!
@@ -242,11 +265,6 @@ oper
 -- mutilari garagardoa ematen al diozu?
 --  txakurrari abesten al diozu?
 
-
-  -- Pres Simul : dakit
-  -- Fut  Simul : jakingo dut ???
-  -- is this ugly? have aux contain forms from both jakin and ukan,
-  -- and prc be empty except for Fut.
 
   mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
     { s = \\t,a,pol =>
