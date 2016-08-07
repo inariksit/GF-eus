@@ -60,6 +60,7 @@ oper
   Noun : Type = { s    : Str ; --for nouns ending in -a, we chop off the -a, and add it in the article + cases.
                   ph   : Phono ;
                   anim : Bizi } ;
+  PNoun : Type = Noun ** { nbr : Number } ;
 
   CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
                    ph   : Phono ; 

@@ -125,7 +125,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     N = ResEus.Noun ;       --{s : Str ; ph = Phono} ;
     --N2 ;    -- relational noun                     e.g. "son"
     --N3 ;    -- three-place relational noun         e.g. "connection"
-    PN = ResEus.Noun ** { nbr : Number } ; 
+    PN = ResEus.PNoun ; 
 
 
 linref

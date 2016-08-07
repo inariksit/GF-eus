@@ -6,13 +6,13 @@ oper
 
   mkN = overload {
    mkN : Str -> N = \s -> lin N (mkNoun s) ;
-   mkN : Str -> Bizi -> N = \s,ani -> lin N (mkNoun s) ** {anim=ani} ;
-   mkN : Str -> Phono -> N = \s,ph -> lin N {s = s ; stem = s ; ph = ph ; anim=Inan} 
+   mkN : Str -> Bizi -> N = \s,ani -> lin N (mkNoun s) ;
+   mkN : Str -> Phono -> N = \s,ph -> lin N (mkNoun s) ** {ph = ph} ;
   } ;
 
   mkPN = overload {
-    mkPN : Str -> PN = \s -> lin PN (mkNoun s ** {nbr = Sg} ) ; -- FIXME: check mkNoun
-    mkPN : Str -> Phono -> PN = \s,ph -> lin PN {s = s ; stem = s ; ph = ph ; nbr = Sg ; anim=Anim} 
+    mkPN : Str -> PN = \s -> lin PN (mkPNoun s) ;
+    mkPN : Str -> Phono -> PN = \s,ph -> lin PN (mkPNoun s) ** {ph = ph} ;
 
   } ;
 
@@ -21,6 +21,8 @@ oper
   mkA : Str -> A = \s -> lin A (mkAdj s) ;
 
 --  mkA2 : Str -> A2 = \s -> lin A2 (mkAdj s) ;
+
+
 
 --2 Verbs
 
@@ -104,6 +106,8 @@ oper
 				       ("e"|"i"|"o"|"u") => FinalVow ;
  				       _                 => FinalCons } 
 		in { s = stem ; ph = phono ; anim=Inan } ; 
+
+  mkPNoun : Str -> PNoun = \s -> mkNoun s ** {nbr = Sg ; anim=Anim} ; 
 
   mkVerb1 : Str -> Verb = \s -> { val = Nor Izan ;
                                   prc = mkPrc s } ;  
