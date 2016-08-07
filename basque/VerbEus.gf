@@ -16,7 +16,7 @@ lin
 
   -- : VQ -> QS -> VP ;   -- ez dakit [nor den]
   ComplVQ vq qs = 
-    let q : Sentence = qs ! Stat ; -- choose the version without al
+    let q : Sentence = qs ! Indir ; -- choose the version without al
         auxFull : Str = glue q.aux.stem "n" ; --de+n
         qcomp : Complement = mkComp (q.beforeAux ++ auxFull ++ q.afterAux) ;
     in insertComp qcomp (predV vq) ;
@@ -26,40 +26,24 @@ lin
 
 
   -- : V2 -> VPSlash
-  SlashV2a v2 = v2 ** 
-   { dobj = { s = \\pol => [] ;
-              a = Hau ;
-              isDef = False } ;
-     iobj = { s = [] ;
-              a = Hau } ;
-     adv  = [] ;
-     comp = \\_ => [] ;
-     post = noPost ;
+  SlashV2a v2 = predV v2 ** 
+    { post = noPost ;
      missing = MissingDObj } ;
 
   -- : V3 -> NP -> VPSlash ;  -- give it (to her)
-  Slash2V3 v3 npNor = v3 **
+  Slash2V3 v3 npNor = predV v3 **
     { dobj = { s = table { Pos => npNor.s ! Abs ; 
                            Neg => negDObj npNor } ;
                a = npNor.agr ;
                isDef = npNor.isDef } ;
-      iobj = { s = [] ;
-               a = Hau } ;
-      adv = [] ;
-      comp = \\agr => [] ;
       post = noPost ;
       missing = MissingIObj } ;
 
 
   -- : V3  -> NP -> VPSlash ;  -- give (it) to her
-  Slash3V3 v3 npNori = v3 **
-    { dobj = { s = \\pol => [] ; 
-               a = Hau ;
-               isDef = False } ;
-      iobj = { s = npNori.s ! Dat ;
+  Slash3V3 v3 npNori = predV v3 **
+    { iobj = { s = npNori.s ! Dat ;
                a = npNori.agr } ;
-      comp = \\agr => [] ;
-      adv = [] ;
       post = noPost ;
       missing = MissingDObj } ;
 {-
@@ -140,20 +124,14 @@ lin
   CompCN cn = { s = \\agr => cn.s ! agr ++ artA ! getNum agr ! Abs ! cn.ph ;
                 copula = Izan } ; 
 
--- Copula alone
-
-
-                            
--- choose copula based on transitivity(argstruct) of main verb.
-
+-- Copula alone; intransitive and Izan by default
     UseCopula = copulaVP ;
 
 
 oper 
 
-  copulaVP : VP = lin VP (predV { prc  = \\tns => [] ; 
-                                  val  = Nor ;
-                                  ph   = FinalCons }) ;
+  copulaVP : VP = lin VP (predV { prc = \\tns => [] ; 
+                                  val = Nor }) ;
 } 
 
 
