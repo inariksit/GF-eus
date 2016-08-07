@@ -29,12 +29,13 @@ param
        | Gen | Soc | Ins | Ine -- Irregular stems
        | LocStem ;  -- LocStem is inessive without -an; many other cases use same stem!
 
---    Gender = Masc | Fem ; -- We will need this for hika
+
 --    Degree = Posit | Compar | Superl | Excess ;
 --    CardOrd = NCard | NOrd ;
 
+  Gender = Masc | Fem ;
 
-  Agr = Ni | Hi | Zu | Hau | Gu | Zuek | Hauek ;
+  Agr = Ni | Hi Gender | Zu | Hau | Gu | Zuek | Hauek ;
 
 
   Phono = FinalA | FinalR | FinalCons | FinalVow ; 
@@ -53,20 +54,20 @@ oper
   plAgr : Agr -> Agr = \agr ->
     case agr of { Ni  => Gu ;
                   Zu  => Zuek ;
-                  Hi  => Zuek ;
+                  Hi _ => Zuek ;
                   Hau => Hauek ;
                   agr => agr } ;
 
   getNum : Agr -> Number = \np ->
     case np of {
-        (Ni|Hi|Zu|Hau)  => Sg ;
+        (Ni|Hi _|Zu|Hau)  => Sg ;
         (Gu|Zuek|Hauek) => Pl 
     } ;
 
   getPers : Agr -> Person = \np ->
     case np of {
         (Ni|Gu)      => P1 ;
-        (Hi|Zu|Zuek) => P2 ;
+        (Hi _ |Zu|Zuek) => P2 ;
         (Hau|Hauek)  => P3
     } ;
 

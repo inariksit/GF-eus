@@ -33,7 +33,7 @@ oper
 
     copulaNor : IntransV =
       table {Past => table {Ni => mkVForms "nintzen" ; 
-                            Hi => mkVForms "hintzen" ; 
+                            Hi _ => mkVForms "hintzen" ; 
                             Zu => mkVForms "zinen" ; 
                             Hau => mkVForms "zen" ; 
                             Gu => mkVForms "ginen" ; 
@@ -41,7 +41,7 @@ oper
                             Hauek => mkVForms "ziren" } ;
 
              Cond => table {Ni => mkVForms "nintzateke" ; 
-                            Hi => mkVForms "hintzateke" ; 
+                            Hi _ => mkVForms "hintzateke" ; 
                             Zu => mkVForms "zinateke" ; 
                             Hau => mkVForms "litzateke" ; 
                             Gu => mkVForms "ginateke" ; 
@@ -49,7 +49,7 @@ oper
                             Hauek => mkVForms "lirateke" } ;
              -- Present and future are identical
 	           _     => table {Ni => mkVForms "naiz" ; 
-                             Hi => mkVForms "haiz" ; 
+                             Hi _ => mkVForms "haiz" ; 
                              Zu => mkVForms "zara" ; 
                              Hau => mkVForms "da" ; 
                              Gu => mkVForms "gara" ; 
@@ -84,7 +84,8 @@ oper
                               Ni => noVForm ;
                               Zuek => mkVForms "ninduzuen" ;
                               Hau => mkVForms "ninduen" ;
-                              Hi => mkVForms "ninduan" ; --| "nindunan" ;
+                              Hi Fem  => mkVForms "ninduan" ; 
+                              Hi Masc => mkVForms "nindunan" ;
                               Zu => mkVForms "ninduzun" 
                      } ;
                      _ => table { -- Pres
@@ -93,7 +94,8 @@ oper
                               Ni => noVForm ;
                               Zuek => mkVForms "nauzue" ;
                               Hau => mkVForms "nau" ;
-                              Hi => mkVForms "nauk" ; --| "naun" ;
+                              Hi Fem  => mkVForms "nauk" ; 
+                              Hi Masc => mkVForms "naun" ;
                               Zu => mkVForms "nauzu" 
                      }
               } ;
@@ -104,7 +106,8 @@ oper
                               Ni => noVForm ;
                               Zuek => mkVForms "gintuzuen" ;
                               Hau => mkVForms "gintuen" ;
-                              Hi => mkVForms "gintuan" ; --| "gintunan" ;
+                              Hi Fem => mkVForms "gintuan" ; 
+                              Hi Masc => mkVForms "gintunan" ;
                               Zu => mkVForms "gintuzun" 
                      } ;
                      _ => table { -- Pres
@@ -113,7 +116,8 @@ oper
                               Ni => noVForm ;
                               Zuek => mkVForms "gaituzue" ;
                               Hau => mkVForms "gaitu" ;
-                              Hi => mkVForms "gaituk" ; --| "gaitun" ;
+                              Hi Fem => mkVForms "gaituk" ; 
+                              Hi Masc => mkVForms "gaitun" ;
                               Zu => mkVForms "gaituzu" 
                      }
               } ;
@@ -124,7 +128,7 @@ oper
                               Ni => mkVForms "nituen" ;
                               Zuek => mkVForms "zenituzten" ;
                               Hau => mkVForms "zituen" ;
-                              Hi => mkVForms "hituen" ;
+                              Hi _ => mkVForms "hituen" ;
                               Zu => mkVForms "zenituen" 
                      } ;
                      _ => table { -- Pres
@@ -133,7 +137,8 @@ oper
                               Ni => mkVForms "ditut" ;
                               Zuek => mkVForms "dituzue" ;
                               Hau => mkVForms "ditu" ;
-                              Hi => mkVForms "dituk" ; --| "ditun" ;
+                              Hi Fem => mkVForms "dituk" ;
+                              Hi Masc => mkVForms "ditun" ;
                               Zu => mkVForms "dituzu" 
                      }
               } ;
@@ -144,7 +149,7 @@ oper
                               Ni => mkVForms "zintuztedan" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "zintuzten" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm
                      } ;
                      _ => table { -- Pres
@@ -153,7 +158,7 @@ oper
                               Ni => mkVForms "zaituztet" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "zaituzte" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      }
               } ;
@@ -164,7 +169,7 @@ oper
                               Ni => mkVForms "nuen" ;
                               Zuek => mkVForms "zenuten" ;
                               Hau => mkVForms "zuen" ;
-                              Hi => mkVForms "huen" ;
+                              Hi _ => mkVForms "huen" ;
                               Zu => mkVForms "zenuen" 
                      } ;
                      _ => table { -- Pres
@@ -173,18 +178,19 @@ oper
                               Ni => mkVForms "dut" ;
                               Zuek => mkVForms "duzue" ;
                               Hau => mkVForms "du" ;
-                              Hi => mkVForms "duk" ; --| "dun" ;
+                              Hi Fem => mkVForms "duk" ; 
+                              Hi Masc => mkVForms "dun" ;
                               Zu => mkVForms "duzu" 
                      }
               } ;
-              Hi => table {
+              Hi _ => table {
                      Past => table {
                               Gu => mkVForms "hindugun" ;
                               Hauek => mkVForms "hinduten" ;
                               Ni => mkVForms "hindudan" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "hinduen" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -193,7 +199,7 @@ oper
                               Ni => mkVForms "haut" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "hau" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm
                      }
               } ;
@@ -204,7 +210,7 @@ oper
                               Ni => mkVForms "zintudan" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "zintuen" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -213,7 +219,7 @@ oper
                               Ni => mkVForms "zaitut" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "zaitu" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      }
               }
@@ -227,7 +233,7 @@ oper
 
     copulaEgonNor : IntransV =
       table {Past => table {Ni => mkVForms "nengoen" ; 
-                    Hi => mkVForms "hengoen" ; 
+                    Hi _ => mkVForms "hengoen" ; 
                     Zu => mkVForms "zeunden" ; 
                     Hau => mkVForms "zegoen" ; 
                     Gu => mkVForms "geunden" ; 
@@ -236,7 +242,7 @@ oper
              -- TODO: Cond
              -- Present and future are identical
 	     _ =>  table {Ni => mkVForms "nago" ; 
-                    Hi => mkVForms "hago" ; 
+                    Hi _ => mkVForms "hago" ; 
                     Zu => mkVForms "zaude" ; 
                     Hau => mkVForms "dago" ; 
                     Gu => mkVForms "gaude" ; 
@@ -261,7 +267,7 @@ oper
                               Ni => noVForm ;
                               Zuek => noVForm ;
                               Hau => noVForm ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -270,7 +276,7 @@ oper
                               Ni => noVForm ;
                               Zuek => mkVForms "naukazue" ;
                               Hau => mkVForms "nauka" ;
-                              Hi => mkVForms "naukan" ; --| "naukan" ;
+                              Hi _ => mkVForms "naukan" ;
                               Zu => mkVForms "naukazu" 
                      }
               } ;
@@ -281,7 +287,7 @@ oper
                               Ni => noVForm ;
                               Zuek => noVForm ;
                               Hau => noVForm ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -290,7 +296,7 @@ oper
                               Ni => noVForm ;
                               Zuek => mkVForms "gauzkazue" ;
                               Hau => mkVForms "gauzka" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => mkVForms "gauzkazu" 
                      }
               } ;
@@ -301,7 +307,7 @@ oper
                               Ni => noVForm ;
                               Zuek => noVForm ;
                               Hau => noVForm ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -310,7 +316,8 @@ oper
                               Ni => mkVForms "dauzkat" ;
                               Zuek => mkVForms "dauzkazue" ;
                               Hau => mkVForms "dauzka" ;
-                              Hi => mkVForms "dauzkak" ; --| "dauzkan" ;
+                              Hi Fem => mkVForms "dauzkak" ; 
+                              Hi Masc => mkVForms "dauzkan" ;
                               Zu => mkVForms "dauzkazu" 
                      }
               } ;
@@ -321,7 +328,7 @@ oper
                               Ni => noVForm ;
                               Zuek => noVForm ;
                               Hau => noVForm ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm
                      } ;
                      _ => table { -- Pres
@@ -330,7 +337,7 @@ oper
                               Ni => mkVForms "zauzkatet" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "zauzkate" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      }
               } ;
@@ -341,7 +348,7 @@ oper
                               Ni => noVForm ;
                               Zuek => noVForm ;
                               Hau => noVForm ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -350,18 +357,19 @@ oper
                               Ni => mkVForms "daukat" ;
                               Zuek => mkVForms "daukazue" ;
                               Hau => mkVForms "dauka" ;
-                              Hi => mkVForms "daukak" ; --| "daukan" ;
+                              Hi Fem => mkVForms "daukak" ; 
+                              Hi Masc => mkVForms "daukan" ;
                               Zu => mkVForms "daukazu" 
                      }
               } ;
-              Hi => table {
+              Hi _ => table {
                      Past => table {
                               Gu => noVForm ;
                               Hauek => noVForm ;
                               Ni => noVForm ;
                               Zuek => noVForm ;
                               Hau => noVForm ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -370,7 +378,7 @@ oper
                               Ni => mkVForms "haukat" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "hauka" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm
                      }
               } ;
@@ -381,7 +389,7 @@ oper
                               Ni => noVForm ;
                               Zuek => noVForm ;
                               Hau => noVForm ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      } ;
                      _ => table { -- Pres
@@ -390,7 +398,7 @@ oper
                               Ni => mkVForms "zauzkat" ;
                               Zuek => noVForm ;
                               Hau => mkVForms "zauzka" ;
-                              Hi => noVForm ;
+                              Hi _ => noVForm ;
                               Zu => noVForm 
                      }
               }
