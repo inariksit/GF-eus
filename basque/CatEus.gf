@@ -67,7 +67,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 -- as defined in NounEus.
 
     CN = ResEus.CNoun ;
-    NP = ResEus.NounPhrase ; --{s : Case => Str ; agr : Agr} 
+    NP = ResEus.NounPhrase ; 
     Pron = ResEus.Pronoun ; --Pronouns need enough info to turn it into NP or Quant.
     Det = { s     : Case => Phono => Str ;   -- hauek
             pref  : Str ;                    -- nire
@@ -106,10 +106,9 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 -- These are constructed in LexiconEus and in 
 -- additional lexicon modules.
 
-    V  = ResEus.Verb ;
-    V2 = ResEus.Verb ;
-    V3 = ResEus.Verb ;
-
+    V,
+    V2,
+    V3,
     VV,    -- verb-phrase-complement verb         e.g. "want"
     VS,    -- sentence-complement verb            e.g. "claim"
     VQ,    -- question-complement verb            e.g. "wonder"  
@@ -129,7 +128,6 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
 
 linref
-
     S = linS ;
     Cl = linCl ;
     VP = linVP ;

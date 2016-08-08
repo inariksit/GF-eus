@@ -84,13 +84,13 @@ lin
 
 -}
   -- : VP -> Adv -> VP ;  -- sleep here
-  AdvVP vp adv = ResEus.insertAdv adv.s vp ;
+  AdvVP vp adv = ResEus.insertAdv adv vp ;
 
   -- : VP -> Adv -> VP ;  -- sleep , even though ...
-  ExtAdvVP vp adv = ResEus.insertAdv (adv.s ++ ",") vp ;
+  ExtAdvVP vp adv = ResEus.insertAdv (postfixSS "," adv) vp ;
 
   -- : AdV -> VP -> VP ;  -- always sleep
-  AdVVP adv vp = ResEus.insertAdv adv.s vp ;
+  AdVVP adv vp = ResEus.insertAdv adv vp ;
 
   -- : VPSlash -> Adv -> VPSlash ;  -- use (it) here
   AdvVPSlash vps adv = vps ** { adv = vps.adv ++ adv.s } ;

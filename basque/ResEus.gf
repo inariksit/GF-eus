@@ -219,8 +219,8 @@ oper
   -----
   -- Modify existing VPs
 
-  insertAdv : Str -> VerbPhrase -> VerbPhrase = \a,vp ->
-    vp ** { adv = vp.adv ++ a } ;
+  insertAdv : SS -> VerbPhrase -> VerbPhrase = \a,vp ->
+    vp ** { adv = vp.adv ++ a.s } ;
 
 
   insertComp = overload {
