@@ -130,5 +130,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
 linref
 
-    S = \sent -> sent.beforeAux ++ sent.aux.indep ++ sent.afterAux ;
+    S = linS ;
+    Cl = linCl ;
+    VP = linVP ;
 }

@@ -11,7 +11,7 @@ lin girl_N  = mkN "neska" ;
 lin blow_V = mkV "putz" egin_V ;
 lin sleep_V = mkV "lo"  egin_V ;
 
-lin love_V2 = ukanV2 "maite" ; 
+lin love_V2 = ukanV "maite" ; 
 
 lin see_V2  = mkV2 "ikusi" ;
 lin drink_V2 = mkV2 "edan" ;

@@ -2,23 +2,24 @@ concrete VerbEus of Verb = CatEus ** open ResEus, AditzTrinkoak, Prelude in {
 
 
 lin
-  UseV = predV ; -- {s = v.s ; sc = Abs ; prc = v.prc ; compl = []; adv = []} ; 
+  UseV = predV ;
 
-{-
-    ComplVV  : VV  -> VP -> VP ;  -- want to run
--}
+
+  -- : VV  -> VP -> VP ;  -- [lo egin/neska ikusi/jakin] nahi/ahal/behar dut
+  ComplVV vv vp = 
+    let vcomp : Complement = mkComp (linVPPrc vp) ;
+    in insertComp vcomp (predV vv) ;
+
 
   -- : VS  -> S  -> VP ;  -- uste dut [neska etorriko dela]
   ComplVS vs s =
-    let auxFull : Str = glue s.aux.stem "la" ; --de+la
-        scomp : Complement = mkComp (s.beforeAux ++ auxFull ++ s.afterAux) ;
+    let scomp : Complement = mkComp (linSSub s "la") ;
     in insertComp scomp (predV vs) ;
 
   -- : VQ -> QS -> VP ;   -- ez dakit [nor den]
   ComplVQ vq qs = 
     let qi : Sentence = qs ! Indir ; -- choose the version without al
-        auxFull : Str = glue qi.aux.stem "n" ; --de+n
-        qcomp : Complement = mkComp (qi.beforeAux ++ auxFull ++ qi.afterAux) ;
+        qcomp : Complement = mkComp (linSSub qi "n") ;
     in insertComp qcomp (predV vq) ;
 
   -- : VA -> AP -> VP ;  -- they become red
@@ -105,7 +106,7 @@ lin
     -- the house is big   = etxea handia da
     -- the houses are big = etxeak handiak dira
 
-    -- Complement : Type = {s : Agr => Str ; copula : SyntVerb } ;
+    -- Complement : Type = {s : Agr => Str ; copula : SyntVerb1 } ;
 
   -- : AP  -> Comp ;
   CompAP ap = { s = \\agr => ap.s ++ artA ! getNum agr ! Abs ! ap.ph  ;

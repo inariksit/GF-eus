@@ -40,9 +40,9 @@ oper
     let maiteV = mkVerb1 maite ;
     in lin V (maiteV ** { prc = \\_ => maite }) ;
 
-  ukanV2 : Str -> V2 = \maite -> 
+  ukanV : Str -> Verb = \maite -> 
     let maiteV2 = mkVerb2 maite ;
-    in lin V2 (maiteV2 ** { prc = \\_ => maite }) ;
+    in (maiteV2 ** { prc = \\_ => maite }) ;
 
   mkV2 = overload {
     mkV2 : Str -> V2 = \s -> lin V2 (mkVerb2 s) ;
@@ -61,9 +61,8 @@ oper
 
 
   mkVS : Str -> VS = \s -> lin VS (mkVerb2 s) ;
-  ukanVS : Str -> VS = \uste -> 
-    let usteV2 = mkVerb2 uste ;
-    in lin VS (usteV2 ** { prc = \\_ => uste }) ;
+
+  ukanVS : Str -> VS = \uste -> lin VS (ukanV uste) ;
 
   --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerb2 s) ;
 -------------------------------------------------------------------------------

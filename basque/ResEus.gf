@@ -176,7 +176,23 @@ oper
 param 
   MissingArg = MissingAdv | MissingDObj | MissingIObj ;
 
-oper 
+oper
+  --to be used in linref, PhraseEus ... anything where a VP is turned into string!
+  linVP : VerbPhrase -> Str = linVPTense Pres Pres ;
+
+  linVPTense : Tense -> Tense -> VerbPhrase -> Str = \tnsPrc,tnsAux,vp ->
+    vp.adv 
+    ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
+    ++ vp.prc ! tnsPrc 
+    ++ (chooseAux vp ! tnsAux ! Hau).indep ;
+
+  -- Used in ComplVV : do not include copula
+  linVPPrc : VerbPhrase -> Str = \vp ->
+    vp.adv 
+    ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
+    ++ vp.prc ! Past ; --If we choose Past, then it will work with Jakin ...
+                       --TODO make it less of a hack.
+
   predV : Verb -> VerbPhrase = \v -> 
     v ** { dobj = { a = Hau ; -- This will be used for *all* V* becoming VP! 
                               -- e.g. VQ, VS, ... will use a NorNork copula, but 
@@ -233,7 +249,17 @@ oper
                       aux : VForms ; -- Need to keep this open for SubjS
                       afterAux : Str } ;
 
+  -- to be used for linref, PhraseEus, etc.
+  linS : Sentence -> Str = \sent -> 
+    sent.beforeAux ++ sent.aux.indep ++ sent.afterAux ;
+
+  linSSub : Sentence -> Str -> Str = \sent,subj ->
+    sent.beforeAux ++ glue sent.aux.stem subj ++ sent.afterAux ;
+
   Clause : Type = { s : Tense => Anteriority => Polarity => ClType => Sentence } ; 
+
+  linCl : Clause -> Str = \clause ->
+    linS (clause.s ! Pres ! Simul ! Pos ! Stat) ;
 
 -- ez al duzu katu beltza ikusi? / ez al duzu katu beltzik ikusi? (MassNP)
 -- ez dut katu beltza ikusi / ez dut katu beltzik ikusi (MassNP)

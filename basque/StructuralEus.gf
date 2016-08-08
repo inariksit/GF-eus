@@ -5,7 +5,6 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   lin but_PConj  = lin PConj (ss "baina") ;
 
 
-
   lin above_Prep = mkPrep "gainean" Abs False ;
  -- lin after_Prep : Prep ;
   lin before_Prep = mkPrep "gabe" Abs False ;
@@ -46,7 +45,13 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, Paradigms
   --lin although_Subj : Subj ;
   lin because_Subj  = mkSubj "lako" False ;
   lin if_Subj = mkSubj "ba" True ;
-  lin that_Subj = mkSubj "en" False ; --TODO phono
+  lin that_Subj = mkSubj "n" False ;
   --lin when_Subj : Subj ;
+
+
+  lin can8know_VV = ukanV "ahal" ; -- can (capacity)
+  lin can_VV = ukanV "ahal" ;      -- can (possibility)
+  lin must_VV = ukanV "behar" ;
+  lin want_VV = ukanV "nahi" ;
 
 }

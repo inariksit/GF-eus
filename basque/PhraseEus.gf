@@ -10,13 +10,10 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
     UttImpPl pol imp = {s = pol.s ++ imp.s ! pol.p } ;
     UttImpPol pol imp = {s = pol.s ++ imp.s ! pol.p } ;
 -}
-    UttIP ip = {s = ip.s ! Abs} ;
+    UttIP ip = { s = ip.s ! Abs} ;
     UttIAdv iadv = iadv ;
-    UttNP np = {s = np.s ! Abs} ;
-    UttVP vp = {s = vp.adv 
-                  ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
-                  ++ vp.prc ! Pres 
-                  ++ (chooseAux vp ! Pres ! Hau).indep } ;
+    UttNP np = { s = np.s ! Abs} ;
+    UttVP vp = { s = linVP vp } ;
     UttAdv adv = adv ;
     UttCN n = {s = n.s ! Hau ++ artA ! Sg ! Abs ! n.ph } ;
 --    UttCard n = {s = n.s ! } ;

@@ -56,11 +56,10 @@ lincat
 
 lin 
   BaseS x y = 
-    y ** { firstSent = x.beforeAux ++ x.aux.indep ++ x.afterAux } ;
+    y ** { firstSent = linS x } ;
 
   ConsS x xs = 
-    let xSent = x.beforeAux ++ x.aux.indep ++ x.afterAux 
-    in xs ** { firstSent = xSent ++ "," ++ xs.firstSent } ;
+    xs ** { firstSent = linS x ++ "," ++ xs.firstSent } ;
 
   -- Combine the finished sentences all into the beforeAux part of the S
   ConjS co xs = xs ** { beforeAux = xs.firstSent ++ co.s ++ xs.beforeAux } ;
