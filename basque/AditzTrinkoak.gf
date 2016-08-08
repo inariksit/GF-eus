@@ -473,9 +473,10 @@ oper
         <Hau,Pres,Hau>   => mkVForms "daki" ;
         <Hau,Pres,Gu>    => mkVForms "dakigu" ;
         <Hau,Pres,Zuek>  => mkVForms "dakizue" ;
---        <Hau,Pres,Hauek> => "daki...???"
+        <Hau,Pres,Hauek> => mkVForms "dakite" ;
         _                => ukanNorNork ! dobjAgr ! tns ! subjAgr 
       } ;
+
 
 
 {-
