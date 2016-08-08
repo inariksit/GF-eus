@@ -38,25 +38,32 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- A noun phrase can also be postmodified by the past participle of a
 -- verb, by an adverb, or by a relative clause
 
-{- TODO
-    PPartNP : NP -> V2  -> NP ;    -- the man seen
-    AdvNP   : NP -> Adv -> NP ;    -- Paris today
-    ExtAdvNP: NP -> Adv -> NP ;    -- boys, such as ..
-    RelNP   : NP -> RS  -> NP ;    -- Paris, which is here
+
+  -- : NP -> V2  -> NP ;    -- the man seen / ikusi gizona (sounds weird but so does English)
+  PPartNP np v2 = np ** { s = \\c => v2.prc ! Past ++ np.s ! c } ;
+
+  -- : NP -> Adv -> NP ;    -- Paris today ; boys, such as ..
+  AdvNP,ExtAdvNP = \np,adv -> np ** { s = \\c => adv.s ++ np.s ! c } ;
+
+
+  -- : NP -> RS  -> NP ;    -- Paris, which is here
+  RelNP np rs = np ** { s = \\c => rs.s ! np.agr ++ np.s ! c } ;
 
 -- Determiners can form noun phrases directly.
 
-    DetNP   : Det -> NP ;  -- these five
--}
-
+  -- : Det -> NP ;  -- nirea / nire bat...ea ?
+  DetNP det = { s = \\c => det.pref ++ det.s ! c ! FinalA ; --TODO phono
+                agr = Hau ; -- ??
+                anim = Inan ;
+                isDef = True } ;
 
   -- MassNP : CN -> NP ; 
-  MassNP cn =  { s = \\c => cn.heavyMod ! Hau 
-                         ++ cn.s ! Hau 
-                         ++ artIndef ! c ! cn.ph ;
-                 agr   = Hau ;
-                 anim  = Inan ;
-                 isDef = False } ;
+  MassNP cn = { s = \\c => cn.heavyMod ! Hau 
+                       ++ cn.s ! Hau 
+                       ++ artIndef ! c ! cn.ph ;
+                agr   = Hau ;
+                anim  = Inan ;
+                isDef = False } ;
 
 
 --2 Determiners
