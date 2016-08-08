@@ -2,60 +2,67 @@ concrete VerbEus of Verb = CatEus ** open ResEus, AditzTrinkoak, Prelude in {
 
 
 lin
-  UseV = predV ;
+  UseV = ResEus.useV ;
 
 
   -- : VV  -> VP -> VP ;  -- [lo egin/neska ikusi/jakin] nahi/ahal/behar dut
   ComplVV vv vp = 
-    let vcomp : Complement = mkComp (linVPPrc vp) ;
-    in insertComp vcomp (predV vv) ;
+    let vcomp : Str = linVPPrc vp ;
+    in ResEus.insertComp vcomp (useV vv) ;
 
 
   -- : VS  -> S  -> VP ;  -- uste dut [neska etorriko dela]
   ComplVS vs s =
-    let scomp : Complement = mkComp (linSSub s "la") ;
-    in insertComp scomp (predV vs) ;
+    let scomp : Str = linSSub s "la" ;
+    in ResEus.insertComp scomp (useV vs) ;
 
   -- : VQ -> QS -> VP ;   -- ez dakit [nor den]
   ComplVQ vq qs = 
     let qi : Sentence = qs ! Indir ; -- choose the version without al
-        qcomp : Complement = mkComp (linSSub qi "n") ;
-    in insertComp qcomp (predV vq) ;
+        qcomp : Str = linSSub qi "n" ;
+    in ResEus.insertComp qcomp (useV vq) ;
 
   -- : VA -> AP -> VP ;  -- they become red
-  ComplVA v ap = insertComp (CompAP ap) (predV v) ;
+  ComplVA va ap = ResEus.insertComp (CompAP ap).s (useV va) ;
 
 
   -- : V2 -> VPSlash
-  SlashV2a v2 = predV v2 ** 
-    { post = noPost ;
-      missing = MissingDObj } ;
+  SlashV2a = ResEus.slashDObj ;
 
   -- : V3 -> NP -> VPSlash ;  -- give it (to her)
-  Slash2V3 v3 npNor = predV v3 **
+  Slash2V3 v3 npNor = slashIObj v3 **
     { dobj = { s = table { Pos => npNor.s ! Abs ; 
                            Neg => negDObj npNor } ;
                a = npNor.agr ;
-               isDef = npNor.isDef } ;
-      post = noPost ;
-      missing = MissingIObj } ;
-
+               isDef = npNor.isDef } 
+    } ;
 
   -- : V3  -> NP -> VPSlash ;  -- give (it) to her
-  Slash3V3 v3 npNori = predV v3 **
+  Slash3V3 v3 npNori = slashDObj v3 **
     { iobj = { s = npNori.s ! Dat ;
-               a = npNori.agr } ;
-      post = noPost ;
-      missing = MissingDObj } ;
-{-
-    SlashV2V : V2V -> VP -> VPSlash ;  -- beg (her) to go
-    SlashV2S : V2S -> S  -> VPSlash ;  -- answer (to him) that it is good
-    SlashV2Q : V2Q -> QS -> VPSlash ;  -- ask (him) who came
-    SlashV2A : V2A -> AP -> VPSlash ;  -- paint (it) red
--}
+               a = npNori.agr }
+    } ;
 
-    -- : VPSlash -> NP -> VP
-    ComplSlash vps np = ResEus.complSlash vps np ;
+  -- : V2V -> VP -> VPSlash ;  -- beg (her) to go
+  SlashV2V v2v vp = slashDObj v2v **
+    { comp = \\agr => linVPPrc vp } ; --How about agreement with tense of the main clause???
+    
+
+  -- : V2S -> S  -> VPSlash ;  -- answer (to him) that it is good
+  SlashV2S v2s s = slashDObj v2s **
+    { comp = \\agr => linS s } ;
+
+  -- : V2Q -> QS -> VPSlash ;  -- ask (him) who came
+  SlashV2Q v2q qs = slashDObj v2q **
+    { comp = \\agr => linS (qs ! Indir) } ;
+
+  -- : V2A -> AP -> VPSlash ;  -- paint (it) red
+  SlashV2A v2a ap = slashDObj v2a **
+    { comp = (CompAP ap).s } ;
+
+
+  -- : VPSlash -> NP -> VP
+  ComplSlash vps np = ResEus.complSlash vps np ;
 {-
     SlashVV    : VV  -> VPSlash -> VPSlash ;       -- want to buy
     SlashV2VNP : V2V -> NP -> VPSlash -> VPSlash ; -- beg me to buy
@@ -66,35 +73,35 @@ lin
 -- Verb phrases can also be constructed reflexively and from
 -- copula-preceded complements.
 
-    -- : VPSlash -> VP ;
-    ReflVP vps = ResEus.complSlash vps buru_NP ; ------ TODO
+  -- : VPSlash -> VP ;
+  ReflVP vps = complSlash vps buru_NP ; ------ TODO
 
-    --  : Comp -> VP ;
-    UseComp comp = insertComp comp (copulaVP comp.copula) ;
+  -- : Comp -> VP ;
+  UseComp comp = insertComp comp.s (copulaVP comp.copula) ;
 
 {-
     PassV2   : V2 -> VP ;               -- be loved
 
 -}
-    -- : VP -> Adv -> VP ;  -- sleep here
-    AdvVP vp adv = ResEus.insertAdv adv vp ;
+  -- : VP -> Adv -> VP ;  -- sleep here
+  AdvVP vp adv = ResEus.insertAdv adv vp ;
 
-    -- : VP -> Adv -> VP ;  -- sleep , even though ...
-    ExtAdvVP vp adv = ResEus.insertAdv (postfixSS "," adv) vp ;
+  -- : VP -> Adv -> VP ;  -- sleep , even though ...
+  ExtAdvVP vp adv = ResEus.insertAdv (postfixSS "," adv) vp ;
 
-    -- : AdV -> VP -> VP ;  -- always sleep
-    AdVVP adv vp = ResEus.insertAdv adv vp ;
+  -- : AdV -> VP -> VP ;  -- always sleep
+  AdVVP adv vp = ResEus.insertAdv adv vp ;
 
-    -- : VPSlash -> Adv -> VPSlash ;  -- use (it) here
-    AdvVPSlash vps adv = vps ** { adv = vps.adv ++ adv.s } ;
+  -- : VPSlash -> Adv -> VPSlash ;  -- use (it) here
+  AdvVPSlash vps adv = vps ** { adv = vps.adv ++ adv.s } ;
 
-    -- : AdV -> VPSlash -> VPSlash ;  -- always use (it)
-    AdVVPSlash adv vps = vps ** { adv = adv.s ++ vps.adv } ;
+  -- : AdV -> VPSlash -> VPSlash ;  -- always use (it)
+  AdVVPSlash adv vps = vps ** { adv = adv.s ++ vps.adv } ;
 
-    -- : VP -> Prep -> VPSlash ;  -- live in (it)
-    VPSlashPrep vp prep = vp ** 
-     { post = prep ; 
-       missing = MissingAdv } ;
+  -- : VP -> Prep -> VPSlash ;  -- live in (it)
+  VPSlashPrep vp prep = vp ** 
+   { post = prep ; 
+     missing = MissingAdv } ;
 
 
 lin
@@ -103,23 +110,27 @@ lin
 
 -- Adjectival phrases, noun phrases, and adverbs can be used.
 
-    -- the house is big   = etxea handia da
-    -- the houses are big = etxeak handiak dira
+  -- the house is big   = etxea handia da
+  -- the houses are big = etxeak handiak dira
+  -- I am [a house that sleeps here] = ni [hemen lo egiten den etxea] naiz
+  -- we are [houses that sleep here] = gu [hemen lo egiten diren etxeak] gara
 
-    -- Complement : Type = {s : Agr => Str ; copula : SyntVerb1 } ;
+  -- Complement : Type = {s : Agr => Str ; copula : SyntVerb1 } ;
 
   -- : AP  -> Comp ;
   CompAP ap = { s = \\agr => ap.s ++ artA ! getNum agr ! Abs ! ap.ph  ;
                 copula = Izan };
+
+  -- : CN  -> Comp ;
+  CompCN cn = { s = \\agr => cn.s ! agr ++ artA ! getNum agr ! Abs ! cn.ph ;
+                copula = Izan } ; 
+
   --  NP  -> Comp ;
   CompNP np = { s = \\agr => np.s ! Abs ; copula = Izan } ; 
 
   -- : Adv  -> Comp ;
-  CompAdv adv = { s = \\agr => adv.s ; copula = Egon } ;
+  CompAdv adv = { s = \\agr => adv.s ; copula = Egon } ; 
 
-  --: CN  -> Comp ;
-  CompCN cn = { s = \\agr => cn.s ! agr ++ artA ! getNum agr ! Abs ! cn.ph ;
-                copula = Izan } ; 
 
 -- Copula alone; intransitive and Izan by default
   UseCopula = copulaVP Izan ;
@@ -128,8 +139,8 @@ lin
 oper 
 
   copulaVP : SyntVerb1 -> VP = \izan ->
-    lin VP (predV { prc = \\tns => [] ; 
-                    val = Nor izan }) ;
+    lin VP (ResEus.useV { prc = \\tns => [] ; 
+                          val = Nor izan }) ;
 } 
 
 

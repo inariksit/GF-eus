@@ -72,9 +72,6 @@ oper
   Complement : Type = { s : Agr => Str ; 
                         copula : SyntVerb1 } ;
 
-  mkComp : Str -> Complement = \str -> 
-    { s = \\agr => str ;
-      copula = Izan } ;
 
   NounPhrase : Type = { s    : Case => Str ;
                         agr  : Agr ;
@@ -186,14 +183,17 @@ oper
     ++ vp.prc ! tnsPrc 
     ++ (chooseAux vp ! tnsAux ! Hau).indep ;
 
-  -- Used in ComplVV : do not include copula
+  -- Used in ComplVV : does not include aux!
   linVPPrc : VerbPhrase -> Str = \vp ->
     vp.adv 
     ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
     ++ vp.prc ! Past ; --If we choose Past, then it will work with Jakin ...
                        --TODO make it less of a hack.
 
-  predV : Verb -> VerbPhrase = \v -> 
+  -----
+  -- Create VP or VPSlash from various Verbs
+
+  useV : Verb -> VerbPhrase = \v -> 
     v ** { dobj = { a = Hau ; -- This will be used for *all* V* becoming VP! 
                               -- e.g. VQ, VS, ... will use a NorNork copula, but 
                               -- the sentence complement will be stored in comp field.
@@ -208,28 +208,32 @@ oper
            adv  = [] ;
            comp = \\agr => [] } ;
 
-    {- Syntax note: 
-          vp ** {adv = "hargle"} 
-       means: take the original VP except for the field adv, which is replaced by "hargle"
-       Same as \vp -> { s     = vp.s ; 
-                        sc    = vp.sc ; 
-                        prc   = vp.prc ; 
-                        compl = vp.compl ;
-                        adv   = "hargle" } ;
-    -}
+  slashV : MissingArg -> Verb -> VPSlash = \missingArg,vstar -> useV vstar ** 
+    { post = noPost ;
+      missing = missingArg } ;
+
+  slashDObj : Verb -> VPSlash = slashV MissingDObj ; --works for V2, V2V, V2S, V2Q, V2A.
+
+  slashIObj : Verb -> VPSlash = slashV MissingIObj ; --only Slash3V3
+
+  -----
+  -- Modify existing VPs
+
   insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv,vp ->
     vp ** { adv = vp.adv ++ adv.s } ;
 
 
-  insertComp : Complement -> VerbPhrase -> VerbPhrase = \comp,vp ->
-    vp ** { comp = \\agr => vp.comp ! agr ++ comp.s ! agr } ; 
-    --TODO: retain Izan vs. Egon difference.
+  insertComp = overload {
 
+    insertComp : (Agr => Str) -> VerbPhrase -> VerbPhrase = \c,vp ->
+      vp ** { comp = \\agr => vp.comp ! agr ++ c ! agr } ; 
 
-  negDObj : NounPhrase -> Str = \np ->
-    case np.isDef of { True  => np.s ! Abs ;
-                       False => np.s ! Par } ;
+    insertComp : Str -> VerbPhrase -> VerbPhrase = \cStr,vp ->
+      vp ** { comp = \\agr => vp.comp ! agr ++ cStr } ;
+  } ;
 
+  -----
+  -- Complete VPSlash into VP
 
   complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
     case vps.missing of {
@@ -241,6 +245,10 @@ oper
                                                a = np.agr ;
                                                isDef = np.isDef } } 
           } ;
+
+  negDObj : NounPhrase -> Str = \np ->
+    case np.isDef of { True  => np.s ! Abs ;
+                       False => np.s ! Par } ;
 
 --------------------------------------------------------------------
 -- Clause and sentence 
