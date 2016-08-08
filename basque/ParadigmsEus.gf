@@ -28,26 +28,17 @@ oper
 
   mkV = overload {
 
-    mkV : Str -> V = \s -> lin V (mkVerb1 s) ;
+    mkV : Str -> V = \s -> lin V (mkVerbNor s) ;
 
     mkV : Str -> V -> V = \lo,egin -> 
       lin V (egin ** { prc = \\t => lo ++ egin.prc ! t }) ;
 
   } ;
 
-
-  izanV : Str -> V = \maite -> 
-    let maiteV = mkVerb1 maite ;
-    in lin V (maiteV ** { prc = \\_ => maite }) ;
-
-  ukanV : Str -> Verb = \maite -> 
-    let maiteV2 = mkVerb2 maite ;
-    in (maiteV2 ** { prc = \\_ => maite }) ;
-
   mkV2 = overload {
-    mkV2 : Str -> V2 = \s -> lin V2 (mkVerb2 s) ;
+    mkV2 : Str -> V2 = \s -> lin V2 (mkVerbNorNork s) ;
 
-    mkV2 : Str -> Valency -> V2 = \s,val -> lin V2 (mkVerb2 s ** { val = val }) ;
+    mkV2 : Str -> Valency -> V2 = \s,val -> lin V2 (mkVerbNor s ** { val = val }) ;
 
     mkV2 : Str -> V -> V2 = \lo,egin -> 
       lin V2 (egin ** { prc = \\t => lo ++ egin.prc ! t ;
@@ -55,16 +46,30 @@ oper
 
   } ;
 
-  mkV3 : Str -> V3 = \s -> lin V3 { prc = mkPrc s ; val = NorNoriNork } ;
 
-  mkVQ : Str -> VQ = \s -> lin VQ (mkVerb2 s) ;
+  --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerbNorNork s) ;
+
+  mkVQ : Str -> VQ = \s -> lin VQ (mkVerbNorNork s) ;
+  mkVS : Str -> VS = \s -> lin VS (mkVerbNorNork s) ;
+
+  mkV2S : Str -> V2S = \s -> lin V2S (mkVerbNorNoriNork s) ;
+  mkV2Q : Str -> V2Q = \s -> lin V2Q (mkVerbNorNoriNork s) ;
+  mkV3 : Str -> V3 = \s -> lin V3 (mkVerbNorNoriNork s) ;
 
 
-  mkVS : Str -> VS = \s -> lin VS (mkVerb2 s) ;
+  -----
+  -- Verbs with non-inflecting participle
+  -- These are just Verb, use izanV for Nor and ukanV for NorNork.
 
-  ukanVS : Str -> VS = \uste -> lin VS (ukanV uste) ;
+  izanV : Str -> Verb = \bizi -> 
+    let biziV = mkVerbNor bizi ;
+    in biziV ** { prc = \\_ => bizi } ;
 
-  --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerb2 s) ;
+  ukanV : Str -> Verb = \maite -> 
+    let maiteV2 = mkVerbNorNork maite ;
+    in maiteV2 ** { prc = \\_ => maite } ;
+
+
 -------------------------------------------------------------------------------
 
   -- ibili, ibiltzen, ibiliko
@@ -108,11 +113,14 @@ oper
 
   mkPNoun : Str -> PNoun = \s -> mkNoun s ** {nbr = Sg ; anim=Anim} ; 
 
-  mkVerb1 : Str -> Verb = \s -> { val = Nor Izan ;
-                                  prc = mkPrc s } ;  
+  mkVerbNor : Str -> Verb = \s -> { val = Nor Izan ;
+                                    prc = mkPrc s } ;  
 
-  mkVerb2 : Str -> Verb = \s -> { val = NorNork Ukan ; 
-                                   prc = mkPrc s } ; 
+  mkVerbNorNork : Str -> Verb = \s -> { val = NorNork Ukan ; 
+                                        prc = mkPrc s } ; 
+
+  mkVerbNorNoriNork : Str -> Verb = \s -> { val = NorNoriNork ; 
+                                            prc = mkPrc s } ; 
 
 
   mkConj : Str -> Number -> Conj = \s,num -> lin Conj { s = s ; nbr = num } ; 

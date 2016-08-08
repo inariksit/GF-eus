@@ -2,6 +2,10 @@ concrete VerbEus of Verb = CatEus ** open ResEus, AditzTrinkoak, Prelude in {
 
 
 lin
+
+-----
+-- VP
+
   UseV = ResEus.useV ;
 
 
@@ -12,6 +16,8 @@ lin
 
 
   -- : VS  -> S  -> VP ;  -- uste dut [neska etorriko dela]
+  -- The subordinator suffix -la is hardcoded in ComplVS
+  -- In Extra: ComplVS that takes the S with other suffixes (-en,-tzera)
   ComplVS vs s =
     let scomp : Str = linSSub s "la" ;
     in ResEus.insertComp scomp (useV vs) ;
@@ -26,8 +32,12 @@ lin
   ComplVA va ap = ResEus.insertComp (CompAP ap).s (useV va) ;
 
 
+--------
+-- Slash
+
   -- : V2 -> VPSlash
   SlashV2a = ResEus.slashDObj ;
+
 
   -- : V3 -> NP -> VPSlash ;  -- give it (to her)
   Slash2V3 v3 npNor = slashIObj v3 **
@@ -50,11 +60,11 @@ lin
 
   -- : V2S -> S  -> VPSlash ;  -- answer (to him) that it is good
   SlashV2S v2s s = slashDObj v2s **
-    { comp = \\agr => linS s } ;
+    { comp = \\agr => linSSub s "la" } ;
 
   -- : V2Q -> QS -> VPSlash ;  -- ask (him) who came
   SlashV2Q v2q qs = slashDObj v2q **
-    { comp = \\agr => linS (qs ! Indir) } ;
+    { comp = \\agr => linSSub (qs ! Indir) "la" } ;
 
   -- : V2A -> AP -> VPSlash ;  -- paint (it) red
   SlashV2A v2a ap = slashDObj v2a **
