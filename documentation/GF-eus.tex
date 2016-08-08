@@ -137,6 +137,93 @@
 
 \end{center}
 
+\section{Verbs, VPs and clauses}
+   Verb has only two fields: participle, which inflects only in tense, and 
+   valency, which includes
+   a) one of the four possible argument structures, and
+   b) which synthetic verb is used for the inflecting part (only varies for 2 of the 4 structures).
+   This means that all V*, regardless of the kind of complement, are of the same linearisation type.
+   
+   Why do we only include a parameter instead of the actual verb table?
+   \footnote{In the PMCFG, what would happen? Would they only point to the same place, or would they be duplicated? TODO find out, if this is an optimisation at all!}
+   The straight-forward solution would be to equip intransitive Vs with one-dimensional verb table;
+   transitive verbs with two-dimensional, and by the time a V2 is combined with an object NP, the object agreement is resolved,
+   leaving the originally intransitive and originally transitive VPs both with an one-dimensional verb table, waiting just the subject agreement.
+   However, the alternative solution is inadequate at capturing the phenomenon described in Section~\ref{foo}, 
+   on negative polarity changing an indefinite object NP into partitive, and forcing the object agreement into singular.
+
+\begin{quote}
+   Garagardoak edaten ditut   `I drink (the) beers' \\
+   Ez dut garagardorik edaten `I don't drink (the) beer/beers' \\
+   \verb!*!Ez ditut garagardorik edaten `I don't drink (the) beers'
+\end{quote}
+
+   Since the direct object agreement cannot be resolved at the VP level -- polarity comes only at two stages up, from Cl to S,
+   we would be forced to carry the extra layer all the way up to S, or at least change the table argument to Polarity instead of Agreement.
+   Another reason is the RGL's heavy usage of Slash categories: VPSlash is a verb phrase that may be missing one or more of
+   direct object, indirect object or an adverbial complement.
+   To combat this, we would have to make all the verbs 3-dimensional with dummy parameters, in order for the VPSlash category to use them.
+
+   This is our category for VP:
+
+   \begin{verbatim}
+   VerbPhrase : Type = {} ...
+   \end{verbatim}
+
+   The \verb!VPSlash -> VP! functions add arguments into the fields of the VP(Slash), and the \verb!V* -> VPSlash! functions indicate which hole is to be filled. The list of \verb!V* -> VPSlash! functions is the following:
+
+   \begin{verbatim}
+    SlashV2a : V2        -> VPSlash ;  -- love (it)
+    Slash2V3 : V3  -> NP -> VPSlash ;  -- give it (to her)
+    Slash3V3 : V3  -> NP -> VPSlash ;  -- give (it) to her
+    SlashV2V : V2V -> VP -> VPSlash ;  -- beg (her) to go
+    SlashV2S : V2S -> S  -> VPSlash ;  -- answer (to him) that it is good
+    SlashV2Q : V2Q -> QS -> VPSlash ;  -- ask (him) who came
+    SlashV2A : V2A -> AP -> VPSlash ;  -- paint (it) red
+    SlashVV    : VV  -> VPSlash -> VPSlash ;       -- want to buy
+    SlashV2VNP : V2V -> NP -> VPSlash -> VPSlash ; -- beg me to buy
+    AdvVPSlash : VPSlash -> Adv -> VPSlash ;  -- use (it) here
+    AdVVPSlash : AdV -> VPSlash -> VPSlash ;  -- always use (it)
+    VPSlashPrep : VP -> Prep -> VPSlash ;  -- live in (it) 
+   \end{verbatim}
+
+And functions that fill VPSlashes:
+
+\begin{verbatim}
+Question.gf:    ComplSlashIP  : VPSlash -> IP -> QVP ;   -- buys what 
+Sentence.gf:    SlashVP   : NP -> VPSlash -> ClSlash ;      -- (whom) he sees
+Verb.gf:    ComplSlash : VPSlash -> NP -> VP ; -- love it
+\end{verbatim}
+
+Thus, a sentence like ``I drink beer in the sea'' can be formed of the following way:
+
+\begin{verbatim}
+1) SlashV2a drink:V ===> drink:VPSlash
+2) ComplSlash drink:VPSlash beer:N  ===> drink_beer:VP
+3) VPSlashPrep drink_beer:VP in:Prep ===> drink_beer_in:VPSlash
+4) ComplSlash drink_beer_in:VPSlash the_sea_NP ===> drink_beer_in_the_sea:VP
+\end{verbatim}
+
+For Basque, these functions do not build strings; they just store the added complements,
+along with their agreements, into the right fields of the VP and VPSlash.
+The type of VPSlash is just an extension of VP, with a parameter that tells which field is missing, so that ComplSlash can fill the right one.
+Matching the two happens with the parameter Missing = MissingDObj | MissingIObj | MissingAdv.
+
+Once we have a VP, where the number of arguments matches the valency (actually we have no check for that; if you accidentally type the wrong thing, the next function just picks 3rd person singular by default for the argument you missed!),
+we can proceed to the PredVP function: it adds the subject, but leaves tense and polarity still open.
+
+The type of Cl is 
+
+   \begin{verbatim}
+   Clause : Type = {} ...
+   Sentence : Type = {} ...
+   \end{verbatim}
+
+The function mkClause does all the heavy work: resolves the inflecting verb form, and picks the right agreement, and right word order.
+
+
+
+
 
 
 \end{document}
