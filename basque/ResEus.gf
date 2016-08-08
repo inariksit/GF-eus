@@ -44,7 +44,7 @@ oper
 
   artIndef : Case => Phono => Str = 
     \\cas,pho => case <cas,pho> of {
-         <Abs,FinalA> => artA ! Sg ! Abs ! FinalA ; --TODO: added this to fix MassNP; may break other things
+         <Abs,FinalA> => artA ! Sg ! Abs ! FinalA ; --
          <Abs,_>      => [] ;
          <c,ph>       => artA ! Pl ! c ! ph } ;
 
@@ -219,8 +219,8 @@ oper
   -----
   -- Modify existing VPs
 
-  insertAdv : Adv -> VerbPhrase -> VerbPhrase = \adv,vp ->
-    vp ** { adv = vp.adv ++ adv.s } ;
+  insertAdv : Str -> VerbPhrase -> VerbPhrase = \a,vp ->
+    vp ** { adv = vp.adv ++ a } ;
 
 
   insertComp = overload {

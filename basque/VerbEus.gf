@@ -84,13 +84,13 @@ lin
 
 -}
   -- : VP -> Adv -> VP ;  -- sleep here
-  AdvVP vp adv = ResEus.insertAdv adv vp ;
+  AdvVP vp adv = ResEus.insertAdv adv.s vp ;
 
   -- : VP -> Adv -> VP ;  -- sleep , even though ...
-  ExtAdvVP vp adv = ResEus.insertAdv (postfixSS "," adv) vp ;
+  ExtAdvVP vp adv = ResEus.insertAdv (adv.s ++ ",") vp ;
 
   -- : AdV -> VP -> VP ;  -- always sleep
-  AdVVP adv vp = ResEus.insertAdv adv vp ;
+  AdVVP adv vp = ResEus.insertAdv adv.s vp ;
 
   -- : VPSlash -> Adv -> VPSlash ;  -- use (it) here
   AdvVPSlash vps adv = vps ** { adv = vps.adv ++ adv.s } ;
@@ -138,9 +138,9 @@ lin
 
 oper 
 
-  copulaVP : SyntVerb1 -> VP = \izan ->
-    lin VP (ResEus.useV { prc = \\tns => [] ; 
-                          val = Nor izan }) ;
+  copulaVP : SyntVerb1 -> VerbPhrase = \izan ->
+    ResEus.useV { prc = \\tns => [] ; 
+                  val = Nor izan } ;
 } 
 
 

@@ -10,18 +10,15 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- - common nouns with determiners
 -- - proper names
 -- - pronouns
---
---
-      -- DetCN : Det -> CN -> NP
-    DetCN det cn = 
-      let ag = case det.nbr of {
+
+  -- : Det -> CN -> NP
+  DetCN det cn = 
+    let ag = case det.nbr of {
                  Sg => Hau ;
                  Pl => Hauek 
                } ;
-      in lin NP
-        { s = \\c => cn.heavyMod ! ag
+    in { s = \\c => cn.heavyMod ! ag
                      ++ det.pref 
---                     ++ cn.stem ! ag 
                      ++ cn.s ! ag 
                      ++ det.s ! c ! cn.ph ;
           agr = ag ;
@@ -29,14 +26,14 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
           isDef = det.isDef 
         } ;
 
-    --UsePN   : PN -> NP ;
-    UsePN pn = lin NP  { s    = \\c => pn.s ++ artIndef ! c ! pn.ph;
-                         agr  = Hau ; 
-                         anim = pn.anim ; 
-                         isDef = True } ; --in Extra : add UsePNIndef to allow "hemen ez dago Olatzik"
+  -- : PN -> NP ;
+  UsePN pn = { s    = \\c => pn.s ++ artIndef ! c ! pn.ph;
+               agr  = Hau ; 
+               anim = pn.anim ; 
+               isDef = True } ; --in Extra : add UsePNIndef to allow "hemen ez dago Olatzik"
 
-    -- UsePron : Pron -> NP ; 
-    UsePron pron = lin NP pron ;
+  -- : Pron -> NP ; 
+  UsePron pron = lin NP pron ;
 
 -- A noun phrase can also be postmodified by the past participle of a
 -- verb, by an adverb, or by a relative clause
@@ -53,14 +50,13 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -}
 
 
-   -- MassNP : CN -> NP ; 
-   MassNP cn = lin NP 
-     { s = \\c => cn.heavyMod ! Hau 
-                 ++ cn.s ! Hau 
-                 ++ artIndef ! c ! cn.ph ;
-       agr   = Hau ;
-       anim  = Inan ;
-       isDef = False } ;
+  -- MassNP : CN -> NP ; 
+  MassNP cn =  { s = \\c => cn.heavyMod ! Hau 
+                         ++ cn.s ! Hau 
+                         ++ artIndef ! c ! cn.ph ;
+                 agr   = Hau ;
+                 anim  = Inan ;
+                 isDef = False } ;
 
 
 --2 Determiners
@@ -69,7 +65,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- quantifier and an optional numeral can be discerned.
 
     -- DetQuant : Quant -> Num -> Det ; 
-    DetQuant quant num = lin Det
+  DetQuant quant num = lin Det
      { s     = \\c,ph => quant.s ! num.n ! c ! ph ;
        pref  = quant.pref ++ num.s ;
        nbr   = num.n ;
@@ -86,17 +82,17 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- the "kernel" of a determiner. It is, however, the $Num$ that determines
 -- the inherent number.
 
-    NumSg = lin Num { s = [] ; n = Sg ; isNum = False } ; 
-    NumPl = lin Num { s = [] ; n = Pl ; isNum = False } ; 
+  NumSg = lin Num { s = [] ; n = Sg ; isNum = False } ; 
+  NumPl = lin Num { s = [] ; n = Pl ; isNum = False } ; 
 
-    -- NumCard : Card -> Num ;
-    NumCard card = lin Num (card ** { isNum = True }) ;
+  -- NumCard : Card -> Num ;
+  NumCard card = lin Num (card ** { isNum = True }) ;
 
-    -- NumDigits  : Digits  -> Card ;
-    NumDigits dig = lin Num (dig ** { isNum = True }) ;
+  -- NumDigits  : Digits  -> Card ;
+  NumDigits dig = lin Num (dig ** { isNum = True }) ;
 
-    -- NumNumeral : Numeral -> Card ;
-    NumNumeral num = lin Num (num ** { isNum = True }) ;
+  -- NumNumeral : Numeral -> Card ;
+  NumNumeral num = lin Num (num ** { isNum = True }) ;
 {-
     AdNum : AdN -> Card -> Card ;   -- almost 51
 
@@ -126,9 +122,9 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
 --2 Common nouns
 
-    --UseN : N -> CN
-    UseN n = lin CN ( n ** { s    = \\_ => n.s ;
-                             heavyMod = \\_ => [] } );
+    -- : N -> CN
+    UseN n = n ** { s = \\_ => n.s ;
+                    heavyMod = \\_ => [] } ;
 
 {-
 -- Relational nouns take one or two arguments.
@@ -144,25 +140,25 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     Use3N3  : N3 -> N2 ;          -- distance (to Paris)
 -}
 
-    -- AdjCN : AP -> CN  -> CN 
-    AdjCN ap cn =
-      let a : Str = artIndef ! Abs ! cn.ph ; --`a' for FinalA, [] for other
-          result : {s : Agr => Str ; ph : Phono}
-           = case ap.typ of {
-                     Ko => { s = \\agr => ap.s ++ cn.s ! agr ;
-                             ph = cn.ph } ;
-                     Bare => { s = \\agr => cn.s ! agr ++ a ++ ap.s ;
-                               ph = ap.ph }
+  -- : AP -> CN -> CN 
+  AdjCN ap cn =
+    let a : Str = artIndef ! Abs ! cn.ph ; --`a' for FinalA, [] for other
+        result : {s : Agr => Str ; ph : Phono} =
+          case ap.typ of {
+                Ko => { s = \\agr => ap.s ++ cn.s ! agr ;
+                        ph = cn.ph } ;
+                Bare => { s = \\agr => cn.s ! agr ++ a ++ ap.s ;
+                          ph = ap.ph }
              } ;
-      in lin CN (cn ** { s  = result.s ;
-                         ph = result.ph } ) ; 
+      in cn ** { s  = result.s ;
+                 ph = result.ph } ; 
 
-    -- RelCN : CN -> RS  -> CN ;
-    RelCN cn rs = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ rs.s ! agr } ;
+  -- : CN -> RS  -> CN ;
+  RelCN cn rs = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ rs.s ! agr } ;
 
 
-    -- AdvCN   : CN -> Adv -> CN ;
-    AdvCN cn adv = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ adv.s } ;
+  -- : CN -> Adv -> CN ;
+  AdvCN cn adv = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ adv.s } ;
 
 {-
 -- Nouns can also be modified by embedded sentences and questions.
