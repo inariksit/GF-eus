@@ -121,9 +121,9 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     A = ResEus.Adjective ;
     --A2 ;    -- two-place adjective                 e.g. "divisible"
 
-    N = ResEus.Noun ;       --{s : Str ; ph = Phono} ;
-    --N2 ;    -- relational noun                     e.g. "son"
-    --N3 ;    -- three-place relational noun         e.g. "connection"
+    N = ResEus.Noun ;
+    N2 = ResEus.Noun2 ;
+    N3 = ResEus.Noun3 ;
     PN = ResEus.PNoun ; 
 
 

@@ -60,7 +60,13 @@ oper
   Noun : Type = { s    : Str ; --for nouns ending in -a, we chop off the -a, and add it in the article + cases.
                   ph   : Phono ;
                   anim : Bizi } ;
+
+  Noun2 : Type = Noun ** { compl1 : Postposizio } ; -- "mother of X": genitive?
+  Noun3 : Type = Noun2 ** { compl2 : Postposizio } ; -- "mother of X": genitive?
+
   PNoun : Type = Noun ** { nbr : Number } ;
+
+
 
   CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
                    ph   : Phono ; 
@@ -68,6 +74,9 @@ oper
                    heavyMod : Agr => Str } ; -- Relative clause or adverbial
                                     -- If it's "heavy", numbers and possessives come after.
                                     -- "Light" modifiers attach directly to the s.
+
+  useN : Noun -> CNoun = \n -> n ** { s = \\_ => n.s ;
+                                      heavyMod = \\_ => [] } ;
 
   Complement : Type = { s : Agr => Str ; 
                         copula : SyntVerb1 } ;

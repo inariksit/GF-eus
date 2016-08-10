@@ -129,23 +129,26 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
 --2 Common nouns
 
-    -- : N -> CN
-    UseN n = n ** { s = \\_ => n.s ;
-                    heavyMod = \\_ => [] } ;
+  -- : N -> CN
+  -- : N2 -> CN ;
+  UseN,UseN2 = ResEus.useN ;
 
-{-
--- Relational nouns take one or two arguments.
 
-    ComplN2 : N2 -> NP -> CN ;    -- mother of the king
-    ComplN3 : N3 -> NP -> N2 ;    -- distance from this city (to Paris)
+  -- : N2 -> NP -> CN ;    -- mother of the king
+  ComplN2 n2 np = 
+    let compl = applyPost n2.compl1 np ;
+    in useN n2 ** { s = \\agr => compl ++ n2.s } ;
 
--- Relational nouns can also be used without their arguments.
--- The semantics is typically derivative of the relational meaning.
+  -- : N3 -> NP -> N2 ;    -- distance from this city (to Paris)
+  ComplN3 n3 np = 
+    let compl = applyPost n3.compl2 np ;
+    in n3 ** {s = compl ++ n3.s } ;
 
-    UseN2   : N2 -> CN ;          -- mother
-    Use2N3  : N3 -> N2 ;          -- distance (from this city)
-    Use3N3  : N3 -> N2 ;          -- distance (to Paris)
--}
+  -- : N3 -> N2 ;          -- distance (from this city)
+  Use2N3 n3 = lin N2 n3 ** { compl1 = n3.compl2 } ;
+
+  -- : N3 -> N2 ;          -- distance (to Paris)
+  Use3N3 n3 = lin N2 n3 ;
 
   -- : AP -> CN -> CN 
   AdjCN ap cn =
