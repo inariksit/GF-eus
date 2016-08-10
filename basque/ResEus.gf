@@ -100,21 +100,21 @@ oper
   Postposizio : Type = { s : Str ; 
                          complCase : Case ;  -- dirurik gabe : Par 
                                              -- hormaren kontra : Gen
-                         attached : Bool } ;
+                         affixed : Bool } ;
 
   mkPost : Str -> Case -> Bool -> Postposizio = \an,cas,b ->
-   { s = an ; complCase = cas ; attached = b } ;
+   { s = an ; complCase = cas ; affixed = b } ;
 
   noPost : Postposizio = mkPost [] Abs False ;
 
-  glueIf : Bool -> (_,_ : Str) -> Str = \attached,a,b -> 
-    if_then_Str attached (glue a b) (a ++ b) ;
+  glueIf : Bool -> (_,_ : Str) -> Str = \affixed,a,b -> 
+    if_then_Str affixed (glue a b) (a ++ b) ;
 
   applyPost : Postposizio -> NounPhrase -> Str = \post,np ->
-    glueIf post.attached (np.s ! post.complCase) post.s ;
+    glueIf post.affixed (np.s ! post.complCase) post.s ;
 
 --------------------------------------------------------------------
--- Pronoun stuffs
+-- Pronoun
 
   Pronoun : Type = NounPhrase ;
 
@@ -139,7 +139,7 @@ oper
 
 
 --------------------------------------------------------------------
--- Adjective stuffs
+-- Adjective and AP
 
   Adjective : Type = {s : Degree => Str ; ph : Phono} ;
 
@@ -396,6 +396,3 @@ oper
   --TODO: some nice synergy between RCl(Slash) and ComplVQ? It's the same morphology.
 
 }
-
--- Nik ikusi dut. past-pres
--- Nik ikusi nuen. past-past

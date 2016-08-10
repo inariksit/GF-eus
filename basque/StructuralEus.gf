@@ -1,46 +1,48 @@
-concrete StructuralEus of Structural = CatEus ** open Prelude, ResEus, ParadigmsEus in {
+concrete StructuralEus of Structural = CatEus ** open Prelude, (R=ResEus), ParadigmsEus in {
 
-  lin and_Conj = mkConj "eta" Pl ; 
-  lin or_Conj  = mkConj "edo" Sg | mkConj "ala" Sg ; 
+  lin and_Conj = mkConj "eta" pl ; 
+  lin or_Conj  = mkConj "edo" sg | mkConj "ala" sg ; 
   lin but_PConj  = lin PConj (ss "baina") ;
 
 
-  lin above_Prep = mkPrep "gainean" Abs False ;
+  lin above_Prep = mkPrep "gainean" genitive ; -- `mendi honen gainean'
  -- lin after_Prep : Prep ;
-  lin before_Prep = mkPrep "gabe" Abs False ;
-  lin behind_Prep = mkPrep "atzean" Gen False ;
-  lin between_Prep = mkPrep "artean" Gen False ; --`bitartean' for time
-  lin by8agent_Prep = casePrep Erg ;
-  lin by8means_Prep = casePrep Ins ;
-  lin during_Prep = mkPrep "an" LocStem ; --- ???
-  lin except_Prep = mkPrep "gain" Soc False ;
-  lin for_Prep = mkPrep "tzat" Gen ;
-  lin from_Prep = mkPrep "tik" LocStem ; --- ?
-  lin in8front_Prep = mkPrep "aurrean" Gen False ;
-  lin in_Prep = casePrep Ine ;
-  lin on_Prep = mkPrep "gainean" Gen False ; 
-  lin part_Prep = casePrep Par ; 
-  lin possess_Prep = casePrep Gen ;
-  lin through_Prep = mkPrep "barrena" Ine False ; -- ?
-  lin to_Prep = casePrep Dat ; --"I gave it to Fran", not "I went to school"
-  lin under_Prep = mkPrep "azpian" Gen False ;
-  lin with_Prep = casePrep Soc ;
-  lin without_Prep = mkPrep "gabe" Abs False ; 
+  lin before_Prep = mkPrep "gabe" ;
+  lin behind_Prep = mkPrep "atzean" genitive ;
+  lin between_Prep = mkPrep "artean" genitive ; --`bitartean' for time
+  lin by8agent_Prep = mkPrep [] ergative ; -- choose just case, no separate postposition
+  lin by8means_Prep = mkPrep [] instrumental ;
+  lin during_Prep = mkPrep [] inessive ; --- ???
+  lin except_Prep = mkPrep "gain" sociative  ;
+  lin for_Prep = affixPrep "tzat" genitive ;
+  lin from_Prep = locPrep "tik" ; --- ?
+  lin in8front_Prep = mkPrep "aurrean" genitive ;
+  lin in_Prep = mkPrep [] inessive ;
+  lin on_Prep = mkPrep "gainean" genitive  ; 
+  lin part_Prep = mkPrep [] partitive ; 
+  lin possess_Prep = mkPrep [] genitive ;
+  lin through_Prep = mkPrep "barrena" inessive  ; -- ?
+  lin to_Prep = mkPrep [] dative ; --"I gave it to Fran", not "I went to school"
+  lin under_Prep = mkPrep "azpian" genitive  ;
+  lin with_Prep = mkPrep [] sociative ;
+  lin without_Prep = mkPrep "gabe" ; 
 
 
-  lin i_Pron = persPron "ni" "niri" "nik" "nire" "nitaz" Ni ;
-  lin we_Pron = persPron "gu" "guri" "guk" "gure" "gutaz" Gu ;
-  lin youSg_Pron = persPron "zu" "zuri" "zuk" "zure" "zutaz" Zu ; -- in Extra: hi/hire
-  lin youPl_Pron = persPron "zuek" "zuei" "zuen" "zuen" "zuetaz" Zuek ;
-  lin he_Pron = persPron "hura" "hari" "hark" "haren" "hartaz" Hau ;
-  lin she_Pron = persPron "hura" "hari" "hark" "haren" "hartaz" Hau ;
-  lin it_Pron = persPron "hau" "honi" "honek" "bere" "honetaz" Hau ;
-  lin they_Pron = persPron "hauek" "hauei" "hauek" "beren" "hauetaz" Hauek ; -- in Extra: the others
+-- Pronouns are closed class, no constructor in ParadigmsEus.
+
+  lin i_Pron = R.persPron "ni" "niri" "nik" "nire" "nitaz" R.Ni ;
+  lin we_Pron = R.persPron "gu" "guri" "guk" "gure" "gutaz" R.Gu ;
+  lin youSg_Pron = R.persPron "zu" "zuri" "zuk" "zure" "zutaz" R.Zu ; -- in Extra: hi/hire
+  lin youPl_Pron = R.persPron "zuek" "zuei" "zuen" "zuen" "zuetaz" R.Zuek ;
+  lin he_Pron = R.persPron "hura" "hari" "hark" "haren" "hartaz" R.Hau ;
+  lin she_Pron = R.persPron "hura" "hari" "hark" "haren" "hartaz" R.Hau ;
+  lin it_Pron = R.persPron "hau" "honi" "honek" "bere" "honetaz" R.Hau ;
+  lin they_Pron = R.persPron "hauek" "hauei" "hauek" "beren" "hauetaz" R.Hauek ; -- in Extra: other forms
  
-  lin whatPl_IP = inanPron "zertzuk" "zertzuei" "zertzuek" "zertzuen" "zertzuetaz" Hauek ;
-  lin whatSg_IP = inanPron "zer" "zeri" "zerk" "zeren" "zertaz" Hau ;
-  lin whoPl_IP = persPron "nortzuk" "nortzuei" "nortzuek" "nortzuen" "nortzuetaz" Hauek ;
-  lin whoSg_IP = persPron "nor" "nori" "nork" "noren" "zertaz" Hau ;
+  lin whatPl_IP = R.inanPron "zertzuk" "zertzuei" "zertzuek" "zertzuen" "zertzuetaz" R.Hauek ;
+  lin whatSg_IP = R.inanPron "zer" "zeri" "zerk" "zeren" "zertaz" R.Hau ;
+  lin whoPl_IP = R.persPron "nortzuk" "nortzuei" "nortzuek" "nortzuen" "nortzuetaz" R.Hauek ;
+  lin whoSg_IP = R.persPron "nor" "nori" "nork" "noren" "zertaz" R.Hau ;
 
   --lin although_Subj : Subj ;
   lin because_Subj  = mkSubj "lako" False ;
