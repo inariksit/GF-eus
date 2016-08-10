@@ -28,5 +28,16 @@ lin
     UseSlash : Temp -> Pol -> ClSlash -> SSlash ; -- (that) she had not seen
 -}
 
+  -- : S  -> SC ;
+  EmbedS s = { s = linSSub s "la" } ; -- datorrela
+
+  -- : QS -> SC ;
+  EmbedQS qs = { s = linSSub (qs ! Indir) "la" } ; --???
+
+  -- : VP -> SC ;                     -- ikusi
+  EmbedVP vp = {s = linVPPrc vp } ;
+
+--  PredSCVP  : SC -> VP -> Cl ;         -- that she goes is good
+
 
 }

@@ -170,12 +170,13 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
   -- : CN -> Adv -> CN ;
   AdvCN cn adv = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ adv.s } ;
 
-{-
 -- Nouns can also be modified by embedded sentences and questions.
 -- For some nouns this makes little sense, but we leave this for applications
 -- to decide. Sentential complements are defined in VerbEus.
 
-    SentCN  : CN -> SC  -> CN ;   -- question where she sleeps
+  -- : CN -> SC  -> CN ;   -- question where she sleeps
+  SentCN cn sc = cn ** { heavymor= \\agr => cn.heavyMod ! agr ++ sc.s } ;
+{-
 
 --2 Apposition
 

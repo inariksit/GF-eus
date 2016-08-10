@@ -8,7 +8,7 @@ lin airplane_N = mkN "hegazkin" ;
 lin already_Adv = mkAdv "dagoeneko" ; --Google translate
 lin animal_N = mkN "animalia" ;
 --apartment_N
---art_N
+lin art_N = mkN "arte" ;
 --ashes_N
 --baby_N
 --back_N
