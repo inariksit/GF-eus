@@ -78,6 +78,8 @@ oper
   mkVQ : Str -> VQ = \s -> lin VQ (mkVerbNorNork s) ;  -- Nor-nork 
   mkVS : Str -> VS = \s -> lin VS (mkVerbNorNork s) ;  -- Nor-nork
 
+
+  mkV2V : Str -> V2V = \s -> lin V2V (mkVerbNorNoriNork s) ; -- ??? TODO check valency
   mkV2S : Str -> V2S = \s -> lin V2S (mkVerbNorNoriNork s) ; -- Nor-nori-nork: (mutilari) (neska datorrela) erantzun diot
   mkV2Q : Str -> V2Q = \s -> lin V2Q (mkVerbNorNoriNork s) ; -- Nor-nori-nork: (mutilari) (neska datorren) galdetu diot
   mkV3 : Str -> V3 = \s -> lin V3 (mkVerbNorNoriNork s) ; -- Nor-nori-nork: (mutilari) (garagardoa) edan diot
@@ -89,6 +91,10 @@ oper
 
   izanV : Str -> Verb = \bizi -> 
     mkVerbNor bizi ** { prc = \\_ => bizi } ; -- Non-inflecting participle, valency is nor: e.g. "bizi naiz", "beldur naiz"
+
+  egonV : Str -> Verb = \zain -> 
+    mkVerbNorEgon zain ** { prc = \\_ => zain } ; -- Non-inflecting participle, valency is nor, but with egon: e.g. "zain nago"
+
 
   ukanV : Str -> Verb = \maite -> 
     mkVerbNorNork maite ** { prc = \\_ => maite } ; -- Non-inflecting participle, valency is nor-nork: e.g, "maite zaitut"
@@ -153,6 +159,9 @@ oper
 
   mkVerbNor : Str -> Verb = \s -> { val = nor ;
                                     prc = mkPrc s } ;  
+
+  mkVerbNorEgon : Str -> Verb = \s -> { val = ResEus.Nor ResEus.Egon ;
+                                    prc = mkPrc s } ; 
 
   mkVerbNorNork : Str -> Verb = \s -> { val = norNork ; 
                                         prc = mkPrc s } ; 

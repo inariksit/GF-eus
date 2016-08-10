@@ -176,6 +176,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
   -- : CN -> SC  -> CN ;   -- question where she sleeps
   SentCN cn sc = cn ** { heavymor= \\agr => cn.heavyMod ! agr ++ sc.s } ;
+  
 {-
 
 --2 Apposition
