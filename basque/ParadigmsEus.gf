@@ -31,15 +31,13 @@ oper
 
 --2 Nouns
 
-  mkN = overload {
-   mkN : Str -> N = \s -> lin N (mkNoun s) ;
-   mkN : Str -> Phono -> N = \s,ph -> lin N (mkNoun s) ** {ph = ph} ;
-  } ;
+  mkN : Str -> N = \s -> lin N (mkNoun s) ;
 
-  mkPN = overload {
-    mkPN : Str -> PN = \s -> lin PN (mkPNoun s) ;
-    mkPN : Str -> Phono -> PN = \s,ph -> lin PN (mkPNoun s) ** {ph = ph} ;
-
+  mkPN : Str -> PN = \s -> lin PN (mkPNoun s) ;
+  
+  mkN2 = overload {
+    mkN2 : Str -> N2 = \s -> lin N2 (mkNoun2 s genitive) ; 
+    mkN2 : Str -> Case -> N2 = \s,cas -> lin N2 (mkNoun2 s cas) ;
   } ;
 
 --2 Adjectives
@@ -75,6 +73,8 @@ oper
 
   --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerbNorNork s) ;
 
+  mkVA : Str -> VA = \s -> lin VA (mkVerbNor s) ; -- Nor
+  
   mkVQ : Str -> VQ = \s -> lin VQ (mkVerbNorNork s) ;  -- Nor-nork 
   mkVS : Str -> VS = \s -> lin VS (mkVerbNorNork s) ;  -- Nor-nork
 
@@ -198,6 +198,8 @@ oper
                ("e"|"i"|"o"|"u") => FinalVow ;
                _                 => FinalCons } 
     in { s = stem ; ph = phono ; anim=Inan } ; 
+
+  mkNoun2 : Str -> Case -> Noun2 = \s,cas -> mkNoun s ** { compl1 = mkPrep [] cas } ;
 
   mkPNoun : Str -> PNoun = \s -> mkNoun s ** {nbr = Sg ; anim=Anim} ; 
 
