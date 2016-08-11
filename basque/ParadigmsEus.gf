@@ -74,7 +74,8 @@ oper
   --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerbNorNork s) ;
 
   mkVA : Str -> VA = \s -> lin VA (mkVerbNor s) ; -- Nor
-  
+
+  mkV2A : Str -> V2A = \s -> lin V2A (mkVerbNorNork s) ;  -- Nor-nork   
   mkVQ : Str -> VQ = \s -> lin VQ (mkVerbNorNork s) ;  -- Nor-nork 
   mkVS : Str -> VS = \s -> lin VS (mkVerbNorNork s) ;  -- Nor-nork
 
