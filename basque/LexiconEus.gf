@@ -211,12 +211,12 @@ lin learn_V2 = mkV2 "ikasi" ; --Apertium
 lin leather_N = mkN "larru" ; --Apertium
 lin leave_V2 = mkV2 "utzi" ; --| mkV2 "laga" ; --Apertium
 lin leg_N = mkN "hanka" ; --Apertium
--- lin lie_V = mkVX "gezur8erran" ; --Apertium
--- lin lie_V = mkVX "gezurra8esan" ; --Apertium
---lin like_V2 = mkVX "gustatu" ; --Apertium -- NOR-NORI
--- lin like_V2 = mkVX "atsegin_izan" ; --Apertium
--- lin like_V2 = mkVX "atsegin8izan<per>" ; --Apertium
--- lin like_V2 = mkVX "gogoko8izan<per>" ; --Apertium
+-- lin lie_V = mkV2 "gezur8erran" ; --Apertium
+-- lin lie_V = mkV2 "gezurra8esan" ; --Apertium
+--lin like_V2 = mkV2 "gustatu" ; --Apertium -- NOR-NORI
+-- lin like_V2 = mkV2 "atsegin_izan" ; --Apertium
+-- lin like_V2 = mkV2 "atsegin8izan<per>" ; --Apertium
+-- lin like_V2 = mkV2 "gogoko8izan<per>" ; --Apertium
 lin listen_V2 = mkV2 "entzun" ; --Apertium
 lin live_V  = izanV "bizi" ;
 lin liver_N = mkN "gibel" ; --Apertium
@@ -233,22 +233,194 @@ lin mother_N2 = mkN2 "ama" ;lin mountain_N = mkN "mendi" | mkN "mendi" ; --Apert
 lin mouth_N = mkN "aho" ; --Apertium
 lin music_N = mkN "musika" ; --Apertium
 
-------
--- N -
+----
+-- N
+
+lin name_N = mkN "izen" ; --Apertium
+lin narrow_A = mkA "estu" ; --Apertium
+lin near_A = mkA "hurbil" ; --Apertium
+lin neck_N = mkN "lepo" ; --Apertium
+lin new_A = mkA "berri" ; --Apertium
+lin newspaper_N = mkN "egunkari" ; -- | mkN "kazeta" ; --Apertium
+lin night_N = mkN "gau" ; --Apertium
+lin nose_N = mkN "sudur" ; --Apertium
+lin number_N = mkN "zenbaki" ; --Apertium
+
+--------
+-- O - P
 
 
-lin sea_N   = mkN "itsaso" ;
-lin sleep_V = mkV "lo" egin_V ;
+lin oil_N = mkN "olio" ; --Apertium
+lin old_A = mkA "zahar" ; --Apertium
+lin open_V2 = mkV2 "ireki" ; -- | mkV2 "zabaldu" ; --Apertium
+lin paint_V2A = mkV2A "margotu" ; -- | mkV2A "pintatu" ; --Apertium
+lin paper_N = mkN "paper" ; --Apertium
+lin peace_N = mkN "bake" ; -- | mkN "sosegu" ; --Apertium
+lin pen_N = mkN "boligrafo" ; --Apertium
+lin person_N = mkN "pertsona" ; --| mkN "gizakume" | mkN "jende" ; --Apertium
+lin planet_N = mkN "planeta" ; --Apertium
+lin plastic_N = mkN "plastiko" ; --Apertium
+lin play_V = mkV "jokatu" ; -- | mkV "jolastu" ; --Apertium
+lin policeman_N = mkN "ertzain" ; --Apertium
+lin priest_N = mkN "apaiz" ; -- | mkN "artzain" ; --Apertium -- FIXME: split 
+lin pull_V2 = mkV2 "tenkatu" ; -- | mkV2 "tiratu" ; --Apertium
+lin push_V2 = mkV2 "bultzatu" ; -- | mkV2 "estutu" ; --Apertium
+lin put_V2 = mkV2 "ezarri" ; -- |  mkV2 "jarri" ; --Apertium
 
+--------
+-- Q - R
 
+lin queen_N = mkN "erregina" ; --Apertium
+lin question_N = mkN "galdera" ; --Apertium
+lin radio_N = mkN "erradio" ; --| mkN "irrati" ; --Apertium
+lin rain_N = mkN "euri" ; --Apertium
+lin rain_V0 = mkV "euria ari" (mkV "edun") ; --Apertium
+lin read_V2 = mkV2 "irakurri" ; --Apertium
+lin ready_A = mkA "prest" ; --Apertium
+lin reason_N = mkN "arrazoi" ; --| mkN "motibo" | mkN "zergati" ; --Apertium
+lin red_A = mkA "gorri" ; --Apertium
+lin religion_N = mkN "erlijio" ; --Apertium
+lin restaurant_N = mkN "janetxe" ; --| mkN "jatetxe" ; --Apertium
+lin river_N = mkN "ibai" ; --Apertium
+lin road_N = mkN "kale" ; --| mkN "errepide" ; --Apertium
+lin rock_N = mkN "harri" ; --| mkN "arroka" ; --Apertium
+lin roof_N = mkN "teilatu" ; --| mkN "sabai" ; --Apertium
+lin root_N = mkN "erro" ; --Apertium
+lin rope_N = mkN "korda" ; --| mkN "soka" ; --Apertium
+lin rotten_A = mkA "ustel" ; --Apertium
+lin round_A = mkA "biribil" ; --Apertium
+lin rub_V2 = mkV2 "igurtzi" ; --Apertium
+lin rubber_N = mkN "goma" ; --Apertium
+lin rule_N = mkN "arautegi" ; --| mkN "erregela" ; --Apertium
+lin run_V = mkV "korritu" ; --Apertium
 
+----
+-- S 
+
+lin salt_N = mkN "gatz" ; --Apertium
+lin sand_N = mkN "harea" ; --Apertium
+lin say_VS = mkVS "esan" ; --Apertium
+lin school_N = mkN "eskola" ; --| mkN "ikastola" ; --Apertium
+lin science_N = mkN "zientzia" ; --Apertium
+lin scratch_V2 = mkV2 "urratu" ; --Apertium
+lin sea_N = mkN "itsaso" ;
 lin see_V2  = mkV2 "ikusi" ;
+lin seed_N = mkN "hazi" ; --Apertium
+lin seek_V2 = mkV2 "bilatu" ; --Apertium
+lin sell_V3 = mkV3 "saldu" ; --Apertium
+lin send_V3 = mkV3 "bidali" ; --| mkV3 "igorri" ; --Apertium
+lin sew_V = mkV "josi" ; --Apertium
+lin sharp_A = mkA "zorrotz" ; -- | mkA "sarkor" | mkA "zoli" ; --Apertium
+lin sheep_N = mkN "ardi" ; --Apertium
+lin ship_N = mkN "ontzi" ; --| mkN "itsasontzi" ; --Apertium
+lin shirt_N = mkN "alkandora" ; --Apertium
+lin shoe_N = mkN "zapata" ; --Apertium
+lin shop_N = mkN "denda" ; --| mkN "saltoki" ; --Apertium
+lin short_A = mkA "apal" ; --| mkA "baxu" | mkA "labur" | mkA "motz" ; --Apertium
+lin silver_N = mkN "zilar" ; --Apertium
+lin sing_V = mkV "kantatu" ; --Apertium
+lin sister_N = mkN "aizpa" ; --| mkN "arreba" ; --Apertium -- FIXME: Depends on gender of 'possessor' 
+lin sit_V = mkV "eseri" ; --| mkV "jarri" ; --Apertium
+lin skin_N = mkN "larru" ; --Apertium
+lin sky_N = mkN "zeru" ; --Apertium
+lin sleep_V = mkV "lo" egin_V ;
+lin small_A = mkA "txiki" ; --| mkA "apur" | mkA "xume" ; --Apertium
+lin smell_V = izanV "usain" ; --Apertium
+lin smoke_N = mkN "ke" ; --Apertium
+lin smooth_A = mkA "leun" ; --| mkA "liso" ; --Apertium
+lin snake_N = mkN "suge" ; --Apertium
+lin snow_N = mkN "elur" ; --Apertium
+lin sock_N = mkN "galtzetin" ; --Apertium
+lin song_N = mkN "abesti" ; --| mkN "kanta" | mkN "kantu" ; --Apertium
+lin speak_V2 = lin V2 (mkV "hitz" egin_V) ; --Apertium
+lin spit_V = mkV "txistua bota" ; --Apertium
+lin split_V2 = mkV2 "pitzatu" ; --| mkV2 "zatitu" ; --Apertium
+lin squeeze_V2 = mkV2 "estutu" ; --Apertium
+lin stab_V2 = mkV2 "sastatu" ; --Apertium
+lin stand_V = mkV "egon" ; --| mkV "eutsi" | mkV "jarri" ; --Apertium
+lin star_N = mkN "izar" ; --Apertium
+lin steel_N = mkN "altzairu" ; --Apertium
+lin stick_N = mkN "palo" ; --Apertium
+lin stone_N = mkN "harri" ; --| mkN "hezur" ; --Apertium
+lin stop_V =  mkV "gelditu" ; --| mkV "geratu" | mkV "atxilotu" | mkV "geldiarazi" ; --Apertium
+lin stove_N = mkN "berogailu" ; --| mkN "sukalde" ; --Apertium
+lin straight_A = mkA "zuzen" ; --Apertium
+lin student_N = mkN "ikasle" ; --Apertium
+lin stupid_A = mkA "ergel" ; -- | mkA "tonto" ; --Apertium
+lin suck_V2 = mkV2 "edoski" ; --|  mkV2 "xurgatu" | mkV2 "zupatu" ; --Apertium
+lin sun_N = mkN "eguzki" | mkN "eguzki" ; --Apertium
+lin swell_V = mkV "handitu" ; --Apertium
+lin swim_V = mkV "igeri" egin_V ; --Apertium
+
+----
+-- T
+
+
+lin table_N = mkN "mahai" ; --| mkN "taula" ; --Apertium
+lin tail_N = mkN "buztan" ; --| mkN "kola" ; --Apertium
+lin talk_V3 = mkV3 "mintzatu" ; --Apertium
+lin teach_V2 = mkV2 "erakutsi" ; --| mkV2 "irakatsi" ; --Apertium
+lin teacher_N = mkN "irakasle" ; --Apertium 
+lin television_N = mkN "telebista" ; --Apertium
+lin thick_A = mkA "lodi" ; --Apertium
+lin thin_A = mkA "argal" ; -- | mkA "mehe" ; --Apertium
+lin think_V = mkV "iritzi" ; --| mkV "pentsatu" ; --Apertium
+lin throw_V2 = mkV2 "aurtiki" ; -- | mkV2 "jaurti" | mkV2 "tiratu" ; --Apertium
+lin tie_V2 = mkV2 "lotu" ; --Apertium
+lin tongue_N = mkN "mihi" ; --| mkN "mizto" ; --Apertium
+lin tooth_N = mkN "hortz" ; --Apertium
+lin train_N = mkN "tren" ; --Apertium
+lin travel_V = mkV "bidaiatu" ; --Apertium
+lin tree_N = mkN "zuhaitz" ; --Apertium
+lin turn_V = mkV "biratu" ; --| mkV "jiratu" ; --Apertium
+
+--------
+-- U - V
+
+lin ugly_A = mkA "itsusi" ; --Apertium
+lin uncertain_A = mkA "gezur" ; --Apertium
+lin understand_V2 = mkV2 "aditu" ; --| mkV2 "ulertu" ; --Apertium
+lin university_N = mkN "unibertsitate" ; --Apertium
+lin village_N = mkN "herrixka" ; --Apertium
+lin vomit_V = mkV2 "oka" egin_V ; --Apertium
+
+--------
+-- W - Y
+
+lin wait_V2 = mkV2 "itxaron" ; --| mkV2 "zain egon" ; --Apertium
+lin walk_V = ibili_V ; --Apertium
+lin war_N = mkN "gerra" | mkN "gerra" ; --Apertium
+lin warm_A = mkA "bero" ; --Apertium
+lin wash_V2 = mkV2 "garbitu" ; --Apertium
+lin watch_V2 = mkV2 "begiratu" ; --Apertium
+lin water_N = mkN "ur" ; --Apertium
+lin wet_A = mkA "busti" ; --Apertium
+lin white_A = mkA "zuri" ; --| mkA "txuri" ; --Apertium
+lin wide_A = mkA "zabal" ; --Apertium
+lin wife_N = mkN "emazte" ; --Apertium
+lin win_V2 = mkV2 "garaitu" ; --| mkV2 "irabazi" ; --Apertium
+lin wind_N = mkN "haize" ; --Apertium
+lin window_N = mkN "leiho" ; --Apertium
+lin wine_N = mkN "ardo" ; --Apertium
+lin wing_N = mkN "hegal" ; --Apertium
+lin wipe_V2 = mkV2 "garbitu" ; --Apertium
+lin woman_N = mkN "emakume" ; --Apertium
+lin wood_N = mkN "zur" ; --| mkN "baso" ; --Apertium -- leña, bosque 
+lin worm_N = mkN "har" ; --| mkN "zizare" ; --Apertium
+lin write_V2 = mkV2 "idatzi" ; --Apertium
+lin year_N = mkN "urte" ; --| mkN "urtebete" ; --Apertium
+lin yellow_A = mkA "hori" ; --Apertium
+lin young_A = mkA "gazte" ; --Apertium
+
+
 
 
 oper
   egin_V : V = mkV "egin" ;
 
   etorri_V : V = mkV "etorri" ; --TODO synthetic
+
+  ibili_V : V = mkV "ibili" ; --TODO synthetic
 
   jakin_V : R.Verb = 
   	let jakin = mkVerbNorNork "jakin" ;
