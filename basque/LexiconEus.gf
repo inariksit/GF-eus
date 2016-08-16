@@ -244,6 +244,7 @@ lin new_A = mkA "berri" ; --Apertium
 lin newspaper_N = mkN "egunkari" ; -- | mkN "kazeta" ; --Apertium
 lin night_N = mkN "gau" ; --Apertium
 lin nose_N = mkN "sudur" ; --Apertium
+lin now_Adv = mkAdv "orain" ;
 lin number_N = mkN "zenbaki" ; --Apertium
 
 --------
@@ -255,6 +256,7 @@ lin old_A = mkA "zahar" ; --Apertium
 lin open_V2 = mkV2 "ireki" ; -- | mkV2 "zabaldu" ; --Apertium
 lin paint_V2A = mkV2A "margotu" ; -- | mkV2A "pintatu" ; --Apertium
 lin paper_N = mkN "paper" ; --Apertium
+lin paris_PN = mkPN "Paris" ; 
 lin peace_N = mkN "bake" ; -- | mkN "sosegu" ; --Apertium
 lin pen_N = mkN "boligrafo" ; --Apertium
 lin person_N = mkN "pertsona" ; --| mkN "gizakume" | mkN "jende" ; --Apertium
@@ -367,6 +369,7 @@ lin thin_A = mkA "argal" ; -- | mkA "mehe" ; --Apertium
 lin think_V = mkV "iritzi" ; --| mkV "pentsatu" ; --Apertium
 lin throw_V2 = mkV2 "aurtiki" ; -- | mkV2 "jaurti" | mkV2 "tiratu" ; --Apertium
 lin tie_V2 = mkV2 "lotu" ; --Apertium
+lin today_Adv = mkAdv "gaur" ;
 lin tongue_N = mkN "mihi" ; --| mkN "mizto" ; --Apertium
 lin tooth_N = mkN "hortz" ; --Apertium
 lin train_N = mkN "tren" ; --Apertium

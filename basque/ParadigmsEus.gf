@@ -105,7 +105,7 @@ oper
 
   mkPrep = overload { 
     mkPrep : Str -> Prep = \s -> 
-       lin Prep (mkPost s absolutive False) ; -- Default postposition: complement case Absolutive, not affixed; e.g. "diru gabe"
+       lin Prep (mkPost s genitive False) ; -- Default postposition: complement case genitive, not affixed; e.g. "nire atzean"
 
     mkPrep : Str -> (complCase : Case) -> Prep = \s,compl -> 
        lin Prep (mkPost s compl False) ; -- Specify complement case; not affixed
