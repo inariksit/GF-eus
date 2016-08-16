@@ -1,9 +1,24 @@
 concrete StructuralEus of Structural = CatEus ** open Prelude, (R=ResEus), ParadigmsEus in {
 
+-------
+-- Conj
+
   lin and_Conj = mkConj "eta" pl ; 
   lin or_Conj  = mkConj "edo" sg | mkConj "ala" sg ; 
   lin but_PConj  = lin PConj (ss "baina") ;
 
+-------
+-- IAdv
+
+  lin how_IAdv = { s = "nola" } ;
+  lin very_AdA = mkAdA "oso" ;
+  lin when_IAdv = { s = "noiz" } ;
+  lin where_IAdv = { s = "non" } ;
+  lin why_IAdv = { s = "zergatik" } ;
+
+
+-------
+-- Prep
 
   lin above_Prep = mkPrep "gainean" genitive ; -- `mendi honen gainean'
  -- lin after_Prep : Prep ;
@@ -28,6 +43,9 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, (R=ResEus), Parad
   lin without_Prep = mkPrep "gabe" ; 
 
 
+-------
+-- Pron
+
 -- Pronouns are closed class, no constructor in ParadigmsEus.
 
   lin i_Pron = R.persPron "ni" "niri" "nik" "nire" "nitaz" R.Ni ;
@@ -49,6 +67,11 @@ concrete StructuralEus of Structural = CatEus ** open Prelude, (R=ResEus), Parad
   lin if_Subj = mkSubj "ba" True ;
   lin that_Subj = mkSubj "n" False ;
   --lin when_Subj : Subj ;
+
+--------
+-- Verbs
+
+  lin have_V2 = { prc = mkPrc "" ; val = R.NorNork R.Eduki } ;
 
 
   lin can8know_VV = ukanV "ahal" ; -- can (capacity)
