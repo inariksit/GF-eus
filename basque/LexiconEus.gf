@@ -116,6 +116,7 @@ lin eye_N = mkN "begi" ;
 
 lin factory_N = mkN "fabrika" ; --| mkN "lantegi" ; --Apertium
 lin fall_V = mkV "amildu" ; -- | mkV "erori" ; --Apertium
+lin far_Adv = mkAdv "urrun" ;
 lin fat_N = mkN "gantz" ; --| mkN "koipe" ; --Apertium
 lin father_N2 = mkN2 "aita" ; --genitive
 lin fear_V2 = ukanV "beldur" ; -- beldur nauzu `you are afraid of me'
