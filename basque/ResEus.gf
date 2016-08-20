@@ -8,7 +8,7 @@ coding=utf8 ;
 -- Articles 
 oper
 
-  artA : Number => Case => Phono => Str =
+  artDef : Number => Case => Phono => Str =
     let artASg = table {Abs => finalR "a" ; --itsaso+a ; txakur+ra
                         Erg => finalR "ak" ;
                         Dat => finalR "ari" ;
@@ -44,9 +44,9 @@ oper
 
   artIndef : Case => Phono => Str = 
     \\cas,pho => case <cas,pho> of {
-         <Abs,FinalA> => artA ! Sg ! Abs ! FinalA ; --
+         <Abs,FinalA> => artDef ! Sg ! Abs ! FinalA ; --
          <Abs,_>      => [] ;
-         <c,ph>       => artA ! Pl ! c ! ph } ;
+         <c,ph>       => artDef ! Pl ! c ! ph } ;
 
 
   finalR : Str -> (Phono => Str) = \ak ->

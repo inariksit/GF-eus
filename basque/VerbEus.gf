@@ -128,11 +128,11 @@ lin
   -- Complement : Type = {s : Agr => Str ; copula : SyntVerb1 } ;
 
   -- : AP  -> Comp ;
-  CompAP ap = { s = \\agr => ap.s ++ artA ! getNum agr ! Abs ! ap.ph  ;
+  CompAP ap = { s = \\agr => ap.s ++ artDef ! getNum agr ! Abs ! ap.ph  ;
                 copula = Izan };
 
   -- : CN  -> Comp ;
-  CompCN cn = { s = \\agr => cn.s ! agr ++ artA ! getNum agr ! Abs ! cn.ph ;
+  CompCN cn = { s = \\agr => cn.s ! agr ++ artDef ! getNum agr ! Abs ! cn.ph ;
                 copula = Izan } ; 
 
   --  NP  -> Comp ;

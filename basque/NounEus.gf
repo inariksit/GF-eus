@@ -119,17 +119,17 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -}
 
     DefArt =
-      lin Quant { s     = artA ;
+      lin Quant { s     = artDef ;
                   pref  = [] ;
                   isDef = True } ; 
     IndefArt = 
-      lin Quant { s     = artA ;
+      lin Quant { s     = artDef ;
                   pref  = [] ;
                   isDef = False } ; --has suffix, but turns into partitive in negative!
 
     --PossPron : Pron -> Quant
     PossPron pron = 
-      lin Quant { s    = artA ;
+      lin Quant { s    = artDef ;
                   pref = pron.s ! Gen ;
                   isDef = True } ;
 
@@ -181,8 +181,8 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- to decide. Sentential complements are defined in VerbEus.
 
   -- : CN -> SC  -> CN ;   -- question where she sleeps
-  SentCN cn sc = cn ** { heavymor= \\agr => cn.heavyMod ! agr ++ sc.s } ;
-  
+  SentCN cn sc = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ sc.s } ;
+
 {-
 
 --2 Apposition

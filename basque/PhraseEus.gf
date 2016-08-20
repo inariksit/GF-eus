@@ -15,7 +15,7 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
     UttNP np = { s = np.s ! Abs} ;
     UttVP vp = { s = linVP vp } ;
     UttAdv adv = adv ;
-    UttCN n = {s = n.s ! Hau ++ artA ! Sg ! Abs ! n.ph } ;
+    UttCN n = {s = n.s ! Hau ++ artDef ! Sg ! Abs ! n.ph } ;
 --    UttCard n = {s = n.s ! } ;
 --    UttAP ap = {s = ap.s ! } ;
     UttInterj i = i ;
