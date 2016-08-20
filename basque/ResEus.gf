@@ -54,6 +54,73 @@ oper
    in  table {FinalR => BIND ++ rak ;
               _      => BIND ++ ak } ;
 
+
+
+--------------------------------------------------------------------
+-- Det, Quant
+
+  Determiner : Type = { s     : Case => Phono => Str ;   -- hauek
+                        pref  : Str ;                    -- nire
+                        nbr   : Number ;
+                        isDef : Bool } ;
+
+  indefDet : Str -> Number -> Determiner = \zenbait,num -> 
+    { s = artIndef ;
+      nbr = num ;
+      pref = zenbait ;
+      isDef = False } ;
+
+
+  Quant : Type = { s    : Number => Case => Phono => Str ;
+                   pref : Str ;
+                   isDef : Bool } ;
+
+  quantHau : Number => Case => Phono => Str = 
+   \\num,cas,ph => 
+    let a = case ph of { FinalA => BIND ++ "a" ; _ => [] } ;
+    in case <num,cas> of {
+       <Sg,Abs> => a ++ "hau" ;
+       <Sg,Erg> => a ++ "honek" ;
+       <Sg,Dat> => a ++ "honi" ;
+       <Sg,Gen> => a ++ "honen" ;
+       <Sg,Soc> => a ++ "honekin" ;
+       <Sg,Ins> => a ++ "honetaz" ;
+       <Sg,Ine> => a ++ "honetan" ;
+       <Sg,LocStem> => a ++ "honeta" ;
+       <Pl,Abs> => a ++ "hauek" ;
+       <Pl,Erg> => a ++ "hauek" ;
+       <Pl,Dat> => a ++ "hauei" ;
+       <Pl,Gen> => a ++ "hauen" ;
+       <Pl,Soc> => a ++ "hauekin" ;
+       <Pl,Ins> => a ++ "hauetaz" ;
+       <Pl,Ine> => a ++ "hauetan" ;
+       <Pl,LocStem> => a ++ "haueta" ;
+       <_,Par>  => artIndef ! Par ! ph ++ "hau" --TODO: check how to handle partitive
+    } ;
+
+  quantHori : Number => Case => Phono => Str =
+   \\num,cas,ph => 
+    let a = case ph of { FinalA => BIND ++ "a" ; _ => [] } ;
+    in case <num,cas> of {
+       <Sg,Abs> => a ++ "hori" ;
+       <Sg,Erg> => a ++ "horrek" ;
+       <Sg,Dat> => a ++ "horri" ;
+       <Sg,Gen> => a ++ "horren" ;
+       <Sg,Soc> => a ++ "horrekin" ;
+       <Sg,Ins> => a ++ "horretaz" ;
+       <Sg,Ine> => a ++ "horretan" ;
+       <Sg,LocStem> => a ++ "horreta" ;
+       <Pl,Abs> => a ++ "horiek" ;
+       <Pl,Erg> => a ++ "horiek" ;
+       <Pl,Dat> => a ++ "horiei" ;
+       <Pl,Gen> => a ++ "horien" ;
+       <Pl,Soc> => a ++ "horiekin" ;
+       <Pl,Ins> => a ++ "horietaz" ;
+       <Pl,Ine> => a ++ "horietan" ;
+       <Pl,LocStem> => a ++ "horieta" ;
+       <_,Par>  => artIndef ! Par ! ph ++ "hori"  
+    } ;
+
 --------------------------------------------------------------------
 -- Nouns and NPs
 
@@ -145,69 +212,6 @@ oper
   inanPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \zer,zeri,zerk,zere,zertaz,a ->
     persPron zer zeri zerk zere zertaz a ** { anim = Inan } ;
 
-
---------------------------------------------------------------------
--- Det, Quant
-
-  Determiner : Type = { s     : Case => Phono => Str ;   -- hauek
-                        pref  : Str ;                    -- nire
-                        nbr   : Number ;
-                        isDef : Bool } ;
-
-  indefDet : Str -> Number -> Determiner = \zenbait,num -> 
-    { s = artIndef ;
-      nbr = num ;
-      pref = zenbait ;
-      isDef = False } ;
-
-
-  Quant : Type = { s    : Number => Case => Phono => Str ;
-                   pref : Str ;
-                   isDef : Bool } ;
-
-  quantHau : Number => Case => Phono => Str = 
-    \\num,cas,ph => case <num,cas> of {
-       <Sg,Abs> => "hau" ;
-       <Sg,Erg> => "honek" ;
-       <Sg,Dat> => "honi" ;
-       <Sg,Par> => [] ;
-       <Sg,Gen> => "honen" ;
-       <Sg,Soc> => "honekin" ;
-       <Sg,Ins> => "honetaz" ;
-       <Sg,Ine> => "honetan" ;
-       <Sg,LocStem> => "honeta" ;
-       <Pl,Abs> => "hauek" ;
-       <Pl,Erg> => "hauek" ;
-       <Pl,Dat> => "hauei" ;
-       <Pl,Par> => [] ;
-       <Pl,Gen> => "hauen" ;
-       <Pl,Soc> => "hauekin" ;
-       <Pl,Ins> => "hauetaz" ;
-       <Pl,Ine> => "hauetan" ;
-       <Pl,LocStem> => "haueta" 
-    } ;
-
-  quantHori : Number => Case => Phono => Str =
-    \\num,cas,ph => case <num,cas> of {
-       <Sg,Abs> => "hori" ;
-       <Sg,Erg> => "horrek" ;
-       <Sg,Dat> => "horri" ;
-       <Sg,Par> => [] ;
-       <Sg,Gen> => "horren" ;
-       <Sg,Soc> => "horrekin" ;
-       <Sg,Ins> => "horretaz" ;
-       <Sg,Ine> => "horretan" ;
-       <Sg,LocStem> => "horreta" ;
-       <Pl,Abs> => "horiek" ;
-       <Pl,Erg> => "horiek" ;
-       <Pl,Dat> => "horiei" ;
-       <Pl,Par> => [] ;
-       <Pl,Gen> => "horien" ;
-       <Pl,Soc> => "horiekin" ;
-       <Pl,Ins> => "horietaz" ;
-       <Pl,Ine> => "horietan" ;
-       <Pl,LocStem> => "horieta" 
-    } ;
 
 --------------------------------------------------------------------
 -- Adjective and AP
