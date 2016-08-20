@@ -24,11 +24,11 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
     QCl = ResEus.Clause ;
     IP = ResEus.NounPhrase ;
-{-    IComp ; -- interrogative complement of copula  e.g. "where"
-    IComp ; -- interrogative complement of copula  e.g. "where"
-    IDet ;  -- interrogative determiner            e.g. "how many"
-    IQuant; -- interrogative quantifier            e.g. "which"
--}
+    --IComp ; -- interrogative complement of copula  e.g. "where"
+    --IComp ; -- interrogative complement of copula  e.g. "where"
+    IDet = ResEus.Determiner ;  -- interrogative determiner            e.g. "how many"
+    --IQuant; -- interrogative quantifier            e.g. "which"
+
 
 
 
@@ -69,14 +69,9 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     CN = ResEus.CNoun ;
     NP = ResEus.NounPhrase ; 
     Pron = ResEus.Pronoun ; --Pronouns need enough info to turn it into NP or Quant.
-    Det = { s     : Case => Phono => Str ;   -- hauek
-            pref  : Str ;                    -- nire
-            nbr   : Number ;
-            isDef : Bool } ;
+    Det = ResEus.Determiner ;
     Predet = {s : Str} ; 
-    Quant = { s    : Number => Case => Phono => Str ;
-              pref : Str ;
-              isDef : Bool } ;
+    Quant = ResEus.Quant ;
     Num = { s : Str ; n : Number ; isNum : Bool } ;
     Card, Ord = { s : Str ; n : Number } ;
     DAP = {s : Str} ;

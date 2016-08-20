@@ -146,6 +146,68 @@ oper
     persPron zer zeri zerk zere zertaz a ** { anim = Inan } ;
 
 
+--------------------------------------------------------------------
+-- Det, Quant
+
+  Determiner : Type = { s     : Case => Phono => Str ;   -- hauek
+                        pref  : Str ;                    -- nire
+                        nbr   : Number ;
+                        isDef : Bool } ;
+
+  indefDet : Str -> Number -> Determiner = \zenbait,num -> 
+    { s = artIndef ;
+      nbr = num ;
+      pref = zenbait ;
+      isDef = False } ;
+
+
+  Quant : Type = { s    : Number => Case => Phono => Str ;
+                   pref : Str ;
+                   isDef : Bool } ;
+
+  quantHau : Number => Case => Phono => Str = 
+    \\num,cas,ph => case <num,cas> of {
+       <Sg,Abs> => "hau" ;
+       <Sg,Erg> => "honek" ;
+       <Sg,Dat> => "honi" ;
+       <Sg,Par> => [] ;
+       <Sg,Gen> => "honen" ;
+       <Sg,Soc> => "honekin" ;
+       <Sg,Ins> => "honetaz" ;
+       <Sg,Ine> => "honetan" ;
+       <Sg,LocStem> => "honeta" ;
+       <Pl,Abs> => "hauek" ;
+       <Pl,Erg> => "hauek" ;
+       <Pl,Dat> => "hauei" ;
+       <Pl,Par> => [] ;
+       <Pl,Gen> => "hauen" ;
+       <Pl,Soc> => "hauekin" ;
+       <Pl,Ins> => "hauetaz" ;
+       <Pl,Ine> => "hauetan" ;
+       <Pl,LocStem> => "haueta" 
+    } ;
+
+  quantHori : Number => Case => Phono => Str =
+    \\num,cas,ph => case <num,cas> of {
+       <Sg,Abs> => "hori" ;
+       <Sg,Erg> => "horrek" ;
+       <Sg,Dat> => "horri" ;
+       <Sg,Par> => [] ;
+       <Sg,Gen> => "horren" ;
+       <Sg,Soc> => "horrekin" ;
+       <Sg,Ins> => "horretaz" ;
+       <Sg,Ine> => "horretan" ;
+       <Sg,LocStem> => "horreta" ;
+       <Pl,Abs> => "horiek" ;
+       <Pl,Erg> => "horiek" ;
+       <Pl,Dat> => "horiei" ;
+       <Pl,Par> => [] ;
+       <Pl,Gen> => "horien" ;
+       <Pl,Soc> => "horiekin" ;
+       <Pl,Ins> => "horietaz" ;
+       <Pl,Ine> => "horietan" ;
+       <Pl,LocStem> => "horieta" 
+    } ;
 
 --------------------------------------------------------------------
 -- Adjective and AP

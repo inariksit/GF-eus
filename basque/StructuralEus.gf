@@ -31,6 +31,59 @@ lin there7from_Adv = ss "hortik" ;
 lin there7to_Adv = ss "horra" ;
 lin there_Adv = ss "hor" ;
 
+
+-------
+-- Conj
+
+lin and_Conj = mkConj "eta" pl ; 
+lin or_Conj  = mkConj "edo" sg ; --| mkConj "ala" sg ; 
+--lin if_then_Conj =
+
+--lin both7and_DConj =
+--lin either7or_DConj =
+
+lin but_PConj = ss "baina" ;
+--lin otherwise_PConj
+--lin therefore_PConj
+
+
+-----------------
+-- *Det and Quant
+
+lin how8many_IDet = R.indefDet "zenbait" pl ; 
+
+--lin all_Predet =
+--lin not_Predet =
+--lin only_Predet =
+--lin most_Predet =
+
+--lin every_Det =
+--lin few_Det =
+--lin many_Det =
+--lin much_Det =
+--lin somePl_Det =
+--lin someSg_Det =
+
+--lin no_Quant
+lin that_Quant = { s = R.quantHori ;
+                   pref = [] ;
+                   isDef = True } ;
+lin this_Quant = { s = R.quantHau ;
+                   pref = [] ;
+                   isDef = True } ;
+--lin which_IQuant
+
+
+-----
+-- NP
+
+--lin everybody_NP =
+--lin everything_NP =
+--lin nobody_NP =
+--lin nothing_NP =
+--lin somebody_NP =
+--lin something_NP =
+
 -------
 -- Prep
 

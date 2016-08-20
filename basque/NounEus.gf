@@ -73,9 +73,15 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
     -- DetQuant : Quant -> Num -> Det ; 
   DetQuant quant num = lin Det
-     { s     = \\c,ph => quant.s ! num.n ! c ! ph ;
-       pref  = quant.pref ++ num.s ;
-       nbr   = num.n ;
+     { s = \\c,ph => case <num.isNum,num.n> of { --numeral 1 ("bat") goes after NP!
+                 <True,Sg> => num.s ++ quant.s ! num.n ! c ! FinalCons ; 
+                 _         => quant.s ! num.n ! c ! ph 
+               } ;
+       nbr = num.n ;
+       pref = case num.n of {
+                Sg => quant.pref ;
+                Pl => quant.pref ++ num.s 
+              } ;
        isDef = orB quant.isDef num.isNum ;
      } ;
 
