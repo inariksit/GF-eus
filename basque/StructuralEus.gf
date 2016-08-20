@@ -1,16 +1,19 @@
-concrete StructuralEus of Structural = CatEus ** open Prelude, (R=ResEus), ParadigmsEus in {
+concrete StructuralEus of Structural = CatEus ** 
+              open Prelude, (R=ResEus), ParadigmsEus in {
 
--------
--- Conj
 
-lin and_Conj = mkConj "eta" pl ; 
-lin or_Conj  = mkConj "edo" sg ; --| mkConj "ala" sg ; 
-lin but_PConj  = lin PConj (ss "baina") ;
 
 -------
 -- Ad*
 
+-- lin almost_AdA = 
+-- lin almost_AdN =
+-- lin at_least_AdN =
+-- lin at_most_AdN =
+-- lin so_AdA =
+-- lin too_AdA =
 lin very_AdA = mkAdA "oso" ;
+
 -- lin as_CAdv = { s = [] ; p = [] } ;
 lin less_CAdv = { s = "gutxiago" ; p = [] } ;
 lin more_CAdv = { s = "gehiago" ; p = [] } ;
@@ -20,6 +23,8 @@ lin how8much_IAdv = ss "zerbait" ;
 lin when_IAdv = ss "noiz" ;
 lin where_IAdv = ss "non" ;
 lin why_IAdv = ss "zergatik" ;
+
+-- lin always_AdV =
 
 lin everywhere_Adv = ss "nonahi" ;
 lin here7from_Adv = ss "hemendik" ;
@@ -119,6 +124,7 @@ lin i_Pron = R.persPron "ni" "niri" "nik" "nire" "nitaz" R.Ni ;
 lin we_Pron = R.persPron "gu" "guri" "guk" "gure" "gutaz" R.Gu ;
 lin youSg_Pron = R.persPron "zu" "zuri" "zuk" "zure" "zutaz" R.Zu ; -- in Extra: hi/hire
 lin youPl_Pron = R.persPron "zuek" "zuei" "zuen" "zuen" "zuetaz" R.Zuek ;
+lin youPol_Pron =  R.persPron "zu" "zuri" "zuk" "zure" "zutaz" R.Zu ;
 lin he_Pron = R.persPron "hura" "hari" "hark" "haren" "hartaz" R.Hau ;
 lin she_Pron = R.persPron "hura" "hari" "hark" "haren" "hartaz" R.Hau ;
 lin it_Pron = R.persPron "hau" "honi" "honek" "bere" "honetaz" R.Hau ;
@@ -129,21 +135,42 @@ lin whatSg_IP = R.inanPron "zer" "zeri" "zerk" "zeren" "zertaz" R.Hau ;
 lin whoPl_IP = R.persPron "nortzuk" "nortzuei" "nortzuek" "nortzuen" "nortzuetaz" R.Hauek ;
 lin whoSg_IP = R.persPron "nor" "nori" "nork" "noren" "zertaz" R.Hau ;
 
+
+
+
+-------
+-- Subj
+
   --lin although_Subj : Subj ;
 lin because_Subj  = mkSubj "lako" False ;
 lin if_Subj = mkSubj "ba" True ;
 lin that_Subj = mkSubj "n" False ;
   --lin when_Subj : Subj ;
 
---------
--- Verbs
 
-lin have_V2 = { prc = mkPrc "" ; val = R.NorNork R.Eduki } ;
 
+------
+-- Utt
+
+lin language_title_Utt = ss "euskara" ;
+--lin no_Utt = ss "ez" ; --?
+lin yes_Utt = ss "bai" ;
+
+
+-------
+-- Verb
+
+lin have_V2 = { prc = mkPrc [] ; val = R.NorNork R.Eduki } ;
 
 lin can8know_VV = ukanV "ahal" ; -- can (capacity)
 lin can_VV = ukanV "ahal" ;      -- can (possibility)
 lin must_VV = ukanV "behar" ;
 lin want_VV = ukanV "nahi" ;
+
+
+------
+-- Voc
+
+--lin please_Voc = 
 
 }
