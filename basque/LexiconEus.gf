@@ -393,7 +393,7 @@ lin vomit_V = mkV2 "oka" egin_V ; --Apertium
 
 lin wait_V2 = mkV2 "itxaron" ; --| mkV2 "zain egon" ; --Apertium
 lin walk_V = ibili_V ; --Apertium
-lin war_N = mkN "gerra" | mkN "gerra" ; --Apertium
+lin war_N = mkN "gerra" ; --Apertium
 lin warm_A = mkA "bero" ; --Apertium
 lin wash_V2 = mkV2 "garbitu" ; --Apertium
 lin watch_V2 = mkV2 "begiratu" ; --Apertium

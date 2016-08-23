@@ -162,7 +162,7 @@ oper
                                     prc = mkPrc s } ;  
 
   mkVerbNorEgon : Str -> Verb = \s -> { val = ResEus.Nor ResEus.Egon ;
-                                    prc = mkPrc s } ; 
+                                        prc = mkPrc s } ; 
 
   mkVerbNorNork : Str -> Verb = \s -> { val = norNork ; 
                                         prc = mkPrc s } ; 

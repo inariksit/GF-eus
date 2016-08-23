@@ -153,7 +153,7 @@ lin that_Subj = mkSubj "n" False ;
 -- Utt
 
 lin language_title_Utt = ss "euskara" ;
---lin no_Utt = ss "ez" ; --?
+lin no_Utt = ss "ez" ; --?
 lin yes_Utt = ss "bai" ;
 
 
