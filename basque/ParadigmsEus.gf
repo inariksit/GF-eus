@@ -170,6 +170,16 @@ oper
   mkVerbNorNoriNork : Str -> Verb = \s -> { val = norNoriNork ; 
                                             prc = mkPrc s } ; 
 
+  syntVerbNor : Str -> SyntVerb1 -> Verb = \sEtorri,pEtorri ->
+    let etorri = mkVerbNor sEtorri ; 
+     in etorri ** { prc = table { Pres => [] ; -- synthetic forms for present in AditzTrinkoak.jakin!
+                                  tns  => etorri.prc ! tns } ;
+                     val = Nor pEtorri } ;
+
+  syntVerbNorNork : Str -> SyntVerb2 -> Verb = \sJakin,pJakin ->
+    syntVerbNor sJakin Izan ** { val = NorNork pJakin } ;
+
+
   -- ibili, ibiltzen, ibiliko
   -- amildu, amiltzen, amilduko
   mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->

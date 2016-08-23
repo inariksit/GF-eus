@@ -408,6 +408,18 @@ oper
   =============================================================================
 -}
 
+  etorriNor : IntransV = 
+    \\tns,subjAgr => 
+      case <tns,subjAgr> of {
+        <Pres,Ni>    => mkVForms "nator" ;
+        <Pres,Zu>    => mkVForms "..." ;
+        <Pres,Hau>   => mkVForms "dator" ;
+        <Pres,Gu>    => mkVForms "..." ;
+        <Pres,Zuek>  => mkVForms "..." ;
+        <Pres,Hauek> => mkVForms "..." ;
+        _            => izanNor ! tns ! subjAgr 
+      } ;
+
 {-
   =============================================================================
   Joan

@@ -382,6 +382,7 @@ oper
       Nor Izan  => AditzTrinkoak.izanNor ;
       Nor Egon  => AditzTrinkoak.egonNor ;
       Nor Ibili => AditzTrinkoak.ibiliNor ;
+      Nor Etorri => AditzTrinkoak.etorriNor ;
       NorNori   => AditzTrinkoak.ukanNoriNor ! vp.iobj.a ; --are there other NorNori verbs?
 
       NorNoriNork => 

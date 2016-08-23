@@ -74,7 +74,7 @@ lin close_V2 = mkV2 "gerturatu" ; -- | mkV2 "itxi" | mkV2 "zarratu" ; --Apertium
 lin cloud_N = mkN "hodei" ; --Apertium
 lin coat_N = mkN "beroki" ; -- | mkN "kapa" ; --Apertium
 lin cold_A = mkA "hotz" ;
-lin come_V = etorri_V ; --Synthetic verb
+lin come_V = etorri_V ;
 lin computer_N = mkN "ordenagailu" ; --| mkN "ordenatzaile" ; --Apertium
 lin correct_A = mkA "zuzen" ; --Apertium
 lin count_V2 = mkV2 "kontatu" ; -- | mkV2 "zenbatu" ; --Apertium
@@ -422,15 +422,10 @@ lin young_A = mkA "gazte" ; --Apertium
 oper
   egin_V : V = mkV "egin" ;
 
-  etorri_V : V = mkV "etorri" ; --TODO synthetic
+  etorri_V : R.Verb = syntVerbNor "etorri" R.Etorri ;
 
-  ibili_V : V = mkV "ibili" ; --TODO synthetic
+  ibili_V : R.Verb = syntVerbNor "ibili" R.Ibili ;
 
-  jakin_V : R.Verb = 
-  	let jakin = mkVerbNorNork "jakin" ;
-  	in  jakin ** { prc = table { R.Pres => [] ; -- synthetic forms for present in AditzTrinkoak.jakin!
-      							 tns    => jakin.prc ! tns } ;
-      			   val = R.NorNork R.Jakin  
-      			 } ;
+  jakin_V : R.Verb = syntVerbNorNork "jakin" R.Jakin ;
 
 }
