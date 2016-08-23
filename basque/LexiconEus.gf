@@ -80,7 +80,7 @@ lin correct_A = mkA "zuzen" ; --Apertium
 lin count_V2 = mkV2 "kontatu" ; -- | mkV2 "zenbatu" ; --Apertium
 lin country_N = mkN "herri" ; --Apertium
 lin cousin_N = mkN "lehengusu" ; --Apertium
-lin cow_N = mkN "behi" | mkN "behi" ; --Apertium
+lin cow_N = mkN "behi" ; --Apertium
 lin cut_V2 = mkV2 "ebaki" ; -- | mkV2 "moztu" ; --Apertium
 
 ----
@@ -98,7 +98,7 @@ lin door_N = mkN "ate" ;
 lin drink_V2 = mkV2 "edan" ;
 lin dry_A = mkA "lehor" ; --Apertium
 lin dull_A = mkA "aspergarri" ; --Apertium
-lin dust_N = mkN "hauts" | mkN "hauts" ; --Apertium
+lin dust_N = mkN "hauts" ; --Apertium
 
 ----
 -- E
@@ -151,8 +151,8 @@ lin girl_N  = mkN "neska" ;
 lin give_V3 = mkV3 "eman" ; --Apertium
 lin glove_N = mkN "eskularru" | mkN "eskularru" ; --Apertium
 lin go_V = mkV "joan" ; --Apertium --TODO synthetic version
-lin gold_N = mkN "urre" | mkN "urre" ; --Apertium
-lin good_A = mkA "on" | mkA "hobe" | mkA "on" | mkA "onen" ; --Apertium
+lin gold_N = mkN "urre" ; --Apertium
+lin good_A = mkA "on" ; --| mkA "hobe" ; --Apertium
 lin grammar_N = mkN "gramatika" ; --Apertium
 lin grass_N = mkN "belar" ; --Apertium
 lin green_A = mkA "berde" ; --Apertium
@@ -230,7 +230,8 @@ lin man_N = mkN "gizon" ; --Apertium
 lin meat_N = mkN "haragi" ; -- | mkN "mami" ; --Apertium
 lin milk_N = mkN "esne" ; --Apertium
 lin moon_N = mkN "ilargi" ; --Apertium
-lin mother_N2 = mkN2 "ama" ;lin mountain_N = mkN "mendi" | mkN "mendi" ; --Apertium
+lin mother_N2 = mkN2 "ama" ;
+lin mountain_N = mkN "mendi" ; --Apertium
 lin mouth_N = mkN "aho" ; --Apertium
 lin music_N = mkN "musika" ; --Apertium
 
@@ -351,7 +352,7 @@ lin straight_A = mkA "zuzen" ; --Apertium
 lin student_N = mkN "ikasle" ; --Apertium
 lin stupid_A = mkA "ergel" ; -- | mkA "tonto" ; --Apertium
 lin suck_V2 = mkV2 "edoski" ; --|  mkV2 "xurgatu" | mkV2 "zupatu" ; --Apertium
-lin sun_N = mkN "eguzki" | mkN "eguzki" ; --Apertium
+lin sun_N = mkN "eguzki" ; --Apertium
 lin swell_V = mkV "handitu" ; --Apertium
 lin swim_V = mkV "igeri" egin_V ; --Apertium
 
