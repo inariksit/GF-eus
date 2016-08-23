@@ -157,6 +157,7 @@ oper
   instrumental = Ins ;
   sociative = Soc ;
 
+--------------------------------------------------------------------------------
 
   mkVerbNor : Str -> Verb = \s -> { val = nor ;
                                     prc = mkPrc s } ;  
@@ -180,15 +181,18 @@ oper
     syntVerbNor sJakin Izan ** { val = NorNork pJakin } ;
 
 
-  -- ibili, ibiltzen, ibiliko
+  -- egin, egiten, egingo
   -- amildu, amiltzen, amilduko
   mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->
-    let egi = init ikusi ; 
-        egite = egi + "te" ;
-        ikusten = egite + "n" ;
-        ikusiko = case last ikusi of {
-                    "n" => egite + "ko" ;
-                    _   => ikusi + "ko" }
+    let ikus : Str = case ikusi of {
+                      _ + "du" => init (init ikusi) ; 
+                      _        => init ikusi } ;
+        ikusten : Str = case last ikus of {
+                         "l" => ikus + "tzen" ; --amil+tzen, ibil+tzen
+                         _   => ikus + "ten" } ;--ikus+ten, egi+ten
+        ikusiko : Str = case last ikusi of {
+                         "n" => ikusi + "go" ;
+                         _   => ikusi + "ko" } ;
     in table { Pres => ikusten ;
                Fut  => ikusiko ;
                _    => ikusi } ;

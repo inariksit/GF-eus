@@ -421,8 +421,10 @@ lin young_A = mkA "gazte" ; --Apertium
 
 
 oper
+
   egin_V : V = mkV "egin" ;
 
+  -- Synthetic verbs
   etorri_V : R.Verb = syntVerbNor "etorri" R.Etorri ;
 
   ibili_V : R.Verb = syntVerbNor "ibili" R.Ibili ;
