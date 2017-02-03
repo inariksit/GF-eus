@@ -275,13 +275,51 @@ oper
   =============================================================================
 -}
   --TODO make it properly, this is just for a few testing purposes
-
+  -- After 28 hand-typed/copypasted lines one wonders if there wouldn't be a function to do that
   ukanNoriNorNork : DitransV = 
-    \\nori,nor,tns,nork => case <nori,nor,tns,nork> of 
-    {  <Hau,Hau,Pres,Ni>  => mkVForms "diot" ;
-       <Hau,Hau,Pres,Zu>  => mkVForms "diozu" ;
+    \\nori,nor,tns,nork => case <nori,nor,tns,nork> of {
+
+       -- X give(s) SGP3 to SGP3
+       <Hau,Hau,Pres,Ni>  => mkVForms "diot" ;
+       <Hau,Hau,Pres,Hi Fem>  => mkVForms "dion" ;
+       <Hau,Hau,Pres,Hi Masc>  => mkVForms "diok" ;
        <Hau,Hau,Pres,Hau> => mkVForms "dio" ;
-        _                 => mkVForms "ukan (nori-nor-nork): TODO"
+       <Hau,Hau,Pres,Gu>  => mkVForms "diogu" ;
+       <Hau,Hau,Pres,Zu>  => mkVForms "diozu" ;
+       <Hau,Hau,Pres,Zuek>  => mkVForms "diozue" ;
+       <Hau,Hau,Pres,Hauek> => mkVForms "diote" ;
+
+       -- X give(s) PLP3 to SGP3
+       <Hau,Hauek,Pres,Ni>  => mkVForms "dizkiot" ;
+       <Hau,Hauek,Pres,Hi Fem>  => mkVForms "dizkion" ;
+       <Hau,Hauek,Pres,Hi Masc>  => mkVForms "dizkiok" ;
+       <Hau,Hauek,Pres,Hau> => mkVForms "dizkio" ;
+       <Hau,Hauek,Pres,Gu>  => mkVForms "dizkiogu" ;
+       <Hau,Hauek,Pres,Zu>  => mkVForms "dizkiozu" ;
+       <Hau,Hauek,Pres,Zuek>  => mkVForms "dizkiozue" ;
+       <Hau,Hauek,Pres,Hauek> => mkVForms "dizkiote" ;
+
+       -- X give(s) SGP3 to PLP3
+       <Hauek,Hau,Pres,Ni>  => mkVForms "diet" ;
+       <Hauek,Hau,Pres,Hi Fem>  => mkVForms "dien" ;
+       <Hauek,Hau,Pres,Hi Masc>  => mkVForms "diek" ;
+       <Hauek,Hau,Pres,Hau> => mkVForms "die" ;
+       <Hauek,Hau,Pres,Gu>  => mkVForms "diegu" ;
+       <Hauek,Hau,Pres,Zu>  => mkVForms "diezu" ;
+       <Hauek,Hau,Pres,Zuek>  => mkVForms "diezue" ;
+       <Hauek,Hau,Pres,Hauek> => mkVForms "diete" ;
+
+       -- X give(s) PLP3 to PLP3
+       <Hauek,Hauek,Pres,Ni>  => mkVForms "dizkiet" ;
+       <Hauek,Hauek,Pres,Hi Fem>  => mkVForms "dizkien" ;
+       <Hauek,Hauek,Pres,Hi Masc>  => mkVForms "dizkiek" ;
+       <Hauek,Hauek,Pres,Hau> => mkVForms "dizkie" ;
+       <Hauek,Hauek,Pres,Gu>  => mkVForms "dizkiegu" ;
+       <Hauek,Hauek,Pres,Zu>  => mkVForms "dizkiezu" ;
+       <Hauek,Hauek,Pres,Zuek>  => mkVForms "dizkiezue" ;
+       <Hauek,Hauek,Pres,Hauek> => mkVForms "dizkiete" ;
+
+       _                 => mkVForms "ukan (nori-nor-nork): TODO"
     } ;
 
 {-
