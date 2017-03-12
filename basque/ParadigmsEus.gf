@@ -29,9 +29,16 @@ oper
   instrumental : Case ; -- Instrumental : 
   sociative : Case ; -- Sociative/comitative : txakurrarekin `with the dog'
 
+  Animacy : Type ;
+  animate : Animacy ;
+  inanim : Animacy ;
+
 --2 Nouns
 
-  mkN : Str -> N = \s -> lin N (mkNoun s) ;
+  mkN = overload {
+    mkN : Str -> N = \s -> lin N (mkNoun s) ;
+    mkN : Str -> Bizi -> N = \s,bizi -> lin N (mkNoun s ** { anim = bizi }) ;
+  } ;
 
   mkPN : Str -> PN = \s -> lin PN (mkPNoun s) ;
   
@@ -156,6 +163,10 @@ oper
   inessive = Ine ;
   instrumental = Ins ;
   sociative = Soc ;
+
+  Animacy = ResEus.Bizi ;
+  animate = Anim ;
+  inanim = Inan ;
 
 --------------------------------------------------------------------------------
 
