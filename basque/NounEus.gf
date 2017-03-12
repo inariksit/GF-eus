@@ -191,11 +191,21 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
     ApposCN : CN -> NP -> CN ;    -- city Paris (, numbers x and y)
 
+-}
+
 --2 Possessive and partitive constructs
 
-    PossNP  : CN -> NP -> CN ;     -- house of Paris, house of mine
-    PartNP  : CN -> NP -> CN ;     -- glass of wine
+  -- : PossNP  : CN -> NP -> CN ;     -- house of Paris, house of mine
+  PossNP cn np = 
+    let npPoss = applyPost (case np.anim of {
+                             Anim => mkPost [] Gen False ;
+                             Inan => mkPost "ko" LocStem True 
+                           }) np ;
+    in cn ** { s = \\agr => npPoss ++ cn.s ! agr } ;
 
+--  PartNP  : CN -> NP -> CN ;     -- glass of wine
+
+{-
 -- This is different from the partitive, as shown by many languages.
 
     CountNP : Det -> NP -> NP ;    -- three of them, some of the boys

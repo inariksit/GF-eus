@@ -107,7 +107,7 @@ lin in8front_Prep = mkPrep "aurrean"  ;
 lin in_Prep = mkPrep [] inessive ;
 lin on_Prep = mkPrep "gainean"   ; 
 lin part_Prep = mkPrep [] partitive ; 
-lin possess_Prep = mkPrep []  ;
+lin possess_Prep = mkPrep [] ; --Genitive. TODO add locative genitive in extra
 lin through_Prep = mkPrep "barrena" inessive  ; -- ?
 lin to_Prep = mkPrep [] dative ; --"I gave it to Fran", not "I went to school"
 lin under_Prep = mkPrep "azpian"   ;
@@ -145,7 +145,7 @@ lin whoSg_IP = R.persPron "nor" "nori" "nork" "noren" "zertaz" R.Hau ;
 lin because_Subj  = mkSubj "lako" False ;
 lin if_Subj = mkSubj "ba" True ;
 lin that_Subj = mkSubj "n" False ;
-  --lin when_Subj : Subj ;
+lin when_Subj = mkSubj "nean" False ;
 
 
 

@@ -178,8 +178,8 @@ oper
                                              -- hormaren kontra : Gen
                          affixed : Bool } ;
 
-  mkPost : Str -> Case -> Bool -> Postposizio = \an,cas,b ->
-   { s = an ; complCase = cas ; affixed = b } ;
+  mkPost : Str -> Case -> Bool -> Postposizio = \ko,loc,b ->
+   { s = ko ; complCase = loc ; affixed = b } ;
 
   noPost : Postposizio = mkPost [] Abs False ;
 
