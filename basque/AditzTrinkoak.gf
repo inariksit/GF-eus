@@ -27,6 +27,59 @@ oper
     DitransV : Type = Agr => TransV ;
 
 
+    --norNoriNork : Agr -> Agr -> Tense -> Agr -> Str = \nor,nori,tns,nork ->
+    --  case tns of {
+    --    Past => "past tense" ;
+    --    Cond => "conditional" ;
+    --    _    => TODO
+    --  } ;
+
+
+    -- For Nor-Nori inflection, map from Agr to prefix morpheme in Nor position
+    norTableNorNori : Agr => Str =
+      table { Ni    => "na" ;
+              Hi _  => "ha" ;
+              Gu    => "ga" ;
+              Zu    => "za" ;
+              Zuek  => "za" ;
+              _     => []  --Hau and Hauek
+            } ;
+
+    -- For Nor-Nori-Nork inflection, map from Agr to prefix morpheme in Nor position
+    norTableNorNoriNork : Agr => Str =
+      table { Ni    => "na" ;
+              Hi _  => "ha" ;
+              Zu    => "za" ;
+              Hau   => "d" ;
+              Gu    => "ga" ;
+              Zuek  => "za" ;
+              Hauek => "d"  --Hau and Hauek
+            } ;
+
+    -- For Nor-Nori and Nor-Nori-Nork inflections, map from Agr to morpheme in Nori position
+    noriTableAll : Agr => Str =
+      table { Ni      => "t" ;
+              Hi Masc => "k" ;
+              Hi Fem  => "n" ;
+              Zu      => "zu" ;
+              Hau     => "o" ;
+              Gu      => "gu" ;
+              Zuek    => "zue" ;
+              Hauek   => "e" 
+            } ;
+
+
+    -- For Nor-Nork and Nor-Nori-Nork inflections, map from Agr to morpheme in Nork position            
+    norkTableAll : Agr => Str =
+      table { Ni      => "t" ;
+              Hi Masc => "k" ;
+              Hi Fem  => "n" ;
+              Zu      => "zu" ;
+              Hau     => "" ;
+              Gu      => "gu" ;
+              Zuek    => "zue" ;
+              Hauek   => "te" 
+            } ;
 
     syntTransVerb : Valency -> TransV = \val ->
       case val of {
@@ -274,8 +327,10 @@ oper
   Ukan [NOR] [NORI] [NORK]
   =============================================================================
 -}
-  --TODO make it properly, this is just for a few testing purposes
-  -- After 28 hand-typed/copypasted lines one wonders if there wouldn't be a function to do that
+  -- Don't confuse the order of nor and nori!
+  -- For GF purposes, Nori is the new argument from NorNork,
+  -- and it is neater if we do Nori => NorNork.
+  -- But conventional literature puts nor first, and it's easier to copy from books.
   ukanNoriNorNork : DitransV = 
     \\nori,nor,tns,nork => case <nori,nor,tns,nork> of {
 
