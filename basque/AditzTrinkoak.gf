@@ -26,13 +26,33 @@ oper
     TransV   : Type = Agr => IntransV ;
     DitransV : Type = Agr => TransV ;
 
+------------------------------------------------------------------------------
 
-    --norNoriNork : Agr -> Agr -> Tense -> Agr -> Str = \nor,nori,tns,nork ->
-    --  case tns of {
-    --    Past => "past tense" ;
-    --    Cond => "conditional" ;
-    --    _    => TODO
-    --  } ;
+    syntTransVerb : Valency -> TransV = \val ->
+      case val of {
+        NorNork Ukan  => ukanNorNork ;
+        NorNork Jakin => jakinNorNork ;
+        NorNork Eduki => edukiNorNork ;
+        NorNori       => ukanNoriNor ;
+        _             => Predef.error "Not a transitive verb"
+      } ;
+
+------------------------------------------------------------------------------
+
+--This version is probably very overgenerating, and wrong.
+  ukanNoriNorNork : DitransV = 
+    \\nori,nor,tns,nork => mkVForms (norNoriNork nor nori tns nork) ;
+
+
+    norNoriNork : Agr -> Agr -> Tense -> Agr -> Str = \nor,nori,tns,nork ->
+      case tns of {
+        Past => "TODO:past tense" ;
+        Cond => "TODO:conditional" ;
+        _    => let dizki = norTableNorNoriNork ! getNum nor ;
+                    da    = noriTableAll ! nork ! nori  + "<NORI>"; --form of nori depends on nork
+                    zue   = norkTableAll ! nork + "<NORK>"
+                in dizki + da + zue 
+      } ;
 
 
     -- For Nor-Nori inflection, map from Agr to prefix morpheme in Nor position
@@ -46,26 +66,22 @@ oper
             } ;
 
     -- For Nor-Nori-Nork inflection, map from Agr to prefix morpheme in Nor position
-    norTableNorNoriNork : Agr => Str =
-      table { Ni    => "na" ;
-              Hi _  => "ha" ;
-              Zu    => "za" ;
-              Hau   => "d" ;
-              Gu    => "ga" ;
-              Zuek  => "za" ;
-              Hauek => "d"  --Hau and Hauek
+    -- There is no other option than 3rd person, only difference is number.
+    norTableNorNoriNork : Number => Str =
+      table { Sg => "di" ;
+              Pl => "dizki"  
             } ;
 
     -- For Nor-Nori and Nor-Nori-Nork inflections, map from Agr to morpheme in Nori position
-    noriTableAll : Agr => Str =
-      table { Ni      => "t" ;
-              Hi Masc => "k" ;
-              Hi Fem  => "n" ;
-              Zu      => "zu" ;
-              Hau     => "o" ;
-              Gu      => "gu" ;
-              Zuek    => "zue" ;
-              Hauek   => "e" 
+    noriTableAll : Agr => Agr => Str =
+      table { Ni      => table { Hau => "t" ; _ => "da" } ; --If nork is Hau, then the form ends in t, otherwise -da-
+              Hi Masc => \\_ => "k" ;
+              Hi Fem  => \\_ => "n" ;
+              Zu      => \\_ => "zu" ;
+              Hau     => \\_ => "o" ;
+              Gu      => \\_ => "gu" ;
+              Zuek    => \\_ => "zue" ;
+              Hauek   => \\_ => "e" 
             } ;
 
 
@@ -75,20 +91,12 @@ oper
               Hi Masc => "k" ;
               Hi Fem  => "n" ;
               Zu      => "zu" ;
-              Hau     => "" ;
+              Hau     => [] ;
               Gu      => "gu" ;
               Zuek    => "zue" ;
               Hauek   => "te" 
             } ;
 
-    syntTransVerb : Valency -> TransV = \val ->
-      case val of {
-        NorNork Ukan  => ukanNorNork ;
-        NorNork Jakin => jakinNorNork ;
-        NorNork Eduki => edukiNorNork ;
-        NorNori       => ukanNoriNor ;
-        _             => Predef.error "Not a transitive verb"
-      } ;
 
 {-
   =============================================================================
@@ -331,7 +339,8 @@ oper
   -- For GF purposes, Nori is the new argument from NorNork,
   -- and it is neater if we do Nori => NorNork.
   -- But conventional literature puts nor first, and it's easier to copy from books.
-  ukanNoriNorNork : DitransV = 
+  oldUkanNoriNorNork : DitransV = 
+--  ukanNoriNorNork : DitransV = 
     \\nori,nor,tns,nork => case <nori,nor,tns,nork> of {
 
        -- X give(s) SGP3 to SGP3

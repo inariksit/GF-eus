@@ -362,7 +362,7 @@ oper
               <Fut,Anter>  => {aux=Past ; prc=Fut} ;  --lo egingo nintzen
               <Cond,Simul> => {aux=Cond ; prc=Fut} ;  --lo egiteko nintzateke
               <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
-            aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ;
+            aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ; --TODO: bug here, somehow subj.agr seems to override indirect object -- investigate!!!
             sc : Case = subjCase vp.val ;
         in wordOrder  { pol = pol ;
                         adv = vp.adv ;
