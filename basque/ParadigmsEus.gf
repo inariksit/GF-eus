@@ -194,13 +194,22 @@ oper
 
   -- egin, egiten, egingo
   -- amildu, amiltzen, amilduko
+  --TODO: think about verbal nouns later -- change type from Tense to some other param: pastPart, nomStem, futStem ???
   mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->
     let ikus : Str = case ikusi of {
-                      _ + "du" => init (init ikusi) ; 
-                      _        => init ikusi } ;
+                      _ + ("du"|"tu") => init (init ikusi) ; -- ager+tu
+                      _ + ("p"|"b"|"t"
+                          |"d"|"k"|"g")
+                        + "i"         => ikusi ;             -- jaiki
+                      _ + "ri"        => init (init ikusi) ; -- etor+ri
+                      _ + "i"         => init ikusi ;        -- ibil+i
+                      _ + "l"         => ikusi ;             -- hil
+                      _ + "n"         => ikusi ; --init ikusi ;        -- jan
+                      _               => init ikusi } ;
         ikusten : Str = case last ikus of {
-                         "l" => ikus + "tzen" ; --amil+tzen, ibil+tzen
-                         _   => ikus + "ten" } ;--ikus+ten, egi+ten
+                        "n"  => init ikus + "ten" ;
+                        "s"  => ikus + "ten" ; --TODO more rules for ten/tzen
+                         _   => ikus + "tzen" } ;
         ikusiko : Str = case last ikusi of {
                          "n" => ikusi + "go" ;
                          _   => ikusi + "ko" } ;
