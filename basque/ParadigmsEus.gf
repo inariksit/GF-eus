@@ -198,18 +198,19 @@ oper
   mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->
     let ikus : Str = case ikusi of {
                       _ + ("du"|"tu") => init (init ikusi) ; -- ager+tu
-                      _ + ("p"|"b"|"t"
-                          |"d"|"k"|"g")
+                      _ + ("p"|"t"|"k"
+                          |"b"|"d"|"g")
                         + "i"         => ikusi ;             -- jaiki
                       _ + "ri"        => init (init ikusi) ; -- etor+ri
                       _ + "i"         => init ikusi ;        -- ibil+i
                       _ + "l"         => ikusi ;             -- hil
                       _ + "n"         => ikusi ; --init ikusi ;        -- jan
                       _               => init ikusi } ;
-        ikusten : Str = case last ikus of {
-                        "n"  => init ikus + "ten" ;
-                        "s"  => ikus + "ten" ; --TODO more rules for ten/tzen
-                         _   => ikus + "tzen" } ;
+        ikusten : Str = case ikus of {
+                        x + "n"        => x + "ten" ;
+                        x + "ts"       => x + "sten" ; 
+                        _ + ("s"|"z")  => ikus + "ten" ;
+                        _              => ikus + "tzen" } ;
         ikusiko : Str = case last ikusi of {
                          "n" => ikusi + "go" ;
                          _   => ikusi + "ko" } ;
