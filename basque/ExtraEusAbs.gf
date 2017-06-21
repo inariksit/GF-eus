@@ -6,10 +6,15 @@ cat
 
 fun
 
-   ko_Attr : Attr ;
+  ko_Attr : Attr ;
 
-    -- AdnP = Adnominal phrase
+   -- AdnP = Adnominal phrase
 
-    AdnP : Adv -> Attr -> AP ; 
+   AdnP : Adv -> Attr -> AP ; 
+
+   ProDrop : Pron -> Pron ;
+
+-- or to drop pronouns by default and have explicit pronouns in Extra?
+--   ExplicitPron : Clause -> Clause ;
 
 } ;

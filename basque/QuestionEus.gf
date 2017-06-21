@@ -10,9 +10,13 @@ concrete QuestionEus of Question = CatEus ** open ResEus in {
 
     -- : IP -> VP -> QCl ; 
     QuestVP ip vp = mkClause ip vp ; 
-{-    
-    QuestSlash  : IP -> ClSlash -> QCl ; -- whom does John love
-    QuestIAdv   : IAdv -> Cl -> QCl ;    -- why does John walk
+    
+--    QuestSlash  : IP -> ClSlash -> QCl ; -- whom does John love
+
+    -- : IAdv -> Cl -> QCl ;    -- why does John walk
+    -- nola (how), zerbait (how much), noiz (when), non (where), zergatik (why)
+--    QuestIAdv iadv cl = ;
+{-
     QuestIComp  : IComp -> NP -> QCl ;   -- where is John
 
 -- Interrogative pronouns can be formed with interrogative
