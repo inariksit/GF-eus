@@ -228,6 +228,7 @@ oper
 oper
 
   Verb : Type = { prc : Tense => Str ;
+                  nstem : Str ; -- Nominal stem : ibiltze
                   val : Valency 
                 } ;
 

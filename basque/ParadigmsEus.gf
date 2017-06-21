@@ -171,31 +171,32 @@ oper
 --------------------------------------------------------------------------------
 
   mkVerbNor : Str -> Verb = \s -> { val = nor ;
+                                    nstem = mkNStem s ;
                                     prc = mkPrc s } ;  
 
   mkVerbNorEgon : Str -> Verb = \s -> { val = ResEus.Nor ResEus.Egon ;
+                                        nstem = mkNStem s ;
                                         prc = mkPrc s } ; 
 
   mkVerbNorNork : Str -> Verb = \s -> { val = norNork ; 
+                                        nstem = mkNStem s ;
                                         prc = mkPrc s } ; 
 
   mkVerbNorNoriNork : Str -> Verb = \s -> { val = norNoriNork ; 
+                                            nstem = mkNStem s ;
                                             prc = mkPrc s } ; 
 
   syntVerbNor : Str -> SyntVerb1 -> Verb = \sEtorri,pEtorri ->
     let etorri = mkVerbNor sEtorri ; 
      in etorri ** { prc = table { Pres => [] ; -- synthetic forms for present in AditzTrinkoak.jakin!
                                   tns  => etorri.prc ! tns } ;
-                     val = Nor pEtorri } ;
+                    val = Nor pEtorri } ;
 
   syntVerbNorNork : Str -> SyntVerb2 -> Verb = \sJakin,pJakin ->
     syntVerbNor sJakin Izan ** { val = NorNork pJakin } ;
 
 
-  -- egin, egiten, egingo
-  -- amildu, amiltzen, amilduko
-  --TODO: think about verbal nouns later -- change type from Tense to some other param: pastPart, nomStem, futStem ???
-  mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->
+  mkNStem : Str -> Str = \ikusi ->
     let ikus : Str = case ikusi of {
                       _ + ("du"|"tu") => init (init ikusi) ; -- ager+tu
                       _ + ("p"|"t"|"k"
@@ -206,15 +207,17 @@ oper
                       _ + "l"         => ikusi ;             -- hil
                       _ + "n"         => ikusi ; --init ikusi ;        -- jan
                       _               => init ikusi } ;
-        ikusten : Str = case ikus of {
-                        x + "n"        => x + "ten" ;
-                        x + "ts"       => x + "sten" ; 
-                        _ + ("s"|"z")  => ikus + "ten" ;
-                        _              => ikus + "tzen" } ;
+    in  case ikus of {  x + "n"        => x + "te" ;
+                        x + "ts"       => x + "ste" ; 
+                        _ + ("s"|"z")  => ikus + "te" ;
+                        _              => ikus + "tze" } ;
+
+  mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->
+    let ikuste = mkNStem ikusi ;
         ikusiko : Str = case last ikusi of {
                          "n" => ikusi + "go" ;
                          _   => ikusi + "ko" } ;
-    in table { Pres => ikusten ;
+    in table { Pres => ikuste + "n" ;
                Fut  => ikusiko ;
                _    => ikusi } ;
 

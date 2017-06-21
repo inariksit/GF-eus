@@ -160,7 +160,7 @@ lin yes_Utt = ss "bai" ;
 -------
 -- Verb
 
-lin have_V2 = { prc = mkPrc [] ; val = R.NorNork R.Eduki } ;
+lin have_V2 = { prc = \\_ => [] ; nstem = "TODO" ; val = R.NorNork R.Eduki } ;
 
 lin can8know_VV = ukanV "ahal" ; -- can (capacity)
 lin can_VV = ukanV "ahal" ;      -- can (possibility)

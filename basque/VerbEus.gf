@@ -150,6 +150,7 @@ oper
 
   copulaVP : SyntVerb1 -> VerbPhrase = \izan ->
     ResEus.useV { prc = \\tns => [] ; 
+                  nstem = "izate" ;
                   val = Nor izan } ;
 } 
 
