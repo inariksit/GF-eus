@@ -2,20 +2,28 @@ resource AditzTrinkoak = open Prelude, ParamEus in {
 
 -- Synthetic verbs are in this module
 
+-- I have not implemented allocutive forms. 
+-- For that I'd have to keep track of up to S whether there is somewhere a familiar 2nd person
+-- (e.g. "I am afraid of you/your mother"; "You(r mother) is nice", "I gave an apple to you(r mother)"), 
+-- and that affects the verb form of a main clause, regardless who is subject/object there.
+
 oper
 
     VForms : Type = { indep : Str ; stem : Str } ;
 
     noVForm : VForms = { indep = Prelude.nonExist ; stem = Prelude.nonExist } ;
 
+    -- Obs. this is pretty rough heuristic, use 2-argument version for good results
     mkVForms = overload {
       mkVForms : Str -> VForms = \du ->
         let due : Str = case du of {
             _ + "en"          => init du ;        -- zen / zen
-            _ + "a"           => init du + "e" ;  -- da  / d+en
-            _ + "t"           => init du + "da" ; -- dut / duda+n
-            _ + ("e"|"i"|"o") => du ;             -- dio / dio+n
-            _                 => du + "e" }       -- du / du+en
+            x + "t"           => x + "da" ;       -- dut / duda+n
+            _ + "r"           => du + "re" ;      -- dator / datorre+n
+            _ + ("e"|"i"|"o"|"a") 
+                              => du ;             -- dio / dio+n
+
+            _                 => du + "e" }       -- du / due+n
         in { indep = du ; stem = due } ;
 
       mkVForms : (_,_ : Str) -> VForms = \dut,duda ->
@@ -124,11 +132,11 @@ oper
              -- Present and future are identical
 	           _     => table {Ni => mkVForms "naiz" ; 
                              Hi _ => mkVForms "haiz" ; 
-                             Zu => mkVForms "zara" ; 
-                             Hau => mkVForms "da" ; 
-                             Gu => mkVForms "gara" ; 
+                             Zu => mkVForms "zara" "zare" ; 
+                             Hau => mkVForms "da" "de" ; 
+                             Gu => mkVForms "gara" "gare" ; 
                              Zuek => mkVForms "zarete" ; 
-                             Hauek => mkVForms "dira" }
+                             Hauek => mkVForms "dira" "dire" }
        } ;
 
 {-
@@ -241,8 +249,8 @@ oper
                               Ni => mkVForms "dut" ;
                               Zuek => mkVForms "duzue" ;
                               Hau => mkVForms "du" ;
-                              Hi Masc => mkVForms "duk" ; 
-                              Hi Fem => mkVForms "dun" ;
+                              Hi Masc => mkVForms "duk" "dua" ; 
+                              Hi Fem => mkVForms "dun" "duna" ;
                               Zu => mkVForms "duzu" 
                      }
               } ;
@@ -430,7 +438,8 @@ oper
                               Ni => noVForm ;
                               Zuek => mkVForms "naukazue" ;
                               Hau => mkVForms "nauka" ;
-                              Hi _ => mkVForms "naukan" ;
+                              Hi Masc => mkVForms "naukak" ;
+                              Hi Fem  => mkVForms "naukan" ;
                               Zu => mkVForms "naukazu" } ;
                      _ => \\agr => noVForm 
               } ;
@@ -514,11 +523,12 @@ oper
     \\tns,subjAgr => 
       case <tns,subjAgr> of {
         <Pres,Ni>    => mkVForms "nator" ;
-        <Pres,Zu>    => mkVForms "..." ;
+        <Pres,Hi _>  => mkVForms "hator" ;
+        <Pres,Zu>    => mkVForms "zatoz" ;
         <Pres,Hau>   => mkVForms "dator" ;
-        <Pres,Gu>    => mkVForms "..." ;
-        <Pres,Zuek>  => mkVForms "..." ;
-        <Pres,Hauek> => mkVForms "..." ;
+        <Pres,Gu>    => mkVForms "gatoz" ;
+        <Pres,Zuek>  => mkVForms "zatozte" ;
+        <Pres,Hauek> => mkVForms "datoz" ;
         _            => izanNor ! tns ! subjAgr 
       } ;
 
@@ -527,6 +537,20 @@ oper
   Joan
   =============================================================================
 -}
+  joanNor : IntransV = 
+    \\tns,subjAgr => 
+      case <tns,subjAgr> of {
+        <Pres,Ni>    => mkVForms "noa" ;
+        <Pres,Hi _>  => mkVForms "hoa" ;
+        <Pres,Zu>    => mkVForms "zoaz" ;
+        <Pres,Hau>   => mkVForms "doa" ;
+        <Pres,Gu>    => mkVForms "goaz" ;
+        <Pres,Zuek>  => mkVForms "zoazte" ;
+        <Pres,Hauek> => mkVForms "doaz" ;
+        _            => izanNor ! tns ! subjAgr 
+      } ;
+
+
 
 {-
   =============================================================================

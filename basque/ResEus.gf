@@ -381,6 +381,7 @@ oper
     case vp.val of {
       Nor Izan  => AditzTrinkoak.izanNor ;
       Nor Egon  => AditzTrinkoak.egonNor ;
+      Nor Joan  => AditzTrinkoak.joanNor ;
       Nor Ibili => AditzTrinkoak.ibiliNor ;
       Nor Etorri => AditzTrinkoak.etorriNor ;
       NorNori   => AditzTrinkoak.ukanNoriNor ! vp.iobj.a ; --are there other NorNori verbs?

@@ -12,7 +12,7 @@ param
   -- Also some of these verbs have different conjugations in NorNork and NorNoriNork.
   -- AditzTrinkoak has all the inflection tables fully spelt out, 
   -- and here we just make nice neat set of parameters that go into the verbs.
-  SyntVerb1 = Izan | Egon | Ibili | Etorri ;
+  SyntVerb1 = Izan | Egon | Ibili | Etorri | Joan ;
   SyntVerb2 = Ukan | Jakin | Eduki ; --TODO others
 
 

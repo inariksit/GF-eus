@@ -431,4 +431,5 @@ oper
 
   jakin_V : R.Verb = syntVerbNorNork "jakin" R.Jakin ;
 
+  joan_V : R.Verb = syntVerbNor "joan" R.Joan ;
 }
