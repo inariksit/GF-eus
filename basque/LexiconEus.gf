@@ -410,6 +410,7 @@ lin wine_N = mkN "ardo" ; --Apertium
 lin wing_N = mkN "hegal" ; --Apertium
 lin wipe_V2 = mkV2 "garbitu" ; --Apertium
 lin woman_N = mkN "emakume" animate ;
+lin wonder_VQ = lin VQ jakin_V ; --TODO
 lin wood_N = mkN "zur" ; --| mkN "baso" ; --Apertium -- leña, bosque 
 lin worm_N = mkN "har" ; --| mkN "zizare" ; --Apertium
 lin write_V2 = mkV2 "idatzi" ; --Apertium

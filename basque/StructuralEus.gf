@@ -112,7 +112,7 @@ lin through_Prep = mkPrep "barrena" inessive  ; -- ?
 lin to_Prep = mkPrep [] dative ; --"I gave it to Fran", not "I went to school"
 lin under_Prep = mkPrep "azpian"   ;
 lin with_Prep = mkPrep [] sociative ;
-lin without_Prep = mkPrep "gabe" absolutive ; 
+lin without_Prep = mkPrep "gabe" partitive ; --absolutive ; 
 
 
 -------
