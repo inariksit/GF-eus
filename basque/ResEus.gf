@@ -347,12 +347,14 @@ oper
 
 -- ez al duzu katu beltza ikusi? / ez al duzu katu beltzik ikusi? (MassNP)
 -- ez dut katu beltza ikusi / ez dut katu beltzik ikusi (MassNP)
--- ibiltzen al zara ;  garagardoa edaten al duzu? 
+-- ibiltzen al zara ;  garagardoa edaten al duzu? ; nor dabil?
 -- mutilari garagardoa ematen al diozu?
 --  txakurrari abesten al diozu?
 
+  mkClause = mkClauseIP False ;
+  mkQClause = mkClauseIP True ;
 
-  mkClause : NounPhrase -> VerbPhrase -> Clause = \subj,vp ->
+  mkClauseIP : (isIP : Bool) -> NounPhrase -> VerbPhrase -> Clause = \isIP,subj,vp ->
     { s = \\t,a,pol =>
         let tns : {aux : Tense ; prc : Tense} = case <t,a> of {
               <Pres,Simul> => {aux=Pres ; prc=Pres} ; --lo egiten da
@@ -365,14 +367,14 @@ oper
               <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
             aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ; --TODO: bug here, somehow subj.agr seems to override indirect object -- investigate!!!
             sc : Case = subjCase vp.val ;
-        in wordOrder  { pol = pol ;
-                        adv = vp.adv ;
-                        subj = subj.s ! sc ;
-                        compl = vp.iobj.s             -- mutilari
+        in wordOrder isIP { pol = pol ;
+                            adv = vp.adv ;
+                            subj = subj.s ! sc ;
+                            compl = vp.iobj.s             -- mutilari
                              ++ vp.dobj.s ! pol       -- garagardoa / garagardorik
                              ++ vp.comp ! subj.agr ;  -- etorriko dela / nor den / handi(ak) / ...
-                        prc = vp.prc ! tns.prc ;
-                        aux = aux }
+                            prc = vp.prc ! tns.prc ;
+                            aux = aux }
     } ;
 
   chooseAux : VerbPhrase -> IntransV = chooseAuxPol Pos ;
@@ -402,9 +404,10 @@ oper
 
 
 
-  wordOrder : SentenceLight -> (ClType => Sentence) = \s -> 
+  wordOrder : (isIP : Bool) -> SentenceLight -> (ClType => Sentence) = \isIP,s -> 
     \\ct => 
-      let al = case ct of { Qst => "al" ; _ => [] } ;
+      let al = case ct of { Qst => if_then_Str isIP [] "al" ; 
+                            _   => [] } ;
       in case s.pol of {
            Pos => { beforeAux = s.adv ++ s.subj ++ s.compl ++ s.prc ++ al ;
                     aux = s.aux ;

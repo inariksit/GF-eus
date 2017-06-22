@@ -9,13 +9,19 @@ concrete QuestionEus of Question = CatEus ** open ResEus in {
                      -- { s : Tense => Anteriority => Polarity => Sentence } ; 
 
     -- : IP -> VP -> QCl ; 
-    QuestVP ip vp = mkClause ip vp ; 
+    QuestVP ip vp = mkQClause ip vp ; 
     
 --    QuestSlash  : IP -> ClSlash -> QCl ; -- whom does John love
 
     -- : IAdv -> Cl -> QCl ;    -- why does John walk
     -- nola (how), zerbait (how much), noiz (when), non (where), zergatik (why)
---    QuestIAdv iadv cl = ;
+    QuestIAdv iadv cl = 
+      { s = \\t,a,p,c => 
+        let sent = cl.s ! t ! a ! p ! c ;
+        in { beforeAux = iadv.s ++ sent.beforeAux ;
+             aux = sent.aux ; 
+             afterAux = sent.afterAux } 
+      } ;
 {-
     QuestIComp  : IComp -> NP -> QCl ;   -- where is John
 
