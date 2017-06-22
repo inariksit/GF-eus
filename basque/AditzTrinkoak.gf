@@ -547,6 +547,14 @@ oper
         <Pres,Gu>    => mkVForms "goaz" ;
         <Pres,Zuek>  => mkVForms "zoazte" ;
         <Pres,Hauek> => mkVForms "doaz" ;
+        <Past,Ni>    => mkVForms "nindoan" ;
+        <Past,Hi _>  => mkVForms "hindoan" ;
+        <Past,Zu>    => mkVForms "zindoazen" ;
+        <Past,Hau>   => mkVForms "zihoan" ;
+        <Past,Gu>    => mkVForms "gindoazen" ;
+        <Past,Zuek>  => mkVForms "zindoazten" ;
+        <Past,Hauek> => mkVForms "zihoazen" ;
+
         _            => izanNor ! tns ! subjAgr 
       } ;
 

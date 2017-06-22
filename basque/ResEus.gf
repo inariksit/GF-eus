@@ -383,6 +383,7 @@ oper
   chooseAuxPol : Polarity -> VerbPhrase -> IntransV = \pol,vp -> 
     case vp.val of {
       Nor Izan  => AditzTrinkoak.izanNor ;
+      
       Nor Egon  => AditzTrinkoak.egonNor ;
       Nor Joan  => AditzTrinkoak.joanNor ;
       Nor Ibili => AditzTrinkoak.ibiliNor ;

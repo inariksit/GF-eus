@@ -1,12 +1,12 @@
 --# -path=.:../basque
 
-concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, AditzTrinkoak, ResEus, ExtraEus, Prelude in {
+concrete DictionaryEus of Dictionary = CatEus ** open ParadigmsEus, AditzTrinkoak, ResEus, (S=StructuralEus), Prelude in {
 
 -- SECTION: Conjunctions 
 
-lin and_Conj = mkConj "eta" ; 
-lin or_Conj = mkConj "edo" | mkConj "ala" ; 
-lin but_Conj = mkConj "baina" ; 
+lin and_Conj = S.and_Conj ;
+lin or_Conj = S.or_Conj ;
+lin but_Conj = mkConj "baina" sg ;
 
 -- SECTION: Adpositions
 
@@ -3324,7 +3324,7 @@ lin wastage_N = mkN "galtze" ;
 lin watchman_N = mkN "zaindari" ;
 lin watch_N = mkN "erloju" ;
 lin waterfall_N = mkN "ur-jauzi" ;
-lin water_N = mkN "ur" FinalCons | mkN "ur" ;
+lin water_N = mkN "ur" ;
 lin watershed_N = mkN "arro" ;
 lin wave_N = mkN "olatu" | mkN "uhin" ;
 lin weakness_N = mkN "ahultasun" ;
@@ -8034,7 +8034,7 @@ lin fall_V = mkV "amildu" ;
 lin die_V = mkV "hil" ;
 lin travel_V = mkV "bidaiatu" ;
 
-lin have_V2 = { s = AditzTrinkoak.eduki_V2 } ** { prc = mkPrc "" ; sc = Erg } ;
+lin have_V2 = S.have_V2 ;
 
 --lin see_V2  = mkV2 "ikusi" ;
 --lin learn_V2 = mkV2 "ikasi" ;

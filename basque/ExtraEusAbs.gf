@@ -3,7 +3,6 @@ abstract ExtraEusAbs = Extra ** {
 cat 
 
     Attr ;  -- morpheme to turn an phrase into an adnominal/attributive
-
 fun
 
   ko_Attr : Attr ;
@@ -12,7 +11,7 @@ fun
 
    AdnP : Adv -> Attr -> AP ; 
 
-   ProDrop : Pron -> Pron ;
+--   ProDrop : Pron -> Pron ;
 
 -- or to drop pronouns by default and have explicit pronouns in Extra?
 --   ExplicitPron : Clause -> Clause ;

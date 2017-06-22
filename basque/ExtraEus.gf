@@ -6,6 +6,7 @@ lincat
 
   Attr = { s : Str } ;
 
+
 oper
 
   mkAttr : Str -> Attr = \s -> lin Attr { s = s } ; 
@@ -28,20 +29,7 @@ oper
 --      typ = Ko 
 --  } ;
 
---    MkVPS t p vp = {
---      s = \\a => 
---            let 
---              verb = vp.s ! t.t ! t.a ! p.p ! oDir ! a ;
---              verbf = verb.aux ++ verb.adv ++ verb.fin ++ verb.inf ;
---            in t.s ++ p.s ++ vp.ad ! a ++ verbf ++ vp.p ++ vp.s2 ! a ++ vp.ext
---      } ;
 
-    MkVPS t p vp = {
-      s = \\a => 
-            let 
-              verb = vp.s ! t.t ! t.a ! p.p ! a 
-            in t.s ++ p.s ++ vp.ad ! a ++ vp.p ++ vp.s2 ! a ++ vp.ext
-      } ;
 
 
 } ;
