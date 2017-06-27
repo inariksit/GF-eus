@@ -198,7 +198,7 @@ oper
     { s = table { Erg => nork ;
                   Abs => nor ;
                   Dat => nori ;
-                  Par => [] ;
+                  Par => nonExist ;
                   Gen => nore ;
                   Soc => nore + "kin" ;
                   Ins => zertaz ;
@@ -365,17 +365,42 @@ oper
               <Fut,Anter>  => {aux=Past ; prc=Fut} ;  --lo egingo nintzen
               <Cond,Simul> => {aux=Cond ; prc=Fut} ;  --lo egiteko nintzateke
               <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
-            aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ; --TODO: bug here, somehow subj.agr seems to override indirect object -- investigate!!!
+
+            aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ; 
+                              --TODO: bug here, somehow subj.agr seems to override indirect object 
+                              -- investigate!!!
+
+            prc : Str = case <tns.prc,isSynthetic vp.val> of { -- For ADTs, override the participle in the VP
+                               <Pres,True> => [] ;             -- (There must be a non-empty prc in a VP,
+                               _           => vp.prc ! tns.prc --  otherwise we get trouble in other functions...)
+                        } ;
             sc : Case = subjCase vp.val ;
-        in wordOrder isIP { pol = pol ;
-                            adv = vp.adv ;
-                            subj = subj.s ! sc ;
-                            compl = vp.iobj.s             -- mutilari
+        in wordOrder isIP 
+                     { pol = pol ;
+                       adv = vp.adv ;
+                       subj = subj.s ! sc ;
+                       compl = vp.iobj.s             -- mutilari
                              ++ vp.dobj.s ! pol       -- garagardoa / garagardorik
                              ++ vp.comp ! subj.agr ;  -- etorriko dela / nor den / handi(ak) / ...
-                            prc = vp.prc ! tns.prc ;
-                            aux = aux }
+                       prc = prc ;
+                       aux = aux }
     } ;
+
+{-
+  verbformADT : Tense -> Anteriority -> VerbPhrase -> VForms = \t,a,vp ->
+    let adt : IntransV = chooseAux vp ;
+        adl : IntransV = chooseAux (vp ** {val = defaultAux vp.val}) ; --copula with the same valency
+    in 
+    case <t,a> of {
+      <Pres,Simul> => {aux = adt ! Pres ; prc = []} ;         --noa
+      <Pres,Anter> => {aux = adl ! Pres ; prc = prc ! Past} ; --joan naiz
+      <Past,Simul> => {aux = adt ! Past ; prc = []} ;         --nindoan
+      <Past,Anter> => {aux = adl ! Past ; prc = prc ! Past} ; --joan nintzen
+      <Fut,Simul>  => {aux = adl ! Pres ; prc = prc ! Fut} ;  --joango naiz 
+      <Fut,Anter>  => {aux = adl ! Pres ; prc = prc ! Fut}   --joango nintzen
+      <Cond,Simul> => {aux = adl ! Cond ; prc = prc ! Fut} ;  --joango nintzateke
+      <Cond,Anter> => {aux = adl ! Cond ; prc = prc ! Past} } ;--joan nintzateke
+-}
 
   chooseAux : VerbPhrase -> IntransV = chooseAuxPol Pos ;
 
@@ -383,7 +408,7 @@ oper
   chooseAuxPol : Polarity -> VerbPhrase -> IntransV = \pol,vp -> 
     case vp.val of {
       Nor Izan  => AditzTrinkoak.izanNor ;
-      
+
       Nor Egon  => AditzTrinkoak.egonNor ;
       Nor Joan  => AditzTrinkoak.joanNor ;
       Nor Ibili => AditzTrinkoak.ibiliNor ;
@@ -395,10 +420,10 @@ oper
           <Neg,False> => AditzTrinkoak.ukanNoriNorNork ! vp.iobj.a ! sgAgr vp.dobj.a ;
           _           => AditzTrinkoak.ukanNoriNorNork ! vp.iobj.a ! vp.dobj.a } ;
 
-      NorNork x   => 
+      NorNork x =>
         let aux = AditzTrinkoak.syntTransVerb (NorNork x) 
         in case <pol,vp.dobj.isDef> of {
-             <Neg,False> => aux ! sgAgr vp.dobj.a ;
+             <Neg,False> => aux ! sgAgr vp.dobj.a;
              _           => aux ! vp.dobj.a } 
 
 } ;

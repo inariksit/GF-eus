@@ -1,4 +1,4 @@
-resource ParamEus = ParamX ** {
+resource ParamEus = ParamX ** open Prelude in {
 
 	
 param 
@@ -82,5 +82,19 @@ oper
       NorNori  => Dat ;
       _        => Erg  } ;
 
+
+  isSynthetic : Valency -> Bool = \val -> 
+    case val of {
+      Nor Izan     => False ;
+      NorNori      => False ;
+      NorNork Ukan => False ;
+      NorNoriNork  => False ;
+      _            => True } ;
+
+  defaultAux : Valency -> Valency = \val -> 
+    case val of {
+      Nor _     => Nor Izan ;
+      NorNork _ => NorNork Ukan ;
+      anything  => anything } ;
 
 }
