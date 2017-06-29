@@ -1,5 +1,5 @@
 concrete LexiconEus of Lexicon = CatEus **
-  open ParadigmsEus, Prelude, (R=ResEus), AditzTrinkoak in {
+  open ParadigmsEus, Prelude, (R=ResEus) in {
 
 ----
 -- A
@@ -194,8 +194,8 @@ lin jump_V = mkV "jauzi" egin_V ; --Apertium
 lin kill_V2 = mkV2 "hil" ; --Apertium
 lin king_N = mkN "errege" ; --Apertium
 lin knee_N = mkN "belaun" ; --Apertium
-lin know_V2 = lin V2 jakin_V ; -- synthetic verb
-lin know_VQ = lin VQ jakin_V ; -- synthetic verb
+lin know_V2 = lin V2 jakin_V2 ; -- synthetic verb
+lin know_VQ = lin VQ jakin_V2 ; -- synthetic verb
 
 lin know_VS = ukanV "uste" ;
 
@@ -410,7 +410,7 @@ lin wine_N = mkN "ardo" ; --Apertium
 lin wing_N = mkN "hegal" ; --Apertium
 lin wipe_V2 = mkV2 "garbitu" ; --Apertium
 lin woman_N = mkN "emakume" animate ;
-lin wonder_VQ = lin VQ jakin_V ; --TODO
+lin wonder_VQ = mkVQ "galdetu" ; -- galdetu = ask
 lin wood_N = mkN "zur" ; --| mkN "baso" ; --Apertium -- leña, bosque 
 lin worm_N = mkN "har" ; --| mkN "zizare" ; --Apertium
 lin write_V2 = mkV2 "idatzi" ; --Apertium
@@ -425,12 +425,12 @@ oper
 
   egin_V : V = mkV "egin" ;
 
-  -- Synthetic verbs
-  etorri_V : R.Verb = syntVerbNor "etorri" R.Etorri ;
+  -- Some synthetic verbs
+  etorri_V : R.Verb = R.syntVerbNor "etorri" R.Etorri ;
 
-  ibili_V : R.Verb = syntVerbNor "ibili" R.Ibili ;
+  ibili_V : R.Verb = R.syntVerbNor "ibili" R.Ibili ;
 
-  jakin_V : R.Verb = syntVerbNorNork "jakin" R.Jakin ;
+  jakin_V2 : R.Verb = R.syntVerbNorNork "jakin" R.Jakin ;
 
-  joan_V : R.Verb = syntVerbNor "joan" R.Joan ;
+  joan_V : R.Verb = R.syntVerbNor "joan" R.Joan ;
 }

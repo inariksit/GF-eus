@@ -133,6 +133,21 @@ oper
 
   PNoun : Type = Noun ** { nbr : Number } ;
 
+  mkNoun : Str -> Noun = \s ->
+    let stem : Str = case last s of {
+               "a" => init s ; 
+               _   => s } ;
+        phono : Phono = case last s of {
+               "a"               => FinalA ;
+               "r"               => FinalR ;
+               ("e"|"i"|"o"|"u") => FinalVow ;
+               _                 => FinalCons } 
+    in { s = stem ; ph = phono ; anim=Inan } ; 
+
+  mkNoun2 : Str -> Case -> Noun2 = \s,cas -> mkNoun s ** { compl1 = mkPost [] cas False } ;
+
+  mkPNoun : Str -> PNoun = \s -> mkNoun s ** {nbr = Sg ; anim=Anim} ; 
+
 
 
   CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
@@ -220,9 +235,23 @@ oper
 
   AdjPhrase : Type = {s : Str ; ph : Phono ; typ : APType} ; 
 
+  mkAdj : Str -> Adjective = \s -> 
+    let stem : Str = case last s of {
+               "a" => init s ; 
+               _   => s                } ;
+        phono : Phono = case last s of {
+               "a"               => FinalA ;
+               "r"               => FinalR ;
+               ("e"|"i"|"o"|"u") => FinalVow ;
+               _                 => FinalCons } 
+    in { s = table { Posit  => stem ;
+                     Compar => stem + "ago" ;
+                     Superl => stem + "en" } ;
+                  -- Excess => stem + "egi" } ;
+         ph = phono } ; 
 
 --------------------------------------------------------------------
--- Verbs and VPs
+-- Verbs 
 
 
 oper
@@ -232,6 +261,57 @@ oper
                   val : Valency 
                 } ;
 
+  mkVerbNor : Str -> Verb = \s -> { val = Nor Izan ;
+                                    nstem = mkNStem s ;
+                                    prc = mkPrc s } ;  
+
+  mkVerbNorEgon : Str -> Verb = \s -> { val = Nor Egon ;
+                                        nstem = mkNStem s ;
+                                        prc = mkPrc s } ; 
+
+  mkVerbNorNork : Str -> Verb = \s -> { val = NorNork Ukan ; 
+                                        nstem = mkNStem s ;
+                                        prc = mkPrc s } ; 
+
+  mkVerbNorNoriNork : Str -> Verb = \s -> { val = NorNoriNork ; 
+                                            nstem = mkNStem s ;
+                                            prc = mkPrc s } ; 
+
+  -- Synthetic verbs 
+  syntVerbNor : Str -> SyntVerb1 -> Verb = \sEtorri,pEtorri ->
+    mkVerbNor sEtorri ** { val = Nor pEtorri } ;
+
+  syntVerbNorNork : Str -> SyntVerb2 -> Verb = \sJakin,pJakin ->
+    syntVerbNor sJakin Izan ** { val = NorNork pJakin } ;
+
+  mkNStem : Str -> Str = \ikusi ->
+    let ikus : Str = case ikusi of {
+                      _ + ("du"|"tu") => init (init ikusi) ; -- ager+tu
+                      _ + ("p"|"t"|"k"
+                          |"b"|"d"|"g")
+                        + "i"         => ikusi ;             -- jaiki
+                      _ + "ri"        => init (init ikusi) ; -- etor+ri
+                      _ + "i"         => init ikusi ;        -- ibil+i
+                      _ + "l"         => ikusi ;             -- hil
+                      _ + "n"         => ikusi ; --init ikusi ;        -- jan
+                      _               => init ikusi } ;
+    in  case ikus of {  x + "n"        => x + "te" ;
+                        x + "ts"       => x + "ste" ; 
+                        _ + ("s"|"z")  => ikus + "te" ;
+                        _              => ikus + "tze" } ;
+
+  mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->
+    let ikuste = mkNStem ikusi ;
+        ikusiko : Str = case last ikusi of {
+                         "n" => ikusi + "go" ;
+                         _   => ikusi + "ko" } ;
+    in table { Pres => ikuste + "n" ;
+               Fut  => ikusiko ;
+               _    => ikusi } ;
+
+
+--------------------------------------------------------------------
+-- VP and VPSlash 
 
   VerbPhrase : Type = 
     Verb ** { dobj : { a : Agr ; 

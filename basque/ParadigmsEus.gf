@@ -1,4 +1,4 @@
-resource ParadigmsEus = open Prelude, AditzTrinkoak, ResEus, CatEus in {
+resource ParadigmsEus = open CatEus, ResEus, Prelude in {
 
 oper
 
@@ -12,8 +12,9 @@ oper
   sg : Number ;
   pl : Number ;
 
-
-  Valency : Type ; -- Only restricted to izan and ukan, no other synthetic verbs. If you need to add a new synthetic verb, look at AditzTrinkoak.
+ -- Only restricted to izan and ukan, no other synthetic verbs. 
+ -- If you need to add a new synthetic verb, see syntVerbNor and syntVerbNork in ResEus.
+  Valency : Type ;
   nor : Valency ;
   norNork : Valency ;
   norNori : Valency ;
@@ -66,6 +67,8 @@ oper
 
   } ;
 
+  -- For verbs with non-inflecting participle, see izanV, egonV and ukanV.
+
   mkV2 = overload {
     mkV2 : Str -> V2 = \s -> lin V2 (mkVerbNorNork s) ;
 
@@ -76,9 +79,6 @@ oper
                         val = norNork }) ;
 
   } ;
-
-
-  --mkV* : Str -> (VT : Type) -> VT = \s,VT -> lin VT (mkVerbNorNork s) ;
 
   mkVA : Str -> VA = \s -> lin VA (mkVerbNor s) ; -- Nor
 
@@ -169,87 +169,6 @@ oper
   inanim = Inan ;
 
 --------------------------------------------------------------------------------
-
-  mkVerbNor : Str -> Verb = \s -> { val = nor ;
-                                    nstem = mkNStem s ;
-                                    prc = mkPrc s } ;  
-
-  mkVerbNorEgon : Str -> Verb = \s -> { val = ResEus.Nor ResEus.Egon ;
-                                        nstem = mkNStem s ;
-                                        prc = mkPrc s } ; 
-
-  mkVerbNorNork : Str -> Verb = \s -> { val = norNork ; 
-                                        nstem = mkNStem s ;
-                                        prc = mkPrc s } ; 
-
-  mkVerbNorNoriNork : Str -> Verb = \s -> { val = norNoriNork ; 
-                                            nstem = mkNStem s ;
-                                            prc = mkPrc s } ; 
-
-  syntVerbNor : Str -> SyntVerb1 -> Verb = \sEtorri,pEtorri ->
-    let etorri = mkVerbNor sEtorri ; 
-     in etorri ** { prc = table { Pres => [] ; -- synthetic forms for present in AditzTrinkoak.jakin!
-                                  tns  => etorri.prc ! tns } ;
-                    val = Nor pEtorri } ;
-
-  syntVerbNorNork : Str -> SyntVerb2 -> Verb = \sJakin,pJakin ->
-    syntVerbNor sJakin Izan ** { val = NorNork pJakin } ;
-
-
-  mkNStem : Str -> Str = \ikusi ->
-    let ikus : Str = case ikusi of {
-                      _ + ("du"|"tu") => init (init ikusi) ; -- ager+tu
-                      _ + ("p"|"t"|"k"
-                          |"b"|"d"|"g")
-                        + "i"         => ikusi ;             -- jaiki
-                      _ + "ri"        => init (init ikusi) ; -- etor+ri
-                      _ + "i"         => init ikusi ;        -- ibil+i
-                      _ + "l"         => ikusi ;             -- hil
-                      _ + "n"         => ikusi ; --init ikusi ;        -- jan
-                      _               => init ikusi } ;
-    in  case ikus of {  x + "n"        => x + "te" ;
-                        x + "ts"       => x + "ste" ; 
-                        _ + ("s"|"z")  => ikus + "te" ;
-                        _              => ikus + "tze" } ;
-
-  mkPrc : Str -> (ResEus.Tense => Str) = \ikusi ->
-    let ikuste = mkNStem ikusi ;
-        ikusiko : Str = case last ikusi of {
-                         "n" => ikusi + "go" ;
-                         _   => ikusi + "ko" } ;
-    in table { Pres => ikuste + "n" ;
-               Fut  => ikusiko ;
-               _    => ikusi } ;
-
-  mkAdj : Str -> Adjective = \s -> 
-    let stem : Str = case last s of {
-               "a" => init s ; 
-               _   => s                } ;
-        phono : Phono = case last s of {
-               "a"               => FinalA ;
-               "r"               => FinalR ;
-               ("e"|"i"|"o"|"u") => FinalVow ;
-               _                 => FinalCons } 
-    in { s = table { Posit  => stem ;
-                     Compar => stem + "ago" ;
-                     Superl => stem + "en" } ;
-                  -- Excess => stem + "egi" } ;
-         ph = phono } ; 
-
-  mkNoun : Str -> Noun = \s ->
-    let stem : Str = case last s of {
-               "a" => init s ; 
-               _   => s } ;
-        phono : Phono = case last s of {
-               "a"               => FinalA ;
-               "r"               => FinalR ;
-               ("e"|"i"|"o"|"u") => FinalVow ;
-               _                 => FinalCons } 
-    in { s = stem ; ph = phono ; anim=Inan } ; 
-
-  mkNoun2 : Str -> Case -> Noun2 = \s,cas -> mkNoun s ** { compl1 = mkPrep [] cas } ;
-
-  mkPNoun : Str -> PNoun = \s -> mkNoun s ** {nbr = Sg ; anim=Anim} ; 
 
 }
 

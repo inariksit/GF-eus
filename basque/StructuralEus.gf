@@ -160,7 +160,7 @@ lin yes_Utt = ss "bai" ;
 -------
 -- Verb
 
-lin have_V2 = syntVerbNorNork "eduki" R.Eduki ;
+lin have_V2 = R.syntVerbNorNork "eduki" R.Eduki ;
 
 lin can8know_VV = ukanV "ahal" ; -- can (capacity)
 lin can_VV = ukanV "ahal" ;      -- can (possibility)
