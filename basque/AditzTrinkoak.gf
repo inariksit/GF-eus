@@ -432,7 +432,7 @@ oper
    edukiNorNork : TransV = table {
        -- Nor,Nork
               Ni => table {
-                     Pres => table {
+                    Pres => table {
                               Gu => noVForm ;
                               Hauek => mkVForms "naukate" ;
                               Ni => noVForm ;
@@ -441,10 +441,11 @@ oper
                               Hi Masc => mkVForms "naukak" ;
                               Hi Fem  => mkVForms "naukan" ;
                               Zu => mkVForms "naukazu" } ;
-                     _ => \\agr => noVForm 
+                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
+
               } ;
               Gu => table {
-                     Pres => table { -- Pres
+                    Pres => table { -- Pres
                               Gu => noVForm ;
                               Hauek => mkVForms "gauzkate" ;
                               Ni => noVForm ;
@@ -452,10 +453,10 @@ oper
                               Hau => mkVForms "gauzka" ;
                               Hi _ => noVForm ;
                               Zu => mkVForms "gauzkazu" } ;
-                     _ => \\agr => noVForm 
+                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
               } ;
               Hauek => table {
-                     Pres => table { -- Pres
+                    Pres => table { -- Pres
                               Gu => mkVForms "dauzkagu" ;
                               Hauek => mkVForms "dauzkate" ;
                               Ni => mkVForms "dauzkat" ;
@@ -464,10 +465,10 @@ oper
                               Hi Masc => mkVForms "dauzkak" ; 
                               Hi Fem => mkVForms "dauzkan" ;
                               Zu => mkVForms "dauzkazu" } ;
-                     _ => \\agr => noVForm 
+                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
               } ;
               Zuek => table {
-                     Pres => table { 
+                    Pres => table { 
                               Gu => mkVForms "zauzkategu" ;
                               Hauek => mkVForms "zauzkatete" ;
                               Ni => mkVForms "zauzkatet" ;
@@ -475,10 +476,10 @@ oper
                               Hau => mkVForms "zauzkate" ;
                               Hi _ => noVForm ;
                               Zu => noVForm } ;
-                     _    => \\agr => noVForm           
+                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr
               } ;
               Hau => table {
-                     Pres => table { 
+                    Pres => table { 
                               Gu => mkVForms "daukagu" ;
                               Hauek => mkVForms "daukate" ;
                               Ni => mkVForms "daukat" ;
@@ -487,10 +488,10 @@ oper
                               Hi Masc => mkVForms "daukak" ; 
                               Hi Fem => mkVForms "daukan" ;
                               Zu => mkVForms "daukazu" } ;
-                     _    => \\agr => noVForm
+                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
               } ;
               Hi _ => table {
-                     Pres => table { 
+                    Pres => table { 
                               Gu => mkVForms "haukagu" ;
                               Hauek => mkVForms "haukate" ;
                               Ni => mkVForms "haukat" ;
@@ -498,10 +499,10 @@ oper
                               Hau => mkVForms "hauka" ;
                               Hi _ => noVForm ;
                               Zu => noVForm } ;
-                     _    => \\agr => noVForm
+                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
               } ;
               Zu => table {
-                     Pres => table { 
+                    Pres => table { 
                               Gu => mkVForms "zauzkagu" ;
                               Hauek => noVForm ;
                               Ni => mkVForms "zauzkat" ;
@@ -509,7 +510,7 @@ oper
                               Hau => mkVForms "zauzka" ;
                               Hi _ => noVForm ;
                               Zu => noVForm } ;
-                     _ => \\agr => noVForm 
+                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
               }
    } ;
 
