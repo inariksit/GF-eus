@@ -356,24 +356,10 @@ oper
 
   mkClauseIP : (isIP : Bool) -> NounPhrase -> VerbPhrase -> Clause = \isIP,subj,vp ->
     { s = \\t,a,pol =>
-        let tns : {aux : Tense ; prc : Tense} = case <t,a> of {
-              <Pres,Simul> => {aux=Pres ; prc=Pres} ; --lo egiten da
-              <Pres,Anter> => {aux=Pres ; prc=Past} ; --lo egin da
-              <Past,Simul> => {aux=Past ; prc=Pres} ; --lo egiten nintzen
-              <Past,Anter> => {aux=Past ; prc=Past} ; --lo egin nintzen
-              <Fut,Simul>  => {aux=Pres ; prc=Fut} ;  --lo egingo da 
-              <Fut,Anter>  => {aux=Past ; prc=Fut} ;  --lo egingo nintzen
-              <Cond,Simul> => {aux=Cond ; prc=Fut} ;  --lo egiteko nintzateke
-              <Cond,Anter> => {aux=Cond ; prc=Past}  } ;--lo egin nintzateke
-
-            aux : VForms = chooseAuxPol pol vp ! tns.aux ! subj.agr ; 
-                              --TODO: bug here, somehow subj.agr seems to override indirect object 
-                              -- investigate!!!
-
-            prc : Str = case <tns.prc,isSynthetic vp.val> of { -- For ADTs, override the participle in the VP
-                               <Pres,True> => [] ;             -- (There must be a non-empty prc in a VP,
-                               _           => vp.prc ! tns.prc --  otherwise we get trouble in other functions...)
-                        } ;
+        let verb = case isSynthetic vp.val of {
+                      True  => verbformSynthetic t a vp ;
+                      False => verbformPeriphrastic t a vp 
+            } ;
             sc : Case = subjCase vp.val ;
         in wordOrder isIP 
                      { pol = pol ;
@@ -382,25 +368,30 @@ oper
                        compl = vp.iobj.s             -- mutilari
                              ++ vp.dobj.s ! pol       -- garagardoa / garagardorik
                              ++ vp.comp ! subj.agr ;  -- etorriko dela / nor den / handi(ak) / ...
-                       prc = prc ;
-                       aux = aux }
+                       prc = verb.prc ;
+                       aux = verb.aux ! subj.agr }
     } ;
 
-{-
-  verbformADT : Tense -> Anteriority -> VerbPhrase -> VForms = \t,a,vp ->
+  verbformPeriphrastic : Tense -> Anteriority -> VerbPhrase -> {aux : Agr => VForms ; prc : Str} = \t,a,vp ->
+    let adl : IntransV = chooseAux vp ;
+    in case <t,a> of {
+      <Pres,Simul> => {aux = adl ! Pres ; prc = vp.prc ! Pres} ; --noa / lo egiten da
+      <Pres,Anter> => {aux = adl ! Pres ; prc = vp.prc ! Past} ; --joan da / lo egin da
+      <Past,Simul> => {aux = adl ! Past ; prc = vp.prc ! Pres} ; --nindoan / lo egiten zen
+      <Past,Anter> => {aux = adl ! Past ; prc = vp.prc ! Past} ; --joan nintzen / ...
+      <Fut,Simul>  => {aux = adl ! Pres ; prc = vp.prc ! Fut} ;  --joango da
+      <Fut,Anter>  => {aux = adl ! Pres ; prc = vp.prc ! Fut} ; --joango nintzen
+      <Cond,Simul> => {aux = adl ! Cond ; prc = vp.prc ! Fut} ;  --joango nintzateke
+      <Cond,Anter> => {aux = adl ! Cond ; prc = vp.prc ! Past} } ;--joan nintzateke
+  
+  verbformSynthetic : Tense -> Anteriority -> VerbPhrase -> {aux : Agr => VForms ; prc : Str} = \t,a,vp ->
     let adt : IntransV = chooseAux vp ;
-        adl : IntransV = chooseAux (vp ** {val = defaultAux vp.val}) ; --copula with the same valency
-    in 
-    case <t,a> of {
-      <Pres,Simul> => {aux = adt ! Pres ; prc = []} ;         --noa
-      <Pres,Anter> => {aux = adl ! Pres ; prc = prc ! Past} ; --joan naiz
+    in case <t,a> of {
+      <Pres,Simul> => {aux = adt ! Pres ; prc = []} ;         --noa 
       <Past,Simul> => {aux = adt ! Past ; prc = []} ;         --nindoan
-      <Past,Anter> => {aux = adl ! Past ; prc = prc ! Past} ; --joan nintzen
-      <Fut,Simul>  => {aux = adl ! Pres ; prc = prc ! Fut} ;  --joango naiz 
-      <Fut,Anter>  => {aux = adl ! Pres ; prc = prc ! Fut}   --joango nintzen
-      <Cond,Simul> => {aux = adl ! Cond ; prc = prc ! Fut} ;  --joango nintzateke
-      <Cond,Anter> => {aux = adl ! Cond ; prc = prc ! Past} } ;--joan nintzateke
--}
+      _            => verbformPeriphrastic t a (vp ** {val = defaultAux vp.val}) } ;
+
+
 
   chooseAux : VerbPhrase -> IntransV = chooseAuxPol Pos ;
 
