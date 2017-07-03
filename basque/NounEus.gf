@@ -53,7 +53,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
   -- : Det -> NP ;  -- nirea / nire bat...ea ?
   DetNP det = { s = \\c => det.pref ++ det.s ! c ! FinalA ; --TODO phono
-                agr = Hau ; -- ??
+                agr = case det.nbr of {Sg => Hau ; Pl => Hauek } ;
                 anim = Inan ;
                 isDef = True } ;
 
