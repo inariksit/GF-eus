@@ -43,7 +43,6 @@ param
 
   Agr = Ni | Hi Gender | Zu | Hau | Gu | Zuek | Hauek ;
 
-
   Phono = FinalA | FinalR | FinalCons | FinalVow ; 
 
 
@@ -80,7 +79,7 @@ oper
     case val of {
       Da _  => Abs ;
       Zaio  => Dat ;
-      _     => Erg  } ;
+      _     => Erg } ;
 
 
   isSynthetic : AuxType -> Bool = \val -> 
@@ -95,6 +94,6 @@ oper
     case val of {
       Da _ => Da Izan ;
       Du _ => Du Ukan ;
-      x    => x} ;
+      x    => x } ;
 
 }
