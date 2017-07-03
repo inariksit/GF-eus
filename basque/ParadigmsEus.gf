@@ -14,11 +14,11 @@ oper
 
  -- Only restricted to izan and ukan, no other synthetic verbs. 
  -- If you need to add a new synthetic verb, see syntVerbNor and syntVerbNork in ResEus.
-  Valency : Type ;
-  nor : Valency ;
-  norNork : Valency ;
-  norNori : Valency ;
-  norNoriNork : Valency ;
+  AuxType : Type ;
+  da : AuxType ;
+  du : AuxType ;
+  zaio : AuxType ;
+  dio : AuxType ;
 
   Case : Type ;
   absolutive : Case ;
@@ -60,7 +60,7 @@ oper
 
   mkV = overload {
 
-    mkV : Str -> V = \s -> lin V (mkVerbNor s) ;  -- 
+    mkV : Str -> V = \s -> lin V (mkVerbDa s) ;  -- 
 
     mkV : Str -> V -> V = \lo,egin -> 
       lin V (egin ** { prc = \\t => lo ++ egin.prc ! t }) ;
@@ -70,42 +70,42 @@ oper
   -- For verbs with non-inflecting participle, see izanV, egonV and ukanV.
 
   mkV2 = overload {
-    mkV2 : Str -> V2 = \s -> lin V2 (mkVerbNorNork s) ;
+    mkV2 : Str -> V2 = \s -> lin V2 (mkVerbDu s) ;
 
-    mkV2 : Str -> Valency -> V2 = \s,val -> lin V2 (mkVerbNor s ** { val = val }) ;
+    mkV2 : Str -> AuxType -> V2 = \s,val -> lin V2 (mkVerbDa s ** { val = val }) ;
 
     mkV2 : Str -> V -> V2 = \lo,egin -> 
       lin V2 (egin ** { prc = \\t => lo ++ egin.prc ! t ;
-                        val = norNork }) ;
+                        val = Du Ukan }) ;
 
   } ;
 
-  mkVA : Str -> VA = \s -> lin VA (mkVerbNor s) ; -- Nor
+  mkVA : Str -> VA = \s -> lin VA (mkVerbDa s) ; -- Nor
 
-  mkV2A : Str -> V2A = \s -> lin V2A (mkVerbNorNork s) ;  -- Nor-nork   
-  mkVQ : Str -> VQ = \s -> lin VQ (mkVerbNorNork s) ;  -- Nor-nork 
-  mkVS : Str -> VS = \s -> lin VS (mkVerbNorNork s) ;  -- Nor-nork
+  mkV2A : Str -> V2A = \s -> lin V2A (mkVerbDu s) ;  -- Nor-nork   
+  mkVQ : Str -> VQ = \s -> lin VQ (mkVerbDu s) ;  -- Nor-nork 
+  mkVS : Str -> VS = \s -> lin VS (mkVerbDu s) ;  -- Nor-nork
 
 
-  mkV2V : Str -> V2V = \s -> lin V2V (mkVerbNorNoriNork s) ; -- ??? TODO check valency
-  mkV2S : Str -> V2S = \s -> lin V2S (mkVerbNorNoriNork s) ; -- Nor-nori-nork: (mutilari) (neska datorrela) erantzun diot
-  mkV2Q : Str -> V2Q = \s -> lin V2Q (mkVerbNorNoriNork s) ; -- Nor-nori-nork: (mutilari) (neska datorren) galdetu diot
-  mkV3 : Str -> V3 = \s -> lin V3 (mkVerbNorNoriNork s) ; -- Nor-nori-nork: (mutilari) (garagardoa) edan diot
+  mkV2V : Str -> V2V = \s -> lin V2V (mkVerbDio s) ; -- ??? TODO check valency
+  mkV2S : Str -> V2S = \s -> lin V2S (mkVerbDio s) ; -- Nor-nori-nork: (mutilari) (neska datorrela) erantzun diot
+  mkV2Q : Str -> V2Q = \s -> lin V2Q (mkVerbDio s) ; -- Nor-nori-nork: (mutilari) (neska datorren) galdetu diot
+  mkV3 : Str -> V3 = \s -> lin V3 (mkVerbDio s) ; -- Nor-nori-nork: (mutilari) (garagardoa) edan diot
 
 
   -----
   -- Verbs with non-inflecting participle
-  -- These are just Verb, use izanV for Nor and ukanV for NorNork.
+  -- These are just Verb, use izanV or egonV for intransitive and ukanV for transitive.
 
   izanV : Str -> Verb = \bizi -> 
-    mkVerbNor bizi ** { prc = \\_ => bizi } ; -- Non-inflecting participle, valency is nor: e.g. "bizi naiz", "beldur naiz"
+    mkVerbDa bizi ** { prc = \\_ => bizi } ; -- Non-inflecting participle, auxtype is Da (nor): e.g. "bizi naiz", "beldur naiz"
 
   egonV : Str -> Verb = \zain -> 
-    mkVerbNorEgon zain ** { prc = \\_ => zain } ; -- Non-inflecting participle, valency is nor, but with egon: e.g. "zain nago"
+    mkVerbDaEgon zain ** { prc = \\_ => zain } ; -- Non-inflecting participle, auxtype is Da (nor), but with egon: e.g. "zain nago"
 
 
   ukanV : Str -> Verb = \maite -> 
-    mkVerbNorNork maite ** { prc = \\_ => maite } ; -- Non-inflecting participle, valency is nor-nork: e.g, "maite zaitut"
+    mkVerbDu maite ** { prc = \\_ => maite } ; -- Non-inflecting participle, auxtype is Du (nor-nork): e.g, "maite zaitut"
 
 
 --2 Structural categories
@@ -148,11 +148,11 @@ oper
   sg = Sg ;
   pl = Pl ;
 
-  Valency = ResEus.Valency ;
-  nor = Nor Izan ;
-  norNork = NorNork Ukan ;
-  norNori = NorNori ;
-  norNoriNork = NorNoriNork ;
+  AuxType = ResEus.AuxType ;
+  da = Da Izan ;
+  du = Du Ukan ;
+  zaio = Zaio ;
+  dio = Dio ;
 
   Case = ResEus.Case ;
   absolutive = Abs ;

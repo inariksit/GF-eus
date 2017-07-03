@@ -9,17 +9,17 @@ param
   -- Every verb has some fully inflecting part:
   -- if the whole verb is one of these synthetic verbs, then there won't be a participle
   -- (or it's only in some tenses/persons/something).
-  -- Also some of these verbs have different conjugations in NorNork and NorNoriNork.
   -- AditzTrinkoak has all the inflection tables fully spelt out, 
   -- and here we just make nice neat set of parameters that go into the verbs.
   SyntVerb1 = Izan | Egon | Ibili | Etorri | Joan ;
   SyntVerb2 = Ukan | Jakin | Eduki ; --TODO others
 
 
+  AuxType = Da SyntVerb1 
+          | Du SyntVerb2 
+          | Zaio | Dio ;  --always Ukan ?
 
-  Valency = Nor SyntVerb1 
-          | NorNork SyntVerb2 
-          | NorNori | NorNoriNork ;  --always Ukan ?
+
 
 {-
    Type of adjectival phrase, e.g.
@@ -76,25 +76,25 @@ oper
         (Hau|Hauek)  => P3
     } ;
 
-  subjCase : Valency -> Case = \val ->
+  subjCase : AuxType -> Case = \val ->
     case val of {
-      Nor _    => Abs ;
-      NorNori  => Dat ;
-      _        => Erg  } ;
+      Da _  => Abs ;
+      Zaio  => Dat ;
+      _     => Erg  } ;
 
 
-  isSynthetic : Valency -> Bool = \val -> 
+  isSynthetic : AuxType -> Bool = \val -> 
     case val of {
-      Nor Izan     => False ;
-      NorNori      => False ;
-      NorNork Ukan => False ;
-      NorNoriNork  => False ;
-      _            => True } ;
+      Da Izan => False ;
+      Du Ukan => False ;
+      Zaio    => False ;
+      Dio     => False ;
+      _       => True } ;
 
-  defaultAux : Valency -> Valency = \val -> 
+  defaultAux : AuxType -> AuxType = \val -> 
     case val of {
-      Nor _     => Nor Izan ;
-      NorNork _ => NorNork Ukan ;
-      anything  => anything } ;
+      Da _ => Da Izan ;
+      Du _ => Du Ukan ;
+      x    => x} ;
 
 }

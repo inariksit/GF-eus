@@ -150,8 +150,8 @@ oper
 
   copulaVP : SyntVerb1 -> VerbPhrase = \izan ->
     ResEus.useV { prc = \\tns => [] ; 
-                  nstem = "izate" ;
-                  val = Nor izan } ;
+                  nstem = case izan of { Izan => "izate" ; _ => "egote" } ; --TODO is this correct?
+                  val = Da izan } ;
 } 
 
 

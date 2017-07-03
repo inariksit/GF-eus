@@ -426,11 +426,11 @@ oper
   egin_V : V = mkV "egin" ;
 
   -- Some synthetic verbs
-  etorri_V : R.Verb = R.syntVerbNor "etorri" R.Etorri ;
+  etorri_V : R.Verb = R.syntVerbDa "etorri" R.Etorri ;
 
-  ibili_V : R.Verb = R.syntVerbNor "ibili" R.Ibili ;
+  ibili_V : R.Verb = R.syntVerbDa "ibili" R.Ibili ;
 
-  jakin_V2 : R.Verb = R.syntVerbNorNork "jakin" R.Jakin ;
+  jakin_V2 : R.Verb = R.syntVerbDu "jakin" R.Jakin ;
 
-  joan_V : R.Verb = R.syntVerbNor "joan" R.Joan ;
+  joan_V : R.Verb = R.syntVerbDa "joan" R.Joan ;
 }

@@ -258,31 +258,31 @@ oper
 
   Verb : Type = { prc : Tense => Str ;
                   nstem : Str ; -- Nominal stem : ibiltze
-                  val : Valency 
+                  val : AuxType  --TODO change name of the field
                 } ;
 
-  mkVerbNor : Str -> Verb = \s -> { val = Nor Izan ;
+  mkVerbDa : Str -> Verb = \s -> { val = Da Izan ;
+                                   nstem = mkNStem s ;
+                                   prc = mkPrc s } ;  
+
+  mkVerbDaEgon : Str -> Verb = \s -> { val = Da Egon ;
+                                       nstem = mkNStem s ;
+                                       prc = mkPrc s } ; 
+
+  mkVerbDu : Str -> Verb = \s -> { val = Du Ukan ; 
+                                   nstem = mkNStem s ;
+                                   prc = mkPrc s } ; 
+
+  mkVerbDio : Str -> Verb = \s -> { val = Dio ; 
                                     nstem = mkNStem s ;
-                                    prc = mkPrc s } ;  
-
-  mkVerbNorEgon : Str -> Verb = \s -> { val = Nor Egon ;
-                                        nstem = mkNStem s ;
-                                        prc = mkPrc s } ; 
-
-  mkVerbNorNork : Str -> Verb = \s -> { val = NorNork Ukan ; 
-                                        nstem = mkNStem s ;
-                                        prc = mkPrc s } ; 
-
-  mkVerbNorNoriNork : Str -> Verb = \s -> { val = NorNoriNork ; 
-                                            nstem = mkNStem s ;
-                                            prc = mkPrc s } ; 
+                                    prc = mkPrc s } ; 
 
   -- Synthetic verbs 
-  syntVerbNor : Str -> SyntVerb1 -> Verb = \sEtorri,pEtorri ->
-    mkVerbNor sEtorri ** { val = Nor pEtorri } ;
+  syntVerbDa : Str -> SyntVerb1 -> Verb = \sEtorri,pEtorri ->
+    mkVerbDa sEtorri ** { val = Da pEtorri } ;
 
-  syntVerbNorNork : Str -> SyntVerb2 -> Verb = \sJakin,pJakin ->
-    syntVerbNor sJakin Izan ** { val = NorNork pJakin } ;
+  syntVerbDu : Str -> SyntVerb2 -> Verb = \sJakin,pJakin ->
+    mkVerbDu sJakin ** { val = Du pJakin } ;
 
   mkNStem : Str -> Str = \ikusi ->
     let ikus : Str = case ikusi of {
@@ -319,7 +319,7 @@ oper
                        isDef : Bool } ; --Indefinite direct object turns into Partitive with negative polarity.
               iobj : { a : Agr ; 
                        s : Str } ; 
-              comp : Agr => Str ; -- Comps depend on Agr; Valency is always Nor.
+              comp : Agr => Str ; -- Comps depend on Agr; AuxType is always Nor.
               adv : Str } ;
 
 
@@ -351,7 +351,7 @@ oper
 
   useV : Verb -> VerbPhrase = \v -> 
     v ** { dobj = { a = Hau ; -- This will be used for *all* V* becoming VP! 
-                              -- e.g. VQ, VS, ... will use a NorNork copula, but 
+                              -- e.g. VQ, VS, ... will use a Du copula, but 
                               -- the sentence complement will be stored in comp field.
                               -- This is because of V2Q, V2S versions you need both!
                               --
@@ -478,24 +478,20 @@ oper
   --TODO: add other synthetic transitive verbs
   chooseAuxPol : Polarity -> VerbPhrase -> IntransV = \pol,vp -> 
     case vp.val of {
-      Nor Izan  => AditzTrinkoak.izanNor ;
+      Da x     => AditzTrinkoak.syntIntransVerb (Da x) ;
 
-      Nor Egon  => AditzTrinkoak.egonNor ;
-      Nor Joan  => AditzTrinkoak.joanNor ;
-      Nor Ibili => AditzTrinkoak.ibiliNor ;
-      Nor Etorri => AditzTrinkoak.etorriNor ;
-      NorNori   => AditzTrinkoak.ukanNoriNor ! vp.iobj.a ; --are there other NorNori verbs?
+      Zaio   => AditzTrinkoak.ukanZaio ! vp.iobj.a ; --are there other Zaio (nor-nori) verbs?
 
-      NorNoriNork => 
-        case <pol,vp.dobj.isDef> of {
-          <Neg,False> => AditzTrinkoak.ukanNoriNorNork ! vp.iobj.a ! sgAgr vp.dobj.a ;
-          _           => AditzTrinkoak.ukanNoriNorNork ! vp.iobj.a ! vp.dobj.a } ;
-
-      NorNork x =>
-        let aux = AditzTrinkoak.syntTransVerb (NorNork x) 
+      Du x =>
+        let aux = AditzTrinkoak.syntTransVerb (Du x) 
         in case <pol,vp.dobj.isDef> of {
              <Neg,False> => aux ! sgAgr vp.dobj.a;
-             _           => aux ! vp.dobj.a } 
+             _           => aux ! vp.dobj.a } ;
+
+      Dio => 
+        case <pol,vp.dobj.isDef> of {
+          <Neg,False> => AditzTrinkoak.ukanDio ! vp.iobj.a ! sgAgr vp.dobj.a ;
+          _           => AditzTrinkoak.ukanDio ! vp.iobj.a ! vp.dobj.a } 
 
 } ;
 

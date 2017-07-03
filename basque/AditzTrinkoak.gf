@@ -30,33 +30,43 @@ oper
         { indep = dut ; stem = duda } ;
     } ;
 
-    IntransV : Type = Tense => Agr => VForms ;
-    TransV   : Type = Agr => IntransV ;
-    DitransV : Type = Agr => TransV ;
+    IntransV : Type = Tense => Agr => VForms ;  -- Agr = nor
+    TransV   : Type = Agr => IntransV ;         -- Agr = nork
+    DitransV : Type = Agr => TransV ;           -- Agr = nori
 
 ------------------------------------------------------------------------------
-
-    syntTransVerb : Valency -> TransV = \val ->
-      case val of {
-        NorNork Ukan  => ukanNorNork ;
-        NorNork Jakin => jakinNorNork ;
-        NorNork Eduki => edukiNorNork ;
-        NorNori       => ukanNoriNor ;
-        _             => Predef.error "Not a transitive verb"
-      } ;
+  syntIntransVerb : AuxType -> IntransV = \val ->
+    case val of {
+      Da Izan  => izanDa ;
+      Da Egon  => egonDa ;
+      Da Joan  => joanDa ;
+      Da Ibili => ibiliDa ;
+      Da Etorri => etorriDa ;
+      _          => Predef.error "Not an intransitive verb"
+    } ;
+  syntTransVerb : AuxType -> TransV = \val ->
+    case val of {
+      Du Ukan  => ukanDu ;
+      Du Jakin => jakinDu ;
+      Du Eduki => edukiDu ;
+      Zaio     => ukanZaio ;
+      _        => Predef.error "Not a transitive verb"
+    } ;
 
 ------------------------------------------------------------------------------
 
 --This version is probably very overgenerating, and wrong.
-  ukanNoriNorNork : DitransV = 
-    \\nori,nor,tns,nork => mkVForms (norNoriNork nor nori tns nork) ;
+  ukanDio : DitransV = 
+--    \\nori,nor,tns,nork => mkVForms (norNoriNork nor nori tns nork) ;
+    \\nori,nork,tns,nor => mkVForms (norNoriNork nor nori tns nork) ;
 
 
     norNoriNork : Agr -> Agr -> Tense -> Agr -> Str = \nor,nori,tns,nork ->
+--    norNoriNork : Agr -> Agr -> Tense -> Agr -> Str = \nori,nork,tns,nor ->
       case tns of {
         Past => "TODO:past tense" ;
         Cond => "TODO:conditional" ;
-        _    => let dizki = norTableNorNoriNork ! getNum nor ;
+        _    => let dizki = norTableDio ! getNum nor ;
                     da    = noriTableAll ! nork ! nori  + "<NORI>"; --form of nori depends on nork
                     zue   = norkTableAll ! nork + "<NORK>"
                 in dizki + da + zue 
@@ -64,7 +74,7 @@ oper
 
 
     -- For Nor-Nori inflection, map from Agr to prefix morpheme in Nor position
-    norTableNorNori : Agr => Str =
+    norTableZaio : Agr => Str =
       table { Ni    => "na" ;
               Hi _  => "ha" ;
               Gu    => "ga" ;
@@ -75,7 +85,7 @@ oper
 
     -- For Nor-Nori-Nork inflection, map from Agr to prefix morpheme in Nor position
     -- There is no other option than 3rd person, only difference is number.
-    norTableNorNoriNork : Number => Str =
+    norTableDio : Number => Str =
       table { Sg => "di" ;
               Pl => "dizki"  
             } ;
@@ -113,7 +123,7 @@ oper
 -}
 
     -- common copula
-    izanNor : IntransV =
+    izanDa : IntransV =
       table {Past => table {Ni => mkVForms "nintzen" ; 
                             Hi _ => mkVForms "hintzen" ; 
                             Zu => mkVForms "zinen" ; 
@@ -146,7 +156,7 @@ oper
 -}
 
 
-    ukanNorNork : TransV = table {
+    ukanDu : TransV = table {
        -- Nor,Nork
               Ni => table {
                      Past => table {
@@ -302,7 +312,7 @@ oper
   =============================================================================
 -}
 
-  ukanNoriNor : TransV = table {
+  ukanZaio : TransV = table {
      -- Nori,Nor
       Hau   => table { 
                  Pres => table {
@@ -400,7 +410,7 @@ oper
   =============================================================================
 -}
     -- stative copula, like Spanish estar
-  egonNor : IntransV =
+  egonDa : IntransV =
     table { Past => table {
                      Ni => mkVForms "nengoen" ; 
                      Hi _ => mkVForms "hengoen" ; 
@@ -429,7 +439,7 @@ oper
   =============================================================================
 -}
 
-   edukiNorNork : TransV = table {
+   edukiDu : TransV = table {
        -- Nor,Nork
               Ni => table {
                     Pres => table {
@@ -441,7 +451,7 @@ oper
                               Hi Masc => mkVForms "naukak" ;
                               Hi Fem  => mkVForms "naukan" ;
                               Zu => mkVForms "naukazu" } ;
-                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
+                    tns => \\agr => ukanDu ! Ni ! tns ! agr 
 
               } ;
               Gu => table {
@@ -453,7 +463,7 @@ oper
                               Hau => mkVForms "gauzka" ;
                               Hi _ => noVForm ;
                               Zu => mkVForms "gauzkazu" } ;
-                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
+                    tns => \\agr => ukanDu ! Ni ! tns ! agr 
               } ;
               Hauek => table {
                     Pres => table { -- Pres
@@ -465,7 +475,7 @@ oper
                               Hi Masc => mkVForms "dauzkak" ; 
                               Hi Fem => mkVForms "dauzkan" ;
                               Zu => mkVForms "dauzkazu" } ;
-                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
+                    tns => \\agr => ukanDu ! Ni ! tns ! agr 
               } ;
               Zuek => table {
                     Pres => table { 
@@ -476,7 +486,7 @@ oper
                               Hau => mkVForms "zauzkate" ;
                               Hi _ => noVForm ;
                               Zu => noVForm } ;
-                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr
+                    tns => \\agr => ukanDu ! Ni ! tns ! agr
               } ;
               Hau => table {
                     Pres => table { 
@@ -488,7 +498,7 @@ oper
                               Hi Masc => mkVForms "daukak" ; 
                               Hi Fem => mkVForms "daukan" ;
                               Zu => mkVForms "daukazu" } ;
-                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
+                    tns => \\agr => ukanDu ! Ni ! tns ! agr 
               } ;
               Hi _ => table {
                     Pres => table { 
@@ -499,7 +509,7 @@ oper
                               Hau => mkVForms "hauka" ;
                               Hi _ => noVForm ;
                               Zu => noVForm } ;
-                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
+                    tns => \\agr => ukanDu ! Ni ! tns ! agr 
               } ;
               Zu => table {
                     Pres => table { 
@@ -510,7 +520,7 @@ oper
                               Hau => mkVForms "zauzka" ;
                               Hi _ => noVForm ;
                               Zu => noVForm } ;
-                    tns => \\agr => ukanNorNork ! Ni ! tns ! agr 
+                    tns => \\agr => ukanDu ! Ni ! tns ! agr 
               }
    } ;
 
@@ -520,7 +530,7 @@ oper
   =============================================================================
 -}
 
-  etorriNor : IntransV = 
+  etorriDa : IntransV = 
     \\tns,subjAgr => 
       case <tns,subjAgr> of {
         <Pres,Ni>    => mkVForms "nator" ;
@@ -530,7 +540,7 @@ oper
         <Pres,Gu>    => mkVForms "gatoz" ;
         <Pres,Zuek>  => mkVForms "zatozte" ;
         <Pres,Hauek> => mkVForms "datoz" ;
-        _            => izanNor ! tns ! subjAgr 
+        _            => izanDa ! tns ! subjAgr 
       } ;
 
 {-
@@ -538,7 +548,7 @@ oper
   Joan
   =============================================================================
 -}
-  joanNor : IntransV = 
+  joanDa : IntransV = 
     \\tns,subjAgr => 
       case <tns,subjAgr> of {
         <Pres,Ni>    => mkVForms "noa" ;
@@ -556,7 +566,7 @@ oper
         <Past,Zuek>  => mkVForms "zindoazten" ;
         <Past,Hauek> => mkVForms "zihoazen" ;
 
-        _            => izanNor ! tns ! subjAgr 
+        _            => izanDa ! tns ! subjAgr 
       } ;
 
 
@@ -574,7 +584,7 @@ oper
 -}
   --TODO: check forms
 
-  ibiliNor : IntransV =
+  ibiliDa : IntransV =
     table {
         Past => table {
                     Ni => mkVForms "nenbilen" ; 
@@ -603,7 +613,7 @@ oper
                     Gu => mkVForms "gabiltza" ; 
                     Zuek => mkVForms "zabiltzate" ; 
                     Hauek => mkVForms "dabiltza" } ;
-        Fut => izanNor ! Fut 
+        Fut => izanDa ! Fut 
        } ;
 
 
@@ -612,7 +622,7 @@ oper
   Jakin
   =============================================================================
 -}
-  jakinNorNork : TransV = 
+  jakinDu : TransV = 
     \\dobjAgr,tns,subjAgr => 
       case <dobjAgr,tns,subjAgr> of {
         <Hau,Pres,Ni>    => mkVForms "dakit" ;
@@ -621,7 +631,7 @@ oper
         <Hau,Pres,Gu>    => mkVForms "dakigu" ;
         <Hau,Pres,Zuek>  => mkVForms "dakizue" ;
         <Hau,Pres,Hauek> => mkVForms "dakite" ;
-        _                => ukanNorNork ! dobjAgr ! tns ! subjAgr 
+        _                => ukanDu ! dobjAgr ! tns ! subjAgr 
       } ;
 
 
