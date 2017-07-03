@@ -177,7 +177,7 @@ lin horn_N = mkN "adar" ; --Apertium
 lin horse_N = mkN "zaldi" ; --Apertium
 lin hot_A = mkA "bero" ; --Apertium
 lin house_N = mkN "etxe" ; --Apertium
-lin hunt_V2 = mkV2 "ehizatu" ; -- | lin V2 (mkV "ehizan" AditzTrinkoak.ibiliNorNork) ; --Apertium
+lin hunt_V2 = mkV2 "ehizatu" ;
 lin husband_N = mkN "senar" ; --Apertium
 
 ----

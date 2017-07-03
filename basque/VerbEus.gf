@@ -97,7 +97,7 @@ lin
   AdvVP vp adv = ResEus.insertAdv adv vp ;
 
   -- : VP -> Adv -> VP ;  -- sleep , even though ...
-  ExtAdvVP vp adv = ResEus.insertAdv (postfixSS "," adv) vp ;
+  ExtAdvVP vp adv = ResEus.insertAdv (postfixSS (SOFT_BIND ++ ",") adv) vp ;
 
   -- : AdV -> VP -> VP ;  -- always sleep
   AdVVP adv vp = ResEus.insertAdv adv vp ;

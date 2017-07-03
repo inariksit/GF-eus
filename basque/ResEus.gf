@@ -59,6 +59,8 @@ oper
 --------------------------------------------------------------------
 -- Det, Quant
 
+  -- TODO: some kind of safe independent form to give to DetNP, 
+  -- otherwise sometimes it will generate forms that start with BIND.
   Determiner : Type = { s     : Case => Phono => Str ;   -- hauek
                         pref  : Str ;                    -- nire
                         nbr   : Number ;
