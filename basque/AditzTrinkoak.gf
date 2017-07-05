@@ -56,7 +56,41 @@ oper
     } ;
 
 ------------------------------------------------------------------------------
+-- General building blocks for the forms of ukan
 
+  norkUkanFirst : Agr => Str = table { -- Past, pot, cond etc.
+    Ni   => "n" ; Gu => "gen" ;
+    Hi _ => "h" ; 
+    Zu => "zen" ; Zuek => "zen" ;
+    Hau  => "z" ; Hauek => "z" } ;
+
+  norkUkanLast : Agr => Str = table {
+    Ni      => "t" ;  Gu      => "gu" ;
+    Hi Masc => "k" ;  Hi Fem  => "n" ;
+    Zu      => "zu" ; Zuek    => "zue" ;
+    Hau     => [] ;   Hauek   => "te" } ;
+
+  norkUkanMid : Agr => Str = table {
+    Hi Masc => "a" ;  Hi Fem  => "na" ;
+    Ni => "da" ; x => norkUkanLast ! x } ;
+
+  noriUkanLast : Agr => Str = table {
+    Hau => "o" ; x => norkUkanLast ! x } ;
+
+  noriUkanMid : Agr => Str = table {
+    Hau => "o" ; x => norkUkanMid ! x } ;
+
+  norUkanPres : Agr => Str = table {
+    Ni   => "nau" ; Gu => "gaitu" ;
+    Hi _ => "hau" ; 
+    Zu => "zaitu" ; Zuek => "zaituzte" ;
+    Hau  => "du"  ; Hauek => "ditu" } ;
+
+  norUkanNonpres : Agr => Str = table {
+    Ni => "nindu" ; Gu => "gintu" ;
+    Hi _ => "hindu" ; 
+    Zu => "zintu" ; Zuek => "zintuzte" ;
+    Hau => nonExist ; Hauek => nonExist } ;
 {-
   =============================================================================
   Izan [NOR]
@@ -95,21 +129,47 @@ oper
   Ukan [NOR] [NORK]
   =============================================================================
 -}
-  --TODO make this like ukanDio
-  --newUkanDu : TransV = \\nor,tns,nork => mkVForms (
-  -- case tns of {
+{-
+  ukanDu : TransV = \\nor,tns,nork => mkVForms (
+    case tns of {
 
-  --    Pres => let gaitu = norTable ! nor ;
-  --                zte   = norkTable ! getNum nor ! nork  -- If Nork is Hauek and Nor is plural
-  --             in gaitu + zte } ; 
+      Pres => let gaitu : Str = norPres ! nor ;
+                  zte   : Str = norkPres ! nork ;
+               in gaitu + zte ; 
 
-  --    --TODO rest of the forms
-  --    past => let nindu = "nindu" ;
-  --                te = "te" ;
-  --             in nindu + te + "n" } 
-  --  ) ;
+      --TODO rest of the forms
+      past => 
+        case <nor,nork> of {
+          <Hau,x>   => table { Ni => mkVForms "nuen" ; Gu => mkVForms "genuen" ;
+                               Hi _ => mkVForms "huen" ;        
+                               Zu => mkVForms "zenuen" ; Zuek => mkVForms "zenuten" ;
+                               Hau => mkVForms "zuen" ; Hauek => mkVForms "zuten" } 
+                       ! x ;
+          <Hauek,x> => table { Ni => mkVForms "nituen" ; Gu => mkVForms "genituen" ;
+                               Hi _ => mkVForms "hituen" ;
+                               Zu => mkVForms "zenituen" ; Zuek => mkVForms "zenituzten" ;
+                               Hau => mkVForms "zituen" ; Hauek => mkVForms "zituzten" } 
+                        ! x ;
+          <_,_>     => let nindu : Str = norPast ! nor ;
+                           te    : Str = norkPast ! nork ;
+                        in nindu + te + "n" }}) 
+     where {
 
+      norkPres : Agr => Str = \\nork => case <nor,nork> of {
+       <Gu,Hauek>    => "zte" ; -- If Nork is Hauek and Nor is plural,
+       <Zu,Hauek>    => "zte" ; -- the morpheme "te" changes into "zte"
+       <Hauek,Hauek> => "zte" ;
+       <_,x>         => norkUkanLast ! x } ; 
 
+      norkPast : Agr => Str = norkUkanMid ;
+
+      norPres : Agr => Str = norUkanPres ;    
+      
+      norPast : Agr => Str = norUkanNonpres ;
+        
+  } ;
+
+-}
 
     ukanDu : TransV = table {
        -- Nor,Nork
@@ -343,38 +403,21 @@ oper
 
     ------
     -- Map from Agr to morpheme in Nori position.
-    noriTable : Agr => Str =
-      table { Ni      => "da" ; -- When not the last morpheme
-              Gu      => "gu" ;
-              Hi Masc => "k" ;  Hi Fem => "n" ;
-              Zu      => "zu" ; Zuek   => "zue" ;
-              Hau     => "o" ;  Hauek   => "e" } ;
 
     noriPres : Agr => Str = \\nori => case <nork,nori> of {
-      <Hau,Ni> => "t" ; --If nork is Hau, then the form ends in t
-      <_,x>    => noriTable ! x} ;
+      <Hau,Ni> => "t" ; -- If nork is Hau, then the form ends in "t"
+      <_,x>    => noriUkanMid ! x } ;
 
-    noriPast : Agr => Str =
-      table { Hi Masc => "a" ;  -- Different forms for Hi in past,
-              Hi Fem  => "na" ; -- otherwise same as noriPres
-              x       => noriTable ! x } ;
-
+    noriPast : Agr => Str = noriUkanMid ;
 
     ------
     -- Map from Agr to morpheme in Nork position            
-    norkPres : Agr => Str =
-      table { Ni      => "t" ;  Gu      => "gu" ;
-              Hi Masc => "k" ;  Hi Fem  => "n" ;
-              Zu      => "zu" ; Zuek    => "zue" ;
-              Hau     => [] ;   Hauek   => "te" } ;
+    norkPres : Agr => Str = norkUkanLast ;
 
-    norkPast : Agr => Str =
-      table { Ni   => "n" ; Gu => "gen" ;
-              Hi _ => "h" ; (Zu|Zuek) => "zen" ;
-              Hau  => "z" ; Hauek => "z" } ;
+    norkPast : Agr => Str = norkUkanFirst ;
 
-    norkPastTe : Agr => Str = 
-      table { (Zuek|Hauek) => "te" ; _ => [] } 
+    norkPastTe : Agr => Str = table { 
+      (Zuek|Hauek) => "te" ; _ => [] } 
 
   } ;
 
