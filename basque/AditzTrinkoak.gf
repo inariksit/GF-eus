@@ -90,7 +90,7 @@ oper
     Ni => "nindu" ; Gu => "gintu" ;
     Hi _ => "hindu" ; 
     Zu => "zintu" ; Zuek => "zintuzte" ;
-    Hau => nonExist ; Hauek => nonExist } ;
+    Hau => nonExist ; Hauek => nonExist } ; -- formed separately
 {-
   =============================================================================
   Izan [NOR]
@@ -129,197 +129,74 @@ oper
   Ukan [NOR] [NORK]
   =============================================================================
 -}
-{-
+
   ukanDu : TransV = \\nor,tns,nork => mkVForms (
     case tns of {
+      Past => 
+        case nor of { -- Special forms for past when nor is Hau or Hauek
+          Hau   => norkPast_norHau ! nork ;
+          Hauek => norkPast_norHauek ! nork ;
+          _     => let nindu : Str = norPast ! nor ;
+                       te    : Str = norkPast ! nork ;
+                    in nindu + te + "n" } ;
 
-      Pres => let gaitu : Str = norPres ! nor ;
+      -- TODO: Conditional is generating some clearly wrong forms, investigate
+      Cond => 
+        case nor of { -- Special forms for conditional when nor is Hau or Hauek
+          Hau   => norkCond_norHau ! nork ;
+          Hauek => norkCond_norHauek ! nork ;
+
+          _     => let gintu : Str = norPast ! nor ;
+                       z     : Str = norCondZ ! nor ;
+                       te    : Str = norkPres ! nork ;
+                    in gintu + z + "ke" + te } ;
+
+      pres => let gaitu : Str = norPres ! nor ;
                   zte   : Str = norkPres ! nork ;
-               in gaitu + zte ; 
+               in gaitu + zte  
 
-      --TODO rest of the forms
-      past => 
-        case <nor,nork> of {
-          <Hau,x>   => table { Ni => mkVForms "nuen" ; Gu => mkVForms "genuen" ;
-                               Hi _ => mkVForms "huen" ;        
-                               Zu => mkVForms "zenuen" ; Zuek => mkVForms "zenuten" ;
-                               Hau => mkVForms "zuen" ; Hauek => mkVForms "zuten" } 
-                       ! x ;
-          <Hauek,x> => table { Ni => mkVForms "nituen" ; Gu => mkVForms "genituen" ;
-                               Hi _ => mkVForms "hituen" ;
-                               Zu => mkVForms "zenituen" ; Zuek => mkVForms "zenituzten" ;
-                               Hau => mkVForms "zituen" ; Hauek => mkVForms "zituzten" } 
-                        ! x ;
-          <_,_>     => let nindu : Str = norPast ! nor ;
-                           te    : Str = norkPast ! nork ;
-                        in nindu + te + "n" }}) 
-     where {
+     }) where {
 
       norkPres : Agr => Str = \\nork => case <nor,nork> of {
-       <Gu,Hauek>    => "zte" ; -- If Nork is Hauek and Nor is plural,
-       <Zu,Hauek>    => "zte" ; -- the morpheme "te" changes into "zte"
-       <Hauek,Hauek> => "zte" ;
-       <_,x>         => norkUkanLast ! x } ; 
+        <Gu,Hauek>    => "zte" ; -- If Nork is Hauek and Nor is plural,
+        <Zu,Hauek>    => "zte" ; -- the morpheme "te" changes into "zte"
+        <Hauek,Hauek> => "zte" ;
+        <_,x>         => norkUkanLast ! x } ; 
 
-      norkPast : Agr => Str = norkUkanMid ;
+      norkPast : Agr => Str = \\nork => case <nor,nork> of {
+        <Zuek,Hau> => "" ; 
+        <_,Hau>    => "e" ;
+        <Gu,Hauek>    => "zte" ;
+        <Zu,Hauek>    => "zte" ;
+        <Hauek,Hauek> => "zte" ;
+        <_,x>      => norkUkanMid ! x } ;
 
       norPres : Agr => Str = norUkanPres ;    
       
       norPast : Agr => Str = norUkanNonpres ;
-        
+
+      norCondZ : Agr => Str = table { 
+        (Gu|Zu|Zuek) => "z" ; _ => [] } ;
+
+      norkPast_norHau = table { Ni => "nuen" ; Gu => "genuen" ;
+                                Hi _ => "huen" ;        
+                                Zu => "zenuen" ; Zuek => "zenuten" ;
+                                Hau => "zuen" ; Hauek => "zuten" } ;
+
+      norkPast_norHauek = table { Ni => "nituen" ; Gu => "genituen" ;
+                                  Hi _ => "hituen" ;
+                                  Zu => "zenituen" ; Zuek => "zenituzten" ;
+                                  Hau => "zituen" ; Hauek => "zituzten" } ;
+
+      norkCond_norHau = table { Hi _ => "hinduke" ; Zuek => "zenukete" ; 
+                                Hau => "luke" ; Hauek => "lukete" ; 
+                                x => (tk 2 (norkPast_norHau ! x)) + "ke" } ; -- zu+en -> nu+ke
+
+      norkCond_norHauek = table { Hi _ => "hindukete" ; Zuek => "zenituzkete" ;
+                                  Hau => "lituzke" ;  Hauek => "lituzkete" ; 
+                                  x => (tk 2 (norkPast_norHauek ! x)) + "zke" } --nitu+en -> nitu+zke
   } ;
 
--}
-
-    ukanDu : TransV = table {
-       -- Nor,Nork
-              Ni => table {
-                     Past => table {
-                              Gu => noVForm ;
-                              Hauek => mkVForms "ninduten" ;
-                              Ni => noVForm ;
-                              Zuek => mkVForms "ninduzuen" ;
-                              Hau => mkVForms "ninduen" ;
-                              Hi Masc  => mkVForms "ninduan" ; 
-                              Hi Fem => mkVForms "nindunan" ;
-                              Zu => mkVForms "ninduzun" 
-                     } ;
-                     _ => table { -- Pres
-                              Gu => noVForm ;
-                              Hauek => mkVForms "naute" ;
-                              Ni => noVForm ;
-                              Zuek => mkVForms "nauzue" ;
-                              Hau => mkVForms "nau" ;
-                              Hi Masc  => mkVForms "nauk" ; 
-                              Hi Fem => mkVForms "naun" ;
-                              Zu => mkVForms "nauzu" 
-                     }
-              } ;
-              Gu => table {
-                     Past => table {
-                              Gu => noVForm ;
-                              Hauek => mkVForms "gintuzten" ;
-                              Ni => noVForm ;
-                              Zuek => mkVForms "gintuzuen" ;
-                              Hau => mkVForms "gintuen" ;
-                              Hi Masc => mkVForms "gintuan" ; 
-                              Hi Fem => mkVForms "gintunan" ;
-                              Zu => mkVForms "gintuzun" 
-                     } ;
-                     _ => table { -- Pres
-                              Gu => noVForm ;
-                              Hauek => mkVForms "gaituzte" ;
-                              Ni => noVForm ;
-                              Zuek => mkVForms "gaituzue" ;
-                              Hau => mkVForms "gaitu" ;
-                              Hi Masc => mkVForms "gaituk" ; 
-                              Hi Fem => mkVForms "gaitun" ;
-                              Zu => mkVForms "gaituzu" 
-                     }
-              } ;
-              Hauek => table {
-                     Past => table {
-                              Gu => mkVForms "genituen" ;
-                              Hauek => mkVForms "zituzten" ;
-                              Ni => mkVForms "nituen" ;
-                              Zuek => mkVForms "zenituzten" ;
-                              Hau => mkVForms "zituen" ;
-                              Hi _ => mkVForms "hituen" ;
-                              Zu => mkVForms "zenituen" 
-                     } ;
-                     _ => table { -- Pres
-                              Gu => mkVForms "ditugu" ;
-                              Hauek => mkVForms "dituzte" ;
-                              Ni => mkVForms "ditut" ;
-                              Zuek => mkVForms "dituzue" ;
-                              Hau => mkVForms "ditu" ;
-                              Hi Masc => mkVForms "dituk" ;
-                              Hi Fem => mkVForms "ditun" ;
-                              Zu => mkVForms "dituzu" 
-                     }
-              } ;
-              Zuek => table {
-                     Past => table {
-                              Gu => mkVForms "zintuztegun" ;
-                              Hauek => mkVForms "zintuzteten" ;
-                              Ni => mkVForms "zintuztedan" ;
-                              Zuek => noVForm ;
-                              Hau => mkVForms "zintuzten" ;
-                              Hi _ => noVForm ;
-                              Zu => noVForm
-                     } ;
-                     _ => table { -- Pres
-                              Gu => mkVForms "zaituztegu" ;
-                              Hauek => mkVForms "zaituztete" ;
-                              Ni => mkVForms "zaituztet" ;
-                              Zuek => noVForm ;
-                              Hau => mkVForms "zaituzte" ;
-                              Hi _ => noVForm ;
-                              Zu => noVForm 
-                     }
-              } ;
-              Hau => table {
-                     Past => table {
-                              Gu => mkVForms "genuen" ;
-                              Hauek => mkVForms "zuten" ;
-                              Ni => mkVForms "nuen" ;
-                              Zuek => mkVForms "zenuten" ;
-                              Hau => mkVForms "zuen" ;
-                              Hi _ => mkVForms "huen" ;
-                              Zu => mkVForms "zenuen" 
-                     } ;
-                     _ => table { -- Pres
-                              Gu => mkVForms "dugu" ;
-                              Hauek => mkVForms "dute" ;
-                              Ni => mkVForms "dut" ;
-                              Zuek => mkVForms "duzue" ;
-                              Hau => mkVForms "du" ;
-                              Hi Masc => mkVForms "duk" "dua" ; 
-                              Hi Fem => mkVForms "dun" "duna" ;
-                              Zu => mkVForms "duzu" 
-                     }
-              } ;
-              Hi _ => table {
-                     Past => table {
-                              Gu => mkVForms "hindugun" ;
-                              Hauek => mkVForms "hinduten" ;
-                              Ni => mkVForms "hindudan" ;
-                              Zuek => noVForm ;
-                              Hau => mkVForms "hinduen" ;
-                              Hi _ => noVForm ;
-                              Zu => noVForm 
-                     } ;
-                     _ => table { -- Pres
-                              Gu => mkVForms "haugu" ;
-                              Hauek => mkVForms "haute" ;
-                              Ni => mkVForms "haut" ;
-                              Zuek => noVForm ;
-                              Hau => mkVForms "hau" ;
-                              Hi _ => noVForm ;
-                              Zu => noVForm
-                     }
-              } ;
-              Zu => table {
-                     Past => table {
-                              Gu => mkVForms "zintugun" ;
-                              Hauek => mkVForms "zintuzten" ;
-                              Ni => mkVForms "zintudan" ;
-                              Zuek => noVForm ;
-                              Hau => mkVForms "zintuen" ;
-                              Hi _ => noVForm ;
-                              Zu => noVForm 
-                     } ;
-                     _ => table { -- Pres
-                              Gu => mkVForms "zaitugu" ;
-                              Hauek => mkVForms "zaituzte" ;
-                              Ni => mkVForms "zaitut" ;
-                              Zuek => noVForm ;
-                              Hau => mkVForms "zaitu" ;
-                              Hi _ => noVForm ;
-                              Zu => noVForm 
-                     }
-              }
-   } ;
 
 {-
   =============================================================================
