@@ -18,12 +18,17 @@ oper
       mkVForms : Str -> VForms = \du ->
         let due : Str = case du of {
             _ + "en"          => init du ;        -- zen / zen
+            _ + "gu"          => du ;             -- dugu / dugu+la
+            _ + "u"           => du + "e" ;       -- du / due+n
+            _ + "un"          => du + "a" ;       -- dun / duna+la   
+            _ + "uk"          => init du + "a" ;  -- duk / dua+la
             x + "t"           => x + "da" ;       -- dut / duda+n
             _ + "r"           => du + "re" ;      -- dator / datorre+n
-            _ + ("e"|"i"|"o"|"a") 
-                              => du ;             -- dio / dio+n
+         -- _ + ("e"|"i"|"o"|"a") 
+         --                   => du ;             -- dio / dio+n
 
-            _                 => du + "e" }       -- du / due+n
+         -- _                 => du + "e" }      
+            _                 => du }       
         in { indep = du ; stem = due } ;
 
       mkVForms : (_,_ : Str) -> VForms = \dut,duda ->
