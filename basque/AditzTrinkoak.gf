@@ -62,6 +62,7 @@ oper
 
 ------------------------------------------------------------------------------
 -- General building blocks for the forms of ukan
+-- All thanks to https://upload.wikimedia.org/wikipedia/commons/3/36/Nor_Nori_Nork_taula_osoa.png
 
   norkUkanFirst : Agr => Str = table { -- Past, pot, cond etc.
     Ni   => "n" ; Gu => "gen" ;
@@ -96,6 +97,10 @@ oper
     Hi _ => "hindu" ; 
     Zu => "zintu" ; Zuek => "zintuzte" ;
     Hau => nonExist ; Hauek => nonExist } ; -- formed separately
+
+  norUkanCond : Agr => Str = table {
+    Zuek => "zintu" ; x => norUkanNonpres ! x } ;
+
 {-
   =============================================================================
   Izan [NOR]
@@ -145,15 +150,14 @@ oper
                        te    : Str = norkPast ! nork ;
                     in nindu + te + "n" } ;
 
-      -- TODO: Conditional is generating some clearly wrong forms, investigate
       Cond => 
         case nor of { -- Special forms for conditional when nor is Hau or Hauek
           Hau   => norkCond_norHau ! nork ;
           Hauek => norkCond_norHauek ! nork ;
 
-          _     => let gintu : Str = norPast ! nor ;
+          _     => let gintu : Str = norCond ! nor ;
                        z     : Str = norCondZ ! nor ;
-                       te    : Str = norkPres ! nork ;
+                       te    : Str = norkCond ! nork ;
                     in gintu + z + "ke" + te } ;
 
       pres => let gaitu : Str = norPres ! nor ;
@@ -161,6 +165,10 @@ oper
                in gaitu + zte  
 
      }) where {
+
+      norkCond : Agr => Str = \\nork => case <nor,nork> of {
+        <Zuek,y> => "te" + norkUkanLast ! y ;  -- zintu z ke te t
+        <_,x>    => norkUkanLast ! x } ;
 
       norkPres : Agr => Str = \\nork => case <nor,nork> of {
         <Gu,Hauek>    => "zte" ; -- If Nork is Hauek and Nor is plural,
@@ -179,6 +187,8 @@ oper
       norPres : Agr => Str = norUkanPres ;    
       
       norPast : Agr => Str = norUkanNonpres ;
+
+      norCond : Agr => Str = norUkanCond ;
 
       norCondZ : Agr => Str = table { 
         (Gu|Zu|Zuek) => "z" ; _ => [] } ;
