@@ -9,7 +9,7 @@ concrete GrammarEus of Grammar =
   RelativeEus,
   ConjunctionEus,
   PhraseEus,
-  TextX - [Pol,PPos,PNeg],
+  TextX,
   StructuralEus,
 --  IdiomEus,
   TenseX
