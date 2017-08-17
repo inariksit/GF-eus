@@ -37,7 +37,7 @@ param
 
 
 --    Degree = Posit | Compar | Superl | Excess ;
---    CardOrd = NCard | NOrd ;
+  CardOrd = NCard | NOrd ;
 
   Gender = Masc | Fem ;
 

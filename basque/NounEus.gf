@@ -71,7 +71,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- The determiner has a fine-grained structure, in which a 'nucleus'
 -- quantifier and an optional numeral can be discerned.
 
-    -- DetQuant : Quant -> Num -> Det ; 
+  -- : Quant -> Num -> Det ; 
   DetQuant quant num = lin Det
      { s = \\c,ph => case <num.isNum,num.n> of { --numeral 1 ("bat") goes after NP!
                  <True,Sg> => num.s ++ quant.s ! num.n ! c ! FinalCons ; 
@@ -85,8 +85,10 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
        isDef = orB quant.isDef num.isNum ;
      } ;
 
-    -- DetQuantOrd : Quant -> Num -> Ord -> Det ;  -- these five best
---     DetQuantOrd quant num ord = lin Det {} ;
+  -- : Quant -> Num -> Ord -> Det ;  -- these five best
+  DetQuantOrd quant num ord = 
+    let theseFive = DetQuant quant num 
+    in theseFive ** { s = \\c,ph => theseFive.s ! c ! ph ++ ord.s } ; --TODO: dummy implementation
 
 -- Whether the resulting determiner is singular or plural depends on the
 -- cardinal.
@@ -102,10 +104,10 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
   NumCard card = lin Num (card ** { isNum = True }) ;
 
   -- NumDigits  : Digits  -> Card ;
-  NumDigits dig = lin Num (dig ** { isNum = True }) ;
+  NumDigits dig = lin Card { s = dig.s ! NCard ; n = dig.n } ;
 
   -- NumNumeral : Numeral -> Card ;
-  NumNumeral num = lin Num (num ** { isNum = True }) ;
+  NumNumeral num = lin Card num ;
 {-
     AdNum : AdN -> Card -> Card ;   -- almost 51
 
