@@ -13,21 +13,26 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
   -- : Det -> CN -> NP
   DetCN det cn = 
-    let ag = case det.nbr of {
+    let ag : Agr = case det.nbr of {
                  Sg => Hau ;
                  Pl => Hauek 
                } ;
-    in { s = \\c => cn.heavyMod ! ag
-                     ++ det.pref 
-                     ++ cn.s ! ag 
-                     ++ det.s ! c ! cn.ph ;
-          agr = ag ;
-          anim = cn.anim ;
-          isDef = det.isDef 
+        s : Case => Str = 
+          \\c => cn.heavyMod ! ag -- e.g. rel clause, adverb
+             ++ det.pref     -- nire
+             ++ cn.s ! ag    -- baso handi
+             ++ det.s ! c ! cn.ph  -- bat, &+a
+             ++ cn.comp ;    -- ardo gorri
+    in { s = s ;
+         stem = s ! Abs ; -- This really shouldn't become relevant: 
+         agr = ag ;       -- stem is only used in ApposCN, which makes sense 
+         anim = cn.anim ; -- with NPs formed out of PNs or Symbs.
+         isDef = det.isDef 
         } ;
 
   -- : PN -> NP ;
   UsePN pn = { s    = \\c => pn.s ++ artIndef ! c ! pn.ph;
+               stem = pn.s ;
                agr  = Hau ; 
                anim = pn.anim ; 
                isDef = True } ; --in Extra : add UsePNIndef to allow "hemen ez dago Olatzik"
@@ -53,17 +58,23 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
   -- : Det -> NP ;  -- nirea / nire bat...ea ?
   DetNP det = { s = \\c => det.pref ++ det.s ! c ! FinalA ; --TODO phono
+                stem = det.pref ; --this isn't even supposed to make sense
                 agr = case det.nbr of {Sg => Hau ; Pl => Hauek } ;
                 anim = Inan ;
                 isDef = True } ;
 
   -- MassNP : CN -> NP ; 
-  MassNP cn = { s = \\c => cn.heavyMod ! Hau 
-                       ++ cn.s ! Hau 
-                       ++ artIndef ! c ! cn.ph ;
-                agr   = Hau ;
-                anim  = Inan ;
-                isDef = False } ;
+  MassNP cn = 
+    let s : Case => Str = 
+      \\c => cn.heavyMod ! Hau -- e.g. rel clause, adverb
+          ++ cn.s ! Hau   -- baso handi
+          ++ artIndef ! c ! cn.ph  -- no 
+          ++ cn.comp ;    -- ardo gorri
+    in { s = s ;
+         stem = s ! Abs ;
+         agr   = Hau ;
+         anim  = Inan ;
+         isDef = False } ;
 
 
 --2 Determiners
@@ -97,43 +108,48 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- the "kernel" of a determiner. It is, however, the $Num$ that determines
 -- the inherent number.
 
-  NumSg = lin Num { s = [] ; n = Sg ; isNum = False } ; 
-  NumPl = lin Num { s = [] ; n = Pl ; isNum = False } ; 
+  NumSg = { s = [] ; n = Sg ; isNum = False } ; 
+  NumPl = { s = [] ; n = Pl ; isNum = False } ; 
 
-  -- NumCard : Card -> Num ;
-  NumCard card = lin Num (card ** { isNum = True }) ;
+  -- : Card -> Num ;
+  NumCard card = (card ** { isNum = True }) ;
 
-  -- NumDigits  : Digits  -> Card ;
-  NumDigits dig = lin Card { s = dig.s ! NCard ; n = dig.n } ;
+  -- : Digits  -> Card ;
+  NumDigits dig = { s = dig.s ! NCard ; n = dig.n } ;
 
-  -- NumNumeral : Numeral -> Card ;
-  NumNumeral num = lin Card num ;
-{-
-    AdNum : AdN -> Card -> Card ;   -- almost 51
+  -- : Numeral -> Card ;
+  NumNumeral num = num ;
 
-    OrdDigits  : Digits  -> Ord ;  -- 51st
-    OrdNumeral : Numeral -> Ord ;  -- fifty-first
-    OrdSuperl  : A       -> Ord ;  -- warmest
+  -- : AdN -> Card -> Card ;
+  AdNum adn card = card ** { s = adn.s ++ card.s } ;
+
+  -- : Digits  -> Ord ; 
+  OrdDigits digs = digs ** { s = digs.s ! NOrd } ;
+
+  -- : Numeral -> Ord ; 
+  OrdNumeral num = num ;
+
+  -- : A       -> Ord ;
+  OrdSuperl a = { s = a.s ! Superl ; n = Sg } ; -- why force Sg? 
 
 -- One can combine a numeral and a superlative.
 
-    OrdNumeralSuperl : Numeral -> A -> Ord ; -- third largest
--}
+  -- : Numeral -> A -> Ord ; -- third largest
+  OrdNumeralSuperl num a = num ** { s = num.s ++ a.s ! Superl } ; --TODO: is the word order correct?
 
-    DefArt =
-      lin Quant { s     = artDef ;
-                  pref  = [] ;
-                  isDef = True } ; 
-    IndefArt = 
-      lin Quant { s     = artDef ;
-                  pref  = [] ;
-                  isDef = False } ; --has suffix, but turns into partitive in negative!
+  -- : Quant
+  DefArt = { s     = artDef ;
+             pref  = [] ;
+             isDef = True } ; 
+  -- : Quant
+  IndefArt = { s     = artDef ;
+               pref  = [] ;
+               isDef = False } ; --has suffix, but turns into partitive in negative!
 
-    --PossPron : Pron -> Quant
-    PossPron pron = 
-      lin Quant { s    = artDef ;
-                  pref = pron.s ! Gen ;
-                  isDef = True } ;
+  -- : Pron -> Quant
+  PossPron pron = { s     = artDef ;
+                    pref  = pron.s ! Gen ;
+                    isDef = True } ;
 
 --2 Common nouns
 
@@ -185,19 +201,18 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
   -- : CN -> SC  -> CN ;   -- question where she sleeps
   SentCN cn sc = cn ** { heavyMod = \\agr => cn.heavyMod ! agr ++ sc.s } ;
 
-{-
 
 --2 Apposition
 
 -- This is certainly overgenerating.
 
-    ApposCN : CN -> NP -> CN ;    -- city Paris (, numbers x and y)
+  -- : CN -> NP -> CN ;    -- city Paris (, numbers x and y)
+  ApposCN cn np = cn ** { s = \\agr => np.stem ++ cn.s ! agr } ;
 
--}
 
 --2 Possessive and partitive constructs
 
-  -- : PossNP  : CN -> NP -> CN ;     -- house of Paris, house of mine
+  -- : PossNP  : CN -> NP -> CN ; -- (mutilaren / taberna honetako) garagardo
   PossNP cn np = 
     let npPoss = applyPost (case np.anim of {
                              Anim => mkPost [] Gen False ;
@@ -205,7 +220,13 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
                            }) np ;
     in cn ** { s = \\agr => npPoss ++ cn.s ! agr } ;
 
---  PartNP  : CN -> NP -> CN ;     -- glass of wine
+  -- : CN -> NP -> CN ;     -- glass of wine / baso bat ardo beltz
+                            -- two kilos of red apples / bi kilo sagar gorri
+  PartNP cn np =
+    let baso = cn ;
+        sagarGorri = np.stem 
+    in baso ** { comp = sagarGorri } ;
+
 
 {-
 -- This is different from the partitive, as shown by many languages.

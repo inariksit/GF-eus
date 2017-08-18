@@ -153,6 +153,7 @@ oper
 
 
   CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
+                   comp : Str ; -- For PartNP; "baso *bat* ardo gorri"
                    ph   : Phono ; 
                    anim : Bizi ;
                    heavyMod : Agr => Str } ; -- Relative clause or adverbial
@@ -160,6 +161,7 @@ oper
                                     -- "Light" modifiers attach directly to the s.
 
   useN : Noun -> CNoun = \n -> n ** { s = \\_ => n.s ;
+                                      comp = [] ;
                                       heavyMod = \\_ => [] } ;
 
   Complement : Type = { s : Agr => Str ; 
@@ -167,6 +169,7 @@ oper
 
 
   NounPhrase : Type = { s    : Case => Str ;
+                        stem : Str ; -- without article, used in ApposCN
                         agr  : Agr ;
                         anim : Bizi ; 
                         isDef : Bool } ;
@@ -183,6 +186,7 @@ oper
 -- the field .agr. is of type Agr.   
 
   buru_NP : NounPhrase = { s = \\_ => "buru" ;
+                           stem = "buru" ;
                            agr = Hau ; 
                            anim = Anim ; 
                            isDef = True } ;
@@ -222,6 +226,7 @@ oper
                   Ine => init zertaz + "n" ;
                   LocStem => init zertaz 
                  } ;
+      stem = nor ;
       agr  = a ;
       anim = Anim ;
       isDef = True } ;
@@ -335,10 +340,16 @@ oper
   --to be used in linref, PhraseEus ... anything where a VP is turned into string!
   linVP : VerbPhrase -> Str = linVPTense Pres Pres ;
 
-  linVPTense : Tense -> Tense -> VerbPhrase -> Str = \tnsPrc,tnsAux,vp ->
+  linVPTense : Tense -> Tense -> VerbPhrase -> Str = 
+   \tnsPrc,tnsAux,vp ->
+   let prc = case vp.val of {
+      Da Izan => vp.nstem ;
+      Da Egon => vp.nstem ;
+      _       => vp.prc ! tnsPrc } ;
+   in 
     vp.adv 
     ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
-    ++ vp.prc ! tnsPrc 
+    ++ prc
     ++ (chooseAux vp ! tnsAux ! Hau).indep ;
 
   -- Used in ComplVV : does not include aux!

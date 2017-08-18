@@ -78,7 +78,7 @@ lin
   ConjAP co as = conjunctSS co as ** as ; 
 
 lincat
-  [CN] = {s1,s2,heavyMod : Agr => Str ; ph : Phono ; anim : Bizi } ;
+  [CN] = {s1,s2,heavyMod : Agr => Str ; comp : Str ; ph : Phono ; anim : Bizi } ;
 
 lin 
   BaseCN x y = twoTable Agr x y ** y ; --choose all the other fields from second argument
@@ -98,7 +98,7 @@ lin
 oper
 
   --NP without the s field; just to avoid copypaste and make things easier to change
-  NPLight : Type = { agr  : Agr ; anim : Bizi ; isDef : Bool } ;
+  NPLight : Type = { stem : Str ; agr  : Agr ; anim : Bizi ; isDef : Bool } ;
 
   consNP : NPLight -> NPLight -> NPLight = \x,y ->
     x ** { agr = conjAgr x.agr (getNum y.agr) } ;
