@@ -44,8 +44,8 @@ oper
 
   artIndef : Case => Phono => Str = 
     \\cas,pho => case <cas,pho> of {
-         <Abs,FinalA> => artDef ! Sg ! Abs ! FinalA ; --
-         <Abs,_>      => [] ;
+         <Abs,FinalA> => artDef ! Sg ! Abs ! FinalA ;
+         <Abs>        => [] ;
          <c,ph>       => artDef ! Pl ! c ! ph } ;
 
 
@@ -153,12 +153,24 @@ oper
 
 
   CNoun : Type = { s    : Agr => Str ; -- When we combine CN with RS, we introduce Agr distinction
-                   comp : Str ; -- For PartNP; "baso *bat* ardo gorri"
+                   comp : Str ; -- For PartNP; "s = baso | bat | comp = ardo gorri"
                    ph   : Phono ; 
                    anim : Bizi ;
                    heavyMod : Agr => Str } ; -- Relative clause or adverbial
                                     -- If it's "heavy", numbers and possessives come after.
                                     -- "Light" modifiers attach directly to the s.
+
+  linCNIndef : CNoun -> Str = linCN False ;
+  linCNDef   : CNoun -> Str = linCN True ;
+
+  linCN : Bool -> CNoun -> Str = \isDef,cn ->
+    let art = if_then_else (Case => Phono => Str) isDef (artDef ! Sg) artIndef ;
+    in  cn.heavyMod ! Hau -- e.g. rel clause, adverb
+     ++ cn.s ! Hau   -- baso handi
+     ++ art ! Abs ! cn.ph -- &+a / bat / -
+     ++ cn.comp ;    -- ardo gorri
+
+
 
   useN : Noun -> CNoun = \n -> n ** { s = \\_ => n.s ;
                                       comp = [] ;

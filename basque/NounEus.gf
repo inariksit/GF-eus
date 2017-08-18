@@ -68,7 +68,7 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     let s : Case => Str = 
       \\c => cn.heavyMod ! Hau -- e.g. rel clause, adverb
           ++ cn.s ! Hau   -- baso handi
-          ++ artIndef ! c ! cn.ph  -- no 
+          ++ artIndef ! c ! cn.ph  -- no -a in Abs
           ++ cn.comp ;    -- ardo gorri
     in { s = s ;
          stem = s ! Abs ;

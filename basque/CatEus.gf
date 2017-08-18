@@ -126,4 +126,5 @@ linref
     S = linS ;
     Cl = linCl ;
     VP = linVP ;
+    CN = linCNIndef ;
 }
