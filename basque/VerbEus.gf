@@ -142,7 +142,7 @@ lin
   CompAdv adv = { s = \\agr => adv.s ; copula = Egon } ; 
 
 
--- Copula alone; intransitive and Izan by default
+  -- : VP -- Copula alone; intransitive and Izan by default
   UseCopula = copulaVP Izan ;
 
 

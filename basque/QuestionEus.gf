@@ -17,7 +17,7 @@ concrete QuestionEus of Question = CatEus ** open ResEus in {
     -- nola (how), zerbait (how much), noiz (when), non (where), zergatik (why)
     QuestIAdv iadv cl = 
       { s = \\t,a,p,c => 
-        let sent = cl.s ! t ! a ! p ! c ;
+        let sent = cl.s ! t ! a ! p ! Indir ; -- no "al" with a wh-word!
         in { beforeAux = iadv.s ++ sent.beforeAux ;
              aux = sent.aux ; 
              afterAux = sent.afterAux } 
