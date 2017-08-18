@@ -74,15 +74,15 @@ lincat
 
 lin
   BaseAP x y = twoSS x y ** y ; --choose all the other fields from second argument
-  ConsAP as a = consrSS comma as a ** a ;
+  ConsAP as a = consrSS comma as a ** as ;
   ConjAP co as = conjunctSS co as ** as ; 
 
 lincat
-  [CN] = {s1,s2,heavyMod : Agr => Str ; comp : Str ; ph : Phono ; anim : Bizi } ;
+  [CN] = { s1,s2 : Agr => Str } ** CNLight ;
 
 lin 
-  BaseCN x y = twoTable Agr x y ** y ; --choose all the other fields from second argument
-  ConsCN cs c = consrTable Agr comma cs c ** c ; --- FIXME: loses the other heavyMod
+  BaseCN = baseCN ; -- phono=FinalA words work correctly now!
+  ConsCN = consCN ;
   ConjCN co cs = conjunctTable Agr co cs ** cs ; 
 
 
@@ -119,5 +119,18 @@ oper
     case n of { Pl => Pl ; _ => m } ;
 
 
+  CNLight : Type = { heavyMod : Agr => Str ; comp : Str ; ph : Phono ; anim : Bizi } ;
+
+  -- Use linCNIndef so that words with FinalA get the -a at the end
+  baseCN : CN -> CN -> [CN] = \x,y ->  
+    y ** --choose all the other fields from second argument
+    { s1 = \\agr => linCNIndef x ;  -- ++ SOFT_BIND ++ "," ++ y.s ! agr ;
+      s2 = y.s } ;
+
+  consCN : CN -> [CN] -> [CN] = \x,xs ->
+    xs ** --choose all the other fields from the list
+    { s1 = \\agr => linCNIndef x ++ SOFT_BIND 
+                 ++ comma ++ xs.s1 ! agr ;
+       } ;
 
 }
