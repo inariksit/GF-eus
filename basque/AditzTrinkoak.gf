@@ -20,6 +20,7 @@ oper
             _ + "en"          => init du ;        -- zen / zen
             _ + "gu"          => du ;             -- dugu / dugu+la
             _ + "u"           => du + "e" ;       -- du / due+n
+            _ + "z"           => du + "e" ;       -- naiz / naize+n
             _ + "un"          => du + "a" ;       -- dun / duna+la   
             _ + "uk"          => init du + "a" ;  -- duk / dua+la
             x + "t"           => x + "da" ;       -- dut / duda+n
