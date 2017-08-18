@@ -56,12 +56,17 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
 -- Determiners can form noun phrases directly.
 
-  -- : Det -> NP ;  -- nirea / nire bat...ea ?
-  DetNP det = { s = \\c => det.pref ++ det.s ! c ! FinalA ; --TODO phono
-                stem = det.pref ; --this isn't even supposed to make sense
-                agr = case det.nbr of {Sg => Hau ; Pl => Hauek } ;
-                anim = Inan ;
-                isDef = True } ;
+  -- : Det -> NP ;  -- nirea ?
+  DetNP det = 
+    let f : Case => Str = 
+      \\c => if_then_Str det.indep 
+               (det.pref ++ det.s ! c ! FinalCons)
+               nonExist ; -- To prevent forms that start with BIND
+     in { s = f ;
+          stem = f ! Abs ;
+          agr = case det.nbr of {Sg => Hau ; Pl => Hauek } ;
+          anim = Inan ;
+          isDef = det.isDef } ;
 
   -- MassNP : CN -> NP ; 
   MassNP cn = 
@@ -83,18 +88,17 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 -- quantifier and an optional numeral can be discerned.
 
   -- : Quant -> Num -> Det ; 
-  DetQuant quant num = lin Det
-     { s = \\c,ph => case <num.isNum,num.n> of { --numeral 1 ("bat") goes after NP!
+  DetQuant quant num = quant ** 
+    { s = \\c,ph => case <num.isNum,num.n> of { --numeral 1 ("bat") goes after NP!
                  <True,Sg> => num.s ++ quant.s ! num.n ! c ! FinalCons ; 
                  _         => quant.s ! num.n ! c ! ph 
                } ;
-       nbr = num.n ;
-       pref = case num.n of {
+      nbr = num.n ;
+      pref = case num.n of {
                 Sg => quant.pref ;
                 Pl => quant.pref ++ num.s 
               } ;
-       isDef = orB quant.isDef num.isNum ;
-     } ;
+      isDef = orB quant.isDef num.isNum } ;
 
   -- : Quant -> Num -> Ord -> Det ;  -- these five best
   DetQuantOrd quant num ord = 
@@ -139,15 +143,18 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
 
   -- : Quant
   DefArt = { s     = artDef ;
+             indep = False ;
              pref  = [] ;
              isDef = True } ; 
   -- : Quant
   IndefArt = { s     = artDef ;
+               indep = False ;
                pref  = [] ;
                isDef = False } ; --has suffix, but turns into partitive in negative!
 
   -- : Pron -> Quant
   PossPron pron = { s     = artDef ;
+                    indep = True ;
                     pref  = pron.s ! Gen ;
                     isDef = True } ;
 
@@ -228,15 +235,24 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
     in baso ** { comp = sagarGorri } ;
 
 
-{-
+
 -- This is different from the partitive, as shown by many languages.
 
-    CountNP : Det -> NP -> NP ;    -- three of them, some of the boys
+  -- : Det -> NP -> NP ;    -- gutarik zenbait
+  CountNP det np = np ** 
+    { s = \\c => elative np
+              ++ det.pref 
+              ++ det.s ! c ! FinalCons } ; -- Nonsense for DefArt or IndefArt
 
 --3 Conjoinable determiners and ones with adjectives
 
-    AdjDAP : DAP -> AP -> DAP ;    -- the large (one)
-    DetDAP : Det -> DAP ;          -- this (or that) 
--}
+  -- : DAP -> AP -> DAP ;    -- the large (one)
+  AdjDAP dap ap = dap ** { s = \\cas,ph => ap.s ++ dap.s ! cas ! ph } ;
+
+  -- : Det -> DAP ;          -- this (or that) 
+  DetDAP det = det ;
+
+oper 
+  elative : NP -> Str = \np -> glue (np.s ! LocStem) "rik" ;
 
 }

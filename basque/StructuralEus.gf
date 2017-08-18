@@ -55,7 +55,7 @@ lin but_PConj = ss "baina" ;
 -----------------
 -- *Det and Quant
 
-lin how8many_IDet = R.indefDet "zenbait" pl ; 
+lin how8many_IDet = R.indefDet "zenbat" pl ; 
 
 --lin all_Predet =
 --lin not_Predet =
@@ -66,16 +66,17 @@ lin how8many_IDet = R.indefDet "zenbait" pl ;
 --lin few_Det =
 --lin many_Det =
 --lin much_Det =
---lin somePl_Det =
---lin someSg_Det =
+lin somePl_Det = R.indefDet "zenbait" pl ;
+lin someSg_Det = R.indefDet "zenbait" sg ;
 
---lin no_Quant
-lin that_Quant = { s = R.quantHori ;
-                   pref = [] ;
-                   isDef = True } ;
-lin this_Quant = { s = R.quantHau ;
-                   pref = [] ;
-                   isDef = True } ;
+--lin no_Quant = 
+
+lin that_Quant = R.indefDet [] sg ** 
+				  { s = R.quantHori ;
+				    isDef = True } ;
+lin this_Quant = R.indefDet [] sg ** 
+				  { s = R.quantHau ;
+                    isDef = True } ;
 --lin which_IQuant
 
 

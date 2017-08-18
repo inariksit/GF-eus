@@ -111,6 +111,6 @@ lin D_9 = mkDig "9" ;
     -- : Dig -> Digits ;
 lin IDig dig = dig ;
     -- : Dig -> Digits -> Digits ; 
-lin IIDig dig digs = digs ** {s = \\co => digs.s ! co ++ dig.s ! co } ; ---TODO ???
+lin IIDig dig digs = digs ** {s = \\co => glue (dig.s ! co) (digs.s ! co) } ;
 
 }

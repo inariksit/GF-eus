@@ -61,21 +61,22 @@ oper
 
   -- TODO: some kind of safe independent form to give to DetNP, 
   -- otherwise sometimes it will generate forms that start with BIND.
-  Determiner : Type = { s     : Case => Phono => Str ;   -- hauek
-                        pref  : Str ;                    -- nire
-                        nbr   : Number ;
-                        isDef : Bool } ;
+  Determiner : Type = BaseDet ** 
+    { s   : Case => Phono => Str ;   -- hauek
+      nbr : Number } ;
 
   indefDet : Str -> Number -> Determiner = \zenbait,num -> 
     { s = artIndef ;
+      indep = True ;
       nbr = num ;
       pref = zenbait ;
       isDef = False } ;
 
+  Quant : Type = BaseDet ** { s : Number => Case => Phono => Str } ;
 
-  Quant : Type = { s    : Number => Case => Phono => Str ;
-                   pref : Str ;
-                   isDef : Bool } ;
+  BaseDet : Type = { indep : Bool ;
+                     pref : Str ;  -- nire
+                     isDef : Bool } ;
 
   quantHau : Number => Case => Phono => Str = 
    \\num,cas,ph => 

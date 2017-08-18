@@ -74,7 +74,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     Quant = ResEus.Quant ;
     Num = { s : Str ; n : Number ; isNum : Bool } ;
     Card, Ord = { s : Str ; n : Number } ;
-    DAP = {s : Str} ;
+    DAP = ResEus.Determiner ;
 
 
 --2 Numerals

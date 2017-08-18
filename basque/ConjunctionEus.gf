@@ -85,6 +85,31 @@ lin
   ConsCN = consCN ;
   ConjCN co cs = conjunctTable Agr co cs ** cs ; 
 
+oper
+  CNLight : Type = { heavyMod : Agr => Str ; comp : Str ; ph : Phono ; anim : Bizi } ;
+
+  -- Use linCNIndef so that words with FinalA get the -a at the end
+  baseCN : CN -> CN -> [CN] = \x,y ->  
+    y ** --choose all the other fields from second argument
+    { s1 = \\agr => linCNIndef x ;
+      s2 = y.s } ;
+
+  consCN : CN -> [CN] -> [CN] = \x,xs ->
+    xs ** --choose all the other fields from the list
+    { s1 = \\agr => linCNIndef x ++ SOFT_BIND 
+                 ++ comma ++ xs.s1 ! agr } ;
+
+
+lincat
+  [DAP] = Determiner ** { pref2 : Str } ; 
+
+lin
+  BaseDAP x y = x ** { pref2 = y.pref } ;
+  ConsDAP xs x = xs ** { pref2 = x.pref } ;
+  ConjDet conj xs = xs ** { pref = xs.pref ++ conj.s ++ xs.pref2 } ;
+  -- his or some car: haren edo zenbait auto &+ a
+  -- TODO: "the or some car" 
+
 
 -- Noun phrases. Should work better now.
 lincat
@@ -117,20 +142,5 @@ oper
 
   conjNbr : Number -> Number -> Number = \n,m ->
     case n of { Pl => Pl ; _ => m } ;
-
-
-  CNLight : Type = { heavyMod : Agr => Str ; comp : Str ; ph : Phono ; anim : Bizi } ;
-
-  -- Use linCNIndef so that words with FinalA get the -a at the end
-  baseCN : CN -> CN -> [CN] = \x,y ->  
-    y ** --choose all the other fields from second argument
-    { s1 = \\agr => linCNIndef x ;  -- ++ SOFT_BIND ++ "," ++ y.s ! agr ;
-      s2 = y.s } ;
-
-  consCN : CN -> [CN] -> [CN] = \x,xs ->
-    xs ** --choose all the other fields from the list
-    { s1 = \\agr => linCNIndef x ++ SOFT_BIND 
-                 ++ comma ++ xs.s1 ! agr ;
-       } ;
 
 }

@@ -85,7 +85,8 @@ oper
     Hau => "o" ; x => norkUkanLast ! x } ;
 
   noriUkanMid : Agr => Str = table {
-    Hau => "o" ; x => norkUkanMid ! x } ;
+    Hau => "o" ; Hauek => "e" ; 
+    x => norkUkanMid ! x } ;
 
   norUkanPres : Agr => Str = table {
     Ni   => "nau" ; Gu => "gaitu" ;
