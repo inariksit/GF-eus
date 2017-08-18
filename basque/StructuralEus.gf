@@ -1,20 +1,20 @@
 concrete StructuralEus of Structural = CatEus ** 
-              open Prelude, (R=ResEus), ParadigmsEus in {
+              open Prelude, (R=ResEus), (N=NounEus), ParadigmsEus in {
 
 
 
 -------
 -- Ad*
 
--- lin almost_AdA = 
--- lin almost_AdN =
--- lin at_least_AdN =
--- lin at_most_AdN =
+lin almost_AdA = mkAdA "ia" ;
+lin almost_AdN = ss "ia" ;
+lin at_least_AdN = ss "gutxienez" ;
+lin at_most_AdN = ss "gehienez" ;
 -- lin so_AdA =
 -- lin too_AdA =
 lin very_AdA = mkAdA "oso" ;
 
--- lin as_CAdv = { s = [] ; p = [] } ;
+lin as_CAdv = { s = "bezain" ; p = [] } ;
 lin less_CAdv = { s = "gutxiago" ; p = [] } ;
 lin more_CAdv = { s = "gehiago" ; p = [] } ;
 
@@ -24,7 +24,7 @@ lin when_IAdv = ss "noiz" ;
 lin where_IAdv = ss "non" ;
 lin why_IAdv = ss "zergatik" ;
 
--- lin always_AdV =
+lin always_AdV = ss "beti" ;
 
 lin everywhere_Adv = ss "nonahi" ;
 lin here7from_Adv = ss "hemendik" ;
@@ -57,44 +57,49 @@ lin but_PConj = ss "baina" ;
 
 lin how8many_IDet = R.indefDet "zenbat" pl ; 
 
---lin all_Predet =
---lin not_Predet =
---lin only_Predet =
---lin most_Predet =
+--TODO: fix predets in NounEus, figure out whether Predet should inflect
+lin all_Predet = { s = "guzti" } ; 
+lin not_Predet = { s = "ez" } ;
+lin only_Predet = { s = "bakarrik" } ;
+lin most_Predet = { s = "gehien" } ;
 
---lin every_Det =
+lin every_Det = R.defDet [] sg ** -- egun+ero "every day" --TODO: urtero *urte+ero
+                 { s = \\c,_ => SOFT_BIND ++ "ero" 
+                              ++ R.artDef ! R.Sg ! c ! R.FinalVow } ; 
 --lin few_Det =
 --lin many_Det =
---lin much_Det =
+lin much_Det = R.indefDet "asko" sg ;
 lin somePl_Det = R.indefDet "zenbait" pl ;
 lin someSg_Det = R.indefDet "zenbait" sg ;
 
 --lin no_Quant = 
 
-lin that_Quant = R.indefDet [] sg ** 
-				  { s = R.quantHori ;
-				    isDef = True } ;
-lin this_Quant = R.indefDet [] sg ** 
-				  { s = R.quantHau ;
-                    isDef = True } ;
+lin that_Quant = R.defDet [] sg ** 
+                  { s = R.quantHori } ;
+lin this_Quant = R.defDet [] sg ** 
+                  { s = R.quantHau } ;
 --lin which_IQuant
 
 
 -----
 -- NP
 
---lin everybody_NP =
---lin everything_NP =
---lin nobody_NP =
---lin nothing_NP =
+lin everybody_NP = defNP "dena" N.NumPl ;
+lin everything_NP = defNP "dena" N.NumSg ;
+lin nobody_NP = defNP "ez inor" N.NumSg ; --TODO: negation should be in the verb; "ez da inor"
+lin nothing_NP = defNP "ezer" N.NumSg ;
 --lin somebody_NP =
 --lin something_NP =
 
+oper 
+ defNP : Str -> Num -> NP = \dena,num ->
+   N.DetCN (N.DetQuant N.DefArt num) 
+           (N.UseN (R.mkNoun dena)) ;
 -------
 -- Prep
 
 lin above_Prep = mkPrep "gainean" ;
- -- lin after_Prep : Prep ;
+lin after_Prep = mkPrep "ondoan" ;
 lin before_Prep = mkPrep "gabe" absolutive ;
 lin behind_Prep = mkPrep "atzean"  ;
 lin between_Prep = mkPrep "artean"  ; --`bitartean' for time
@@ -142,7 +147,7 @@ lin whoSg_IP = R.persPron "nor" "nori" "nork" "noren" "zertaz" R.Hau ;
 -------
 -- Subj
 
-  --lin although_Subj : Subj ;
+lin although_Subj = mkSubj "en arren" False ; -- askotan ez dirudien arren
 lin because_Subj  = mkSubj "lako" False ;
 lin if_Subj = mkSubj "ba" True ;
 lin that_Subj = mkSubj "n" False ;

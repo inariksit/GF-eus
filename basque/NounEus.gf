@@ -40,6 +40,11 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
   -- : Pron -> NP ; 
   UsePron pron = lin NP pron ;
 
+
+  -- : Predet -> NP -> NP ; -- only the man 
+  PredetNP predet np = np ** { s = \\cas => predet.s ++ np.s ! cas } ; --TODO: test
+
+
 -- A noun phrase can also be postmodified by the past participle of a
 -- verb, by an adverb, or by a relative clause
 

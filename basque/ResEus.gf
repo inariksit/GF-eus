@@ -72,6 +72,9 @@ oper
       pref = zenbait ;
       isDef = False } ;
 
+  defDet : Str -> Number -> Determiner = \s,n ->
+    indefDet s n ** { isDef = True } ;
+
   Quant : Type = BaseDet ** { s : Number => Case => Phono => Str } ;
 
   BaseDet : Type = { indep : Bool ;
