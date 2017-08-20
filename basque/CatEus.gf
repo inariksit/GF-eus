@@ -72,7 +72,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     Predet = {s : Str} ; 
     Quant = ResEus.Quant ;
     Num = { s : Str ; n : Number ; isNum : Bool } ;
-    Card, Ord = { s : Str ; n : Number } ;
+    Card, Ord = { s : Str ; n : Number } ; 
     DAP = ResEus.Determiner ;
 
 
@@ -112,7 +112,8 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     V2Q,   -- verb with NP and Q complement       e.g. "ask"
     V2A = ResEus.Verb ;   -- verb with NP and AP complement      e.g. "paint"
 
-    A,A2 = ResEus.Adjective ;
+    A = ResEus.Adjective ;
+    A2  = ResEus.Adjective2 ;
 
     N = ResEus.Noun ;
     N2 = ResEus.Noun2 ;

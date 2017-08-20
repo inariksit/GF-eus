@@ -23,11 +23,13 @@ lin
   -- : NP -> VPSlash -> ClSlash ;
   SlashVP = mkClSlash ;
 
-{-    AdvSlash  : ClSlash -> Adv -> ClSlash ;     -- (whom) he sees today
-    SlashPrep : Cl -> Prep -> ClSlash ;         -- (with whom) he walks 
-    SlashVS   : NP -> VS -> SSlash -> ClSlash ; -- (whom) she says that he loves
-    UseSlash : Temp -> Pol -> ClSlash -> SSlash ; -- (that) she had not seen
--}
+  -- : ClSlash -> Adv -> ClSlash ;     -- (whom) he sees today
+  AdvSlash cls adv = cls ** insertAdv adv cls ; 
+  
+--    SlashPrep : Cl -> Prep -> ClSlash ;         -- (with whom) he walks 
+--    SlashVS   : NP -> VS -> SSlash -> ClSlash ; -- (whom) she says that he loves
+--    UseSlash : Temp -> Pol -> ClSlash -> SSlash ; -- (that) she had not seen
+
 
 --2 Imperatives
   -- : VP -> Imp ; 

@@ -256,6 +256,8 @@ oper
 
   Adjective : Type = {s : Degree => Str ; ph : Phono} ;
 
+  Adjective2 : Type = Adjective ** { compl : Postposizio } ;
+
   AdjPhrase : Type = {s : Str ; ph : Phono ; typ : APType} ; 
 
   mkAdj : Str -> Adjective = \s -> 
