@@ -9,7 +9,7 @@ concrete RelativeEus of Relative = CatEus ** open ResEus, Prelude in {
    lin RelVP rp vp = ResEus.mkRCl rp.s vp ;
 
    -- RelSlash : RP -> ClSlash -> RCl ; -- whom John loves
-   lin RelSlash rp cls = ResEus.mkRClSlash rp.s cls ;
+   lin RelSlash rp cls = ResEus.rclFromSlash rp.s cls ;
 
 
    -- IdRP  : RP ;

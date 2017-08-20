@@ -24,10 +24,9 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
     QCl = ResEus.Clause ;
     IP = ResEus.NounPhrase ;
-    --IComp ; -- interrogative complement of copula  e.g. "where"
-    --IComp ; -- interrogative complement of copula  e.g. "where"
+    IComp = { s : Str } ; -- interrogative complement of copula  e.g. "where"
     IDet = ResEus.Determiner ;  -- interrogative determiner            e.g. "how many"
-    --IQuant; -- interrogative quantifier            e.g. "which"
+    IQuant = ResEus.Quant ; -- interrogative quantifier            e.g. "which"
 
 
 
@@ -113,8 +112,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
     V2Q,   -- verb with NP and Q complement       e.g. "ask"
     V2A = ResEus.Verb ;   -- verb with NP and AP complement      e.g. "paint"
 
-    A = ResEus.Adjective ;
-    --A2 ;    -- two-place adjective                 e.g. "divisible"
+    A,A2 = ResEus.Adjective ;
 
     N = ResEus.Noun ;
     N2 = ResEus.Noun2 ;

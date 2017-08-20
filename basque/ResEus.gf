@@ -481,6 +481,29 @@ oper
                        aux = verb.aux ! subj.agr }
     } ;
 
+  fromClSlash : NounPhrase -> ClSlash -> Clause = \objNP,cls ->
+    { s = \\t,a,pol =>
+        let obj : { s : Polarity => Str ; a : Agr ; isDef : Bool } = 
+              { s = table { Pos => objNP.s ! Abs ; Neg => negDObj objNP } ;
+                a = objNP.agr ; isDef = objNP.isDef } ;
+            vp = cls ** { dobj = obj } ; --Insert the object's agr into the cls's dobj!
+            verb = case isSynthetic vp.val of {
+                      True  => verbformSynthetic t a vp ;
+                      False => verbformPeriphrastic t a vp 
+            } ;
+            subj = cls.subj ;
+
+        in wordOrder True --it's used for RCls and QCls, let's assume for now no al
+                     { pol = pol ;
+                       adv = vp.adv ;
+                       subj = subj.s ;
+                       compl = vp.iobj.s
+                             ++ vp.dobj.s ! pol 
+                             ++ vp.comp ! subj.a ; 
+                       prc = verb.prc ;
+                       aux = verb.aux ! subj.a }
+    } ;  
+
   verbformPeriphrastic : Tense -> Anteriority -> VerbPhrase -> {aux : Agr => VForms ; prc : Str} = \t,a,vp ->
     let adl : IntransV = chooseAux vp ;
     in case <t,a> of {
@@ -568,7 +591,7 @@ oper
 -- and we need to produce correct agreement:
 -- `gorria den txakurra' vs. `gorriak diren txakurrak'
 
-
+  --TODO: will this work with only Tense and no Anteriority???? Rewrite + merge with other Clause-pro
   RClause : Type = {s : Tense => Polarity => Agr => Str} ;
 
   mkRCl : Str -> VerbPhrase -> RClause = \en,vp ->
@@ -583,7 +606,7 @@ oper
            ++ en                           -- en
     } ;
 
-  mkRClSlash : Str -> ClSlash -> RClause = \en,cls ->
+  rclFromSlash : Str -> ClSlash -> RClause = \en,cls ->
     { s = \\tns,pol,objAgr =>
         let ez = case pol of { Neg => "ez" ; _ => [] } ;
             clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
