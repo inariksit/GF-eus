@@ -129,7 +129,7 @@ oper
     affixPrep str ResEus.LocStem ; -- Locative postpositions/cases attach to the same stem: mutile+tik, mutile+ra. Inessive is split into its own case, because of its behaviour with nouns ending in A.
  
 
-  mkConj : Str -> Number -> Conj = \s,num -> lin Conj { s = s ; nbr = num } ; 
+  mkConj : (_,_ : Str) -> Number -> Conj = \s1,s2,num -> lin Conj { s1 = s1 ; s2 = s2 ; nbr = num } ; 
   mkSubj : Str -> Bool -> Subj   = \s,b   -> lin Subj { s = s ; isPre = b } ;
 
   mkAdv : Str -> Adv = \s -> lin Adv {s = s} ;

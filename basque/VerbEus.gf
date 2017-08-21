@@ -47,8 +47,7 @@ lin
 
   -- : V3 -> NP -> VPSlash ; -- give (it) to her
   Slash3V3 v3 npNor = slashIObj v3 **
-    { dobj = { s = table { Pos => npNor.s ! Abs ; 
-                           Neg => negDObj npNor } ;
+    { dobj = { s = mkDObj npNor ;
                a = npNor.agr ;
                isDef = npNor.isDef } 
     } ;

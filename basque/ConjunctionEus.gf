@@ -35,7 +35,7 @@ lincat
 lin
   BaseAdv, BaseAdV, BaseIAdv = twoSS ;
   ConsAdv, ConsAdV, ConsIAdv = consrSS comma ;
-  ConjAdv, ConjAdV, ConjIAdv = conjunctSS ;
+  ConjAdv, ConjAdV, ConjIAdv = conjunctDistrSS ;
 
 
 -- RS depends on agreement, otherwise exactly like previous.
@@ -45,7 +45,7 @@ lincat
 lin 
   BaseRS x y = twoTable Agr x y ;
   ConsRS xs x = consrTable Agr comma xs x ;
-  ConjRS co xs = conjunctTable Agr co xs ;
+  ConjRS co xs = conjunctDistrTable Agr co xs ;
 
 -- S has three building blocks; we keep only the last one's aux open,
 -- and choose the independent form to all the rest.
@@ -62,7 +62,7 @@ lin
     xs ** { firstSent = linS x ++ "," ++ xs.firstSent } ;
 
   -- Combine the finished sentences all into the beforeAux part of the S
-  ConjS co xs = xs ** { beforeAux = xs.firstSent ++ co.s ++ xs.beforeAux } ;
+  ConjS co xs = xs ** { beforeAux = co.s1 ++ xs.firstSent ++ co.s2 ++ xs.beforeAux } ;
 
 
 
@@ -75,7 +75,7 @@ lincat
 lin
   BaseAP x y = twoSS x y ** y ; --choose all the other fields from second argument
   ConsAP as a = consrSS comma as a ** as ;
-  ConjAP co as = conjunctSS co as ** as ; 
+  ConjAP co as = conjunctDistrSS co as ** as ; 
 
 lincat
   [CN] = { s1,s2 : Agr => Str } ** CNLight ;
@@ -83,7 +83,7 @@ lincat
 lin 
   BaseCN = baseCN ; -- phono=FinalA words work correctly now!
   ConsCN = consCN ;
-  ConjCN co cs = conjunctTable Agr co cs ** cs ; 
+  ConjCN co cs = conjunctDistrTable Agr co cs ** cs ; 
 
 oper
   CNLight : Type = { heavyMod : Agr => Str ; comp : Str ; ph : Phono ; anim : Bizi } ;
@@ -106,7 +106,7 @@ lincat
 lin
   BaseDAP x y = x ** { pref2 = y.pref } ;
   ConsDAP xs x = xs ** { pref2 = x.pref } ;
-  ConjDet conj xs = xs ** { pref = xs.pref ++ conj.s ++ xs.pref2 } ;
+  ConjDet conj xs = xs ** { pref = conj.s1 ++ xs.pref ++ conj.s2 ++ xs.pref2 } ;
   -- his or some car: haren edo zenbait auto &+ a
   -- TODO: "the or some car" 
 
@@ -134,8 +134,8 @@ oper
  -- Like conjunctTable from prelude/Coordination.gf,
  -- but forces the first argument into absolutive.
   conjunctNPTable : Conj -> ListTable Case -> {s : Case => Str} = \co,xs ->
-   { s = table { Erg => xs.s1 ! Erg ++ co.s ++ xs.s2 ! Erg ;
-                 cas => xs.s1 ! Abs ++ co.s ++ xs.s2 ! cas } } ;
+   { s = table { Erg => co.s1 ++ xs.s1 ! Erg ++ co.s2 ++ xs.s2 ! Erg ;
+                 cas => co.s1 ++ xs.s1 ! Abs ++ co.s2 ++ xs.s2 ! cas } } ;
 
   conjAgr : Agr -> Number -> Agr = \a,n ->
     case n of { Pl => plAgr a ; _  => a } ;

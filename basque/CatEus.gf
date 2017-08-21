@@ -88,8 +88,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 --2 Structural words
 
 -- Constructed in StructuralEus.
-
-    Conj = { s : Str ; nbr : Number } ; --Ni eta Inari gara/*naiz ; Fran edo Mikel da/*dira
+    Conj = { s1,s2 : Str ; nbr : Number } ; --Ni eta Inari gara/*naiz ; Fran edo Mikel da/*dira
     Subj = { s : Str ; isPre : Bool } ; --ba+dut vs. dut+en
     Prep = ResEus.Postposizio ;
 

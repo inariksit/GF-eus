@@ -338,9 +338,11 @@ oper
 --------------------------------------------------------------------
 -- VP and VPSlash 
 
+  DObj : Type = Polarity => Str ;
+
   VerbPhrase : Type = 
     Verb ** { dobj : { a : Agr ; 
-                       s : Polarity => Str ;
+                       s : DObj ;
                        isDef : Bool } ; --Indefinite direct object turns into Partitive with negative polarity.
               iobj : { a : Agr ; 
                        s : Str } ; 
@@ -427,15 +429,15 @@ oper
               MissingAdv  => vps ** { adv = applyPost vps.post np } ;
               MissingIObj => vps ** { iobj = { s = np.s ! Dat ;
                                                a = np.agr } } ;
-              MissingDObj => vps ** { dobj = { s = table { Pos => np.s ! Abs ;
-                                                           Neg => negDObj np } ;
+              MissingDObj => vps ** { dobj = { s = mkDObj np  ;
                                                a = np.agr ;
                                                isDef = np.isDef } } 
           } ;
-
-  negDObj : NounPhrase -> Str = \np ->
-    case np.isDef of { True  => np.s ! Abs ;
-                       False => np.s ! Par } ;
+  
+  mkDObj : NounPhrase -> DObj = \np ->
+    table { Pos => np.s ! Abs ;
+            Neg => np.s ! negCase } 
+    where { negCase = if_then_else Case np.isDef Abs Par } ;
 
 --------------------------------------------------------------------
 -- Clause and sentence 
@@ -485,8 +487,8 @@ oper
 
   fromClSlash : NounPhrase -> ClSlash -> Clause = \objNP,cls ->
     { s = \\t,a,pol =>
-        let obj : { s : Polarity => Str ; a : Agr ; isDef : Bool } = 
-              { s = table { Pos => objNP.s ! Abs ; Neg => negDObj objNP } ;
+        let obj : { s : DObj ; a : Agr ; isDef : Bool } = 
+              { s = mkDObj objNP ;
                 a = objNP.agr ; isDef = objNP.isDef } ;
             vp = cls ** { dobj = obj } ; --Insert the object's agr into the cls's dobj!
             verb = case isSynthetic vp.val of {

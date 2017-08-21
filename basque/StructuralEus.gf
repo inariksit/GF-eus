@@ -40,12 +40,11 @@ lin there_Adv = ss "hor" ;
 -------
 -- Conj
 
-lin and_Conj = mkConj "eta" pl ; 
-lin or_Conj  = mkConj "edo" sg ; --| mkConj "ala" sg ; 
+lin and_Conj = mkConj [] "eta" pl ; 
+lin or_Conj  = mkConj [] "edo" sg ;
 --lin if_then_Conj =
-
---lin both7and_DConj =
---lin either7or_DConj =
+lin both7and_DConj = mkConj "bai" "eta" pl ;
+lin either7or_DConj = mkConj "bai" "edo" pl ;
 
 lin but_PConj = ss "baina" ;
 --lin otherwise_PConj
