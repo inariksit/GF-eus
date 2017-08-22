@@ -463,17 +463,16 @@ oper
 --  txakurrari abesten al diozu?
 
 
-  qclFromVP = mkClauseIP True ;
-  clFromVP = mkClauseIP False ;
+  qclFromVP = mkClause True ;
+  clFromVP = mkClause False ;
 
   clFromSlash : NounPhrase -> ClSlash -> Clause = \o,cls -> 
     let obj = o ** { s = mkDObj o } ;
         vp = cls ** { dobj = obj } ; --Insert the object's agr into the cls's dobj!
         subj = buru_NP ** cls.subj ; -- Just a dummy NP, we won't use more than is in cls.subj
-     in mkClauseIP True subj vp ;
+     in mkClause True subj vp ;
 
-  mkClauseIP : (isIP : Bool) -> NounPhrase -> VerbPhrase -> Clause = \isIP,subj,vp ->
-
+  mkClause : (isIP : Bool) -> NounPhrase -> VerbPhrase -> Clause = \isIP,subj,vp ->
     { s = \\t,a,pol =>
         let verb = case isSynthetic vp.val of {
                       True  => verbformSynthetic t a vp ;
@@ -531,8 +530,6 @@ oper
         case <pol,vp.dobj.isDef> of {
           <Neg,False> => AditzTrinkoak.ukanDio ! vp.iobj.agr ! sgAgr vp.dobj.agr ;
           _           => AditzTrinkoak.ukanDio ! vp.iobj.agr ! vp.dobj.agr} } ;
-
-   
 
 
   wordOrder : (isIP : Bool) -> SentenceLight -> (ClType => Sentence) = \isIP,s -> 
