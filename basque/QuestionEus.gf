@@ -9,10 +9,10 @@ concrete QuestionEus of Question = CatEus ** open ResEus, (VE=VerbEus), (NE=Noun
                     -- { s : Tense => Anteriority => Polarity => Sentence } ; 
 
   -- : IP -> VP -> QCl ; 
-  QuestVP ip vp = mkQClause ip vp ; 
+  QuestVP = qclFromVP ; 
     
   -- : IP -> ClSlash -> QCl ; -- whom does John love / mutilak nor maite du
-  QuestSlash = fromClSlash ;
+  QuestSlash = clFromSlash ;
 
   -- : IAdv -> Cl -> QCl ;    -- why does John walk
   -- nola (how), zerbait (how much), noiz (when), non (where), zergatik (why)
@@ -25,7 +25,7 @@ concrete QuestionEus of Question = CatEus ** open ResEus, (VE=VerbEus), (NE=Noun
     } ;
 
   -- : IComp -> NP -> QCl ;   -- John non da ; TODO maybe other word order, non da John?
-  QuestIComp icomp np = mkQClause np (insertComp icomp.s (VE.copulaVP Izan)) ;
+  QuestIComp icomp np = qclFromVP np (insertComp icomp.s (VE.copulaVP Izan)) ;
 
 -- Interrogative pronouns can be formed with interrogative
 -- determiners, with or without a noun.

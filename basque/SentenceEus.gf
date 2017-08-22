@@ -7,7 +7,7 @@ lin
 --2 Clauses
 
   -- : NP -> VP -> Cl
-  PredVP = mkClause ;
+  PredVP = clFromVP ;
 
   -- : SC -> VP -> Cl ;         -- that she goes is good
   PredSCVP sc vp = 
@@ -17,7 +17,7 @@ lin
            agr = Hau ;
            anim = Inan ;
            isDef = True } ;
-    in mkClause subjSC vp ;
+    in clFromVP subjSC vp ;
 
 --2 Clauses missing object noun phrases
   -- : NP -> VPSlash -> ClSlash ;

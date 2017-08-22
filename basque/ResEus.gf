@@ -341,11 +341,11 @@ oper
   DObj : Type = Polarity => Str ;
 
   VerbPhrase : Type = 
-    Verb ** { dobj : { a : Agr ; 
-                       s : DObj ;
+    Verb ** { dobj : { s : DObj ;
+                       agr : Agr ; 
                        isDef : Bool } ; --Indefinite direct object turns into Partitive with negative polarity.
-              iobj : { a : Agr ; 
-                       s : Str } ; 
+              iobj : { s : Str ;
+                       agr : Agr } ; 
               comp : Agr => Str ; -- Comps depend on Agr; AuxType is always Nor.
               adv : Str } ;
 
@@ -383,7 +383,7 @@ oper
   -- Create VP or VPSlash from various Verbs
 
   useV : Verb -> VerbPhrase = \v -> 
-    v ** { dobj = { a = Hau ; -- This will be used for *all* V* becoming VP! 
+    v ** { dobj = { agr = Hau ; -- This will be used for *all* V* becoming VP! 
                               -- e.g. VQ, VS, ... will use a Du copula, but 
                               -- the sentence complement will be stored in comp field.
                               -- This is because of V2Q, V2S versions you need both!
@@ -392,8 +392,8 @@ oper
                               -- So this function, while looking dangerous, should do the Right Thing.
                     s = \\agr => [] ; 
                     isDef = True } ; --so that we don't choose singular agreement with negative polarity
-           iobj = { a = Hau ;
-                    s = [] } ;
+           iobj = { s = [] ;
+                    agr = Hau } ;
            adv  = [] ;
            comp = \\agr => [] } ;
 
@@ -427,11 +427,9 @@ oper
   complSlash : VPSlash -> NounPhrase -> VerbPhrase = \vps,np ->
     case vps.missing of {
               MissingAdv  => vps ** { adv = applyPost vps.post np } ;
-              MissingIObj => vps ** { iobj = { s = np.s ! Dat ;
-                                               a = np.agr } } ;
-              MissingDObj => vps ** { dobj = { s = mkDObj np  ;
-                                               a = np.agr ;
-                                               isDef = np.isDef } } 
+              MissingIObj => vps ** { iobj = np ** { s = np.s ! Dat }} ;
+--                                               agr = np.agr } } ;
+              MissingDObj => vps ** { dobj = np ** { s = mkDObj np }} 
           } ;
   
   mkDObj : NounPhrase -> DObj = \np ->
@@ -464,10 +462,18 @@ oper
 -- mutilari garagardoa ematen al diozu?
 --  txakurrari abesten al diozu?
 
-  mkClause = mkClauseIP False ;
-  mkQClause = mkClauseIP True ;
+
+  qclFromVP = mkClauseIP True ;
+  clFromVP = mkClauseIP False ;
+
+  clFromSlash : NounPhrase -> ClSlash -> Clause = \o,cls -> 
+    let obj = o ** { s = mkDObj o } ;
+        vp = cls ** { dobj = obj } ; --Insert the object's agr into the cls's dobj!
+        subj = buru_NP ** cls.subj ; -- Just a dummy NP, we won't use more than is in cls.subj
+     in mkClauseIP True subj vp ;
 
   mkClauseIP : (isIP : Bool) -> NounPhrase -> VerbPhrase -> Clause = \isIP,subj,vp ->
+
     { s = \\t,a,pol =>
         let verb = case isSynthetic vp.val of {
                       True  => verbformSynthetic t a vp ;
@@ -484,29 +490,6 @@ oper
                        prc = verb.prc ;
                        aux = verb.aux ! subj.agr }
     } ;
-
-  fromClSlash : NounPhrase -> ClSlash -> Clause = \objNP,cls ->
-    { s = \\t,a,pol =>
-        let obj : { s : DObj ; a : Agr ; isDef : Bool } = 
-              { s = mkDObj objNP ;
-                a = objNP.agr ; isDef = objNP.isDef } ;
-            vp = cls ** { dobj = obj } ; --Insert the object's agr into the cls's dobj!
-            verb = case isSynthetic vp.val of {
-                      True  => verbformSynthetic t a vp ;
-                      False => verbformPeriphrastic t a vp 
-            } ;
-            subj = cls.subj ;
-
-        in wordOrder True --it's used for RCls and QCls, let's assume for now no al
-                     { pol = pol ;
-                       adv = vp.adv ;
-                       subj = subj.s ;
-                       compl = vp.iobj.s
-                             ++ vp.dobj.s ! pol 
-                             ++ vp.comp ! subj.a ; 
-                       prc = verb.prc ;
-                       aux = verb.aux ! subj.a }
-    } ;  
 
   verbformPeriphrastic : Tense -> Anteriority -> VerbPhrase -> {aux : Agr => VForms ; prc : Str} = \t,a,vp ->
     let adl : IntransV = chooseAux vp ;
@@ -536,18 +519,18 @@ oper
     case vp.val of {
       Da x     => AditzTrinkoak.syntIntransVerb (Da x) ;
 
-      Zaio   => AditzTrinkoak.ukanZaio ! vp.iobj.a ; --are there other Zaio (nor-nori) verbs?
+      Zaio   => AditzTrinkoak.ukanZaio ! vp.iobj.agr ; --are there other Zaio (nor-nori) verbs?
 
       Du x =>
         let aux = AditzTrinkoak.syntTransVerb (Du x) 
         in case <pol,vp.dobj.isDef> of {
-             <Neg,False> => aux ! sgAgr vp.dobj.a;
-             _           => aux ! vp.dobj.a } ;
+             <Neg,False> => aux ! sgAgr vp.dobj.agr;
+             _           => aux ! vp.dobj.agr } ;
 
       Dio => 
         case <pol,vp.dobj.isDef> of {
-          <Neg,False> => AditzTrinkoak.ukanDio ! vp.iobj.a ! sgAgr vp.dobj.a ;
-          _           => AditzTrinkoak.ukanDio ! vp.iobj.a ! vp.dobj.a } } ;
+          <Neg,False> => AditzTrinkoak.ukanDio ! vp.iobj.agr ! sgAgr vp.dobj.agr ;
+          _           => AditzTrinkoak.ukanDio ! vp.iobj.agr ! vp.dobj.agr} } ;
 
    
 
@@ -576,13 +559,12 @@ oper
 
 ------------------------------------------------
 -- ClSlash: has verb and subject, missing object
-  ClSlash : Type = VerbPhrase ** { subj : {s : Str ; a : Agr } } ;
+  ClSlash : Type = VerbPhrase ** { subj : {s : Case => Str ; agr : Agr } } ;
  
 
   mkClSlash : NounPhrase -> VPSlash -> ClSlash = \np,vps ->
     let sc : Case = subjCase vps.val ;
-    in vps ** { subj = { s = np.s ! sc ;
-                         a = np.agr } };
+    in vps ** { subj = np };
 
 ------------------------------------------------
 -- Relative clause
@@ -593,9 +575,8 @@ oper
   RClause : Type = {s : Tense => Anteriority => Polarity => Agr => Str } ;
 
   rclFromVP : Str -> VerbPhrase -> RClause = \en,vp ->
-    mkRCl en (vp ** { subj = { s = [] ; a = Hau } ; -- Subj agr will change later
+    mkRCl en (vp ** { subj = { s = \\_ => [] ; agr = Hau } ; -- Subj agr will change later
                       objFixed = True }) ; 
-
 
   rclFromSlash : Str -> ClSlash -> RClause = \en,cls ->
     mkRCl en (cls ** { objFixed = False }) ;
@@ -605,15 +586,16 @@ oper
     { s = \\t,a,pol,agr =>
         let ez = case pol of { Neg => "ez" ; _ => [] } ;
             objAgr : Agr = case cls.objFixed of {
-                             True  => cls.dobj.a ;
+                             True  => cls.dobj.agr ;
                              False => agr } ;
             subjAgr : Agr = case cls.objFixed of {
                              True  => agr ;
-                             False => cls.subj.a } ;
+                             False => cls.subj.agr } ;
+            sc : Case = subjCase cls.val ;
 
             -- We make sure that the agr param in RS affects the right argument
-            cls' = cls ** { dobj = cls.dobj ** { a = objAgr } ;
-                            subj = cls.subj ** { a = subjAgr } } ; 
+            cls' = cls ** { dobj = cls.dobj ** { agr = objAgr } ;
+                            subj = cls.subj ** { agr = subjAgr } } ; 
 
             verb = case isSynthetic cls.val of {
                       True  => verbformSynthetic t a cls' ;
@@ -624,7 +606,7 @@ oper
             ++ cls'.dobj.s ! pol  -- garagardoa   these are empty)
             ++ cls'.comp ! agr 
 
-            ++ cls'.subj.s        -- mutilak     (If coming from VP, this is empty)
+            ++ cls'.subj.s ! sc   -- mutilak     (If coming from VP, this is empty)
 
             --- Common to VP and ClSlash ---
             ++ verb.prc                -- maite 

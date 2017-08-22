@@ -47,7 +47,7 @@ lin both7and_DConj = mkConj "bai" "eta" pl ;
 lin either7or_DConj = mkConj "bai" "edo" pl ;
 
 lin but_PConj = ss "baina" ;
---lin otherwise_PConj
+lin otherwise_PConj = ss "bestela" ;
 --lin therefore_PConj
 
 
@@ -71,7 +71,7 @@ lin much_Det = R.indefDet "asko" sg ;
 lin somePl_Det = R.indefDet "zenbait" pl ;
 lin someSg_Det = R.indefDet "zenbait" sg ;
 
---lin no_Quant = 
+lin no_Quant = R.indefDet "ez" sg ** { s = R.artDef } ; --TODO: this is just the word for "no"; not even sure if it's possible to have no_Quant
 
 lin that_Quant = R.defDet [] sg ** { s = R.quantHori } ;
 lin this_Quant = R.defDet [] sg ** { s = R.quantHau } ;
@@ -174,6 +174,6 @@ lin want_VV = ukanV "nahi" ;
 ------
 -- Voc
 
---lin please_Voc = 
+lin please_Voc = ss "mesedez" ;
 
 }

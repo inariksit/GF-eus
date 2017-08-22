@@ -42,14 +42,12 @@ lin
   -- : V3 -> NP -> VPSlash ; -- give it (to her)
   Slash2V3 v3 npNori = slashDObj v3 **
     { iobj = { s = npNori.s ! Dat ;
-               a = npNori.agr }
+               agr = npNori.agr }
     } ;
 
   -- : V3 -> NP -> VPSlash ; -- give (it) to her
   Slash3V3 v3 npNor = slashIObj v3 **
-    { dobj = { s = mkDObj npNor ;
-               a = npNor.agr ;
-               isDef = npNor.isDef } 
+    { dobj = npNor ** { s = mkDObj npNor } 
     } ;
 
   -- : V2V -> VP -> VPSlash ;  -- beg (her) to go
