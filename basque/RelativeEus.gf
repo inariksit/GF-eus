@@ -1,22 +1,29 @@
-concrete RelativeEus of Relative = CatEus ** open ResEus, Prelude in {
+concrete RelativeEus of Relative = CatEus ** open ResEus, Prelude, (NE=NounEus), (SE=StructuralEus) in {
 
 
+lin
+  --  : Cl -> RCl ;            -- such that John loves her ????
+  RelCl cl = {                 -- TODO: this is likely horribly wrong!
+    s = \\t,a,pol,agr => 
+      let sent = cl.s ! t ! a ! pol ! Stat ;
+      in sent.beforeAux ++ sent.aux.indep ++ sent.afterAux } ;
 
-   -- RelCl    : Cl -> RCl ;            -- such that John loves her
-   -- lin RelCl cl = {} ;
+  -- : RP -> VP -> RCl ;
+  RelVP rp vp = ResEus.rclFromVP rp.s vp ;
 
-   -- RelVP    : RP -> VP -> RCl ;
-   lin RelVP rp vp = ResEus.mkRCl rp.s vp ;
-
-   -- RelSlash : RP -> ClSlash -> RCl ; -- whom John loves
-   lin RelSlash rp cls = ResEus.rclFromSlash rp.s cls ;
+  -- : RP -> ClSlash -> RCl ; -- whom John loves
+  RelSlash rp cls = ResEus.rclFromSlash rp.s cls ;
 
 
-   -- IdRP  : RP ;
-   lin IdRP = { s = BIND ++ "n" } ;
+  -- : RP ;
+  IdRP = { s = BIND ++ "n" } ;
 
-   -- FunRP : Prep -> NP -> RP -> RP ;  -- the mother of whom
-   --lin FunRP prep np rp = {} ;
+  -- : Prep -> NP -> RP -> RP ;  -- the mother of whom
+  FunRP prep np rp = { s = applyPost prep whom ++ np.s ! Abs } 
+   where { num = case np.agr of {
+              Hau => NE.NumSg ;
+              _   => NE.NumPl } ;
+           whom = NE.DetNP (NE.DetQuant SE.which_IQuant num) } ;
 
 {-
 12:18:16 < inariksit> or "the dog, to whom I sing"

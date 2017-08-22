@@ -25,7 +25,7 @@ lin
 
   -- : ClSlash -> Adv -> ClSlash ;     -- (whom) he sees today
   AdvSlash cls adv = cls ** insertAdv adv cls ; 
-  
+
 --    SlashPrep : Cl -> Prep -> ClSlash ;         -- (with whom) he walks 
 --    SlashVS   : NP -> VS -> SSlash -> ClSlash ; -- (whom) she says that he loves
 --    UseSlash : Temp -> Pol -> ClSlash -> SSlash ; -- (that) she had not seen
@@ -54,7 +54,7 @@ lin
   UseCl temp pol cl = cl.s ! temp.t ! temp.a ! pol.p ! Stat ;
 
   -- : Temp -> Pol -> RCl -> RS ;
-  UseRCl temp pol cl = { s = cl.s ! temp.t ! pol.p } ;
+  UseRCl temp pol cl = { s = cl.s ! temp.t ! temp.a ! pol.p } ;
 
   -- : Temp -> Pol -> QCl -> QS ;
   UseQCl temp pol qcl = qcl.s ! temp.t ! temp.a ! pol.p ;

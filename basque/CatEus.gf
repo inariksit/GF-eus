@@ -9,9 +9,12 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
     S  = ResEus.Sentence ; --must keep words separate, because we may add Subj particles for Adv
     QS = ClType => ResEus.Sentence ;
-    RS = { s : Agr => Str } ; -- relative sentence. Tense and polarity fixed,
+    RS = { s : Agr => Str };  -- relative sentence. Tense and polarity fixed,
                               -- but agreement may depend on the CN/NP it modifies:
                               -- `gorriak diren txakurrak' vs. `gorria den txakurra'
+                              -- mutil|ak| maite |du|en neska / mutil|ak| maite |ditu|en nesk|ak|
+                              -- mutil|ek| maite |dute|n nesk|a| / mutil|ek| maite |ditute|n nesk|ak|
+                              -- neska maite duen mutila / neskak maite dituen mutila / neska maite duten mutilak / neskak maite dituten mutilak
 
     Cl = ResEus.Clause ; 
     ClSlash = ResEus.ClSlash ;

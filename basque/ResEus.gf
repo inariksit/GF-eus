@@ -595,34 +595,48 @@ oper
 -- and we need to produce correct agreement:
 -- `gorria den txakurra' vs. `gorriak diren txakurrak'
 
-  --TODO: will this work with only Tense and no Anteriority???? Rewrite + merge with other Clause-pro
-  RClause : Type = {s : Tense => Polarity => Agr => Str} ;
+  RClause : Type = {s : Tense => Anteriority => Polarity => Agr => Str } ;
 
-  mkRCl : Str -> VerbPhrase -> RClause = \en,vp ->
-    { s = \\tns,pol,agr => 
-        let ez = case pol of { Neg => "ez" ; _ => [] } ;
-        in vp.adv 
-           ++ vp.iobj.s
-           ++ vp.dobj.s ! pol              -- John 
-           ++ vp.prc ! tns                 -- maite 
-           ++ ez                           -- (ez)
-           ++ (chooseAux vp ! tns ! agr).stem   -- d(it)u
-           ++ en                           -- en
-    } ;
+  rclFromVP : Str -> VerbPhrase -> RClause = \en,vp ->
+    mkRCl en (vp ** { subj = { s = [] ; a = Hau } ; -- Subj agr will change later
+                      objFixed = True }) ; 
+
 
   rclFromSlash : Str -> ClSlash -> RClause = \en,cls ->
-    { s = \\tns,pol,objAgr =>
-        let ez = case pol of { Neg => "ez" ; _ => [] } ;
-            clsWithObj = cls ** { dobj = cls.dobj ** { a = objAgr } };
+    mkRCl en (cls ** { objFixed = False }) ;
 
-        in  cls.adv 
-            ++ cls.subj.s                               -- Johnek
-            ++ cls.prc ! tns                            -- maite 
-            ++ ez                                       -- (ez)
-            ++ (chooseAux clsWithObj ! tns ! cls.subj.a).stem -- d(it)u
-            ++ en                                       -- en
+
+  mkRCl : Str -> (ClSlash ** {objFixed : Bool}) -> RClause = \en,cls ->
+    { s = \\t,a,pol,agr =>
+        let ez = case pol of { Neg => "ez" ; _ => [] } ;
+            objAgr : Agr = case cls.objFixed of {
+                             True  => cls.dobj.a ;
+                             False => agr } ;
+            subjAgr : Agr = case cls.objFixed of {
+                             True  => agr ;
+                             False => cls.subj.a } ;
+
+            -- We make sure that the agr param in RS affects the right argument
+            cls' = cls ** { dobj = cls.dobj ** { a = objAgr } ;
+                            subj = cls.subj ** { a = subjAgr } } ; 
+
+            verb = case isSynthetic cls.val of {
+                      True  => verbformSynthetic t a cls' ;
+                      False => verbformPeriphrastic t a cls' } ;
+        in  cls'.adv 
+            --- One of the following ---
+            ++ cls'.iobj.s        -- mutilari    (If coming from ClSlash,
+            ++ cls'.dobj.s ! pol  -- garagardoa   these are empty)
+            ++ cls'.comp ! agr 
+
+            ++ cls'.subj.s        -- mutilak     (If coming from VP, this is empty)
+
+            --- Common to VP and ClSlash ---
+            ++ verb.prc                -- maite 
+            ++ ez                      -- (ez)
+            ++ (verb.aux ! subjAgr).stem  -- d(it)u 
+            ++ en                      -- en
     } ;
 
-  --TODO: some nice synergy between RCl(Slash) and ComplVQ? It's the same morphology.
 
 }
