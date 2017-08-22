@@ -24,7 +24,7 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
     UttInterj i = i ;
 
     NoPConj = {s = []} ;
-    PConjConj conj = {s = conj.s} ;
+    PConjConj conj = { s = conj.s1 ++ conj.s2 } ;
 
     NoVoc = {s = []} ;
     VocNP np = { s = "," ++ np.s ! Abs } ;

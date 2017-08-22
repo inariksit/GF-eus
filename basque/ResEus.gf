@@ -547,10 +547,9 @@ oper
       Dio => 
         case <pol,vp.dobj.isDef> of {
           <Neg,False> => AditzTrinkoak.ukanDio ! vp.iobj.a ! sgAgr vp.dobj.a ;
-          _           => AditzTrinkoak.ukanDio ! vp.iobj.a ! vp.dobj.a } 
+          _           => AditzTrinkoak.ukanDio ! vp.iobj.a ! vp.dobj.a } } ;
 
-} ;
-
+   
 
 
   wordOrder : (isIP : Bool) -> SentenceLight -> (ClType => Sentence) = \isIP,s -> 
@@ -574,10 +573,6 @@ oper
                            prc : Str ;
                            aux : VForms } ;
 
---TODO: how do we stack adverbs?
---Lang> p "I think that she will come today"
---PhrUtt NoPConj (UttS (UseCl (TTAnt TPres ASimul) PPos (PredVP (UsePron i_Pron) (AdvVP (UseV think_V) (SubjS that_Subj (UseCl (TTAnt TFut ASimul) PPos (PredVP (UsePron she_Pron) (AdvVP (UseV come_V) today_Adv)))))))) NoVoc
---PhrUtt NoPConj (UttS (UseCl (TTAnt TPres ASimul) PPos (PredVP (UsePron i_Pron) (AdvVP (AdvVP (UseV think_V) (SubjS that_Subj (UseCl (TTAnt TFut ASimul) PPos (PredVP (UsePron she_Pron) (UseV come_V))))) today_Adv)))) NoVoc
 
 ------------------------------------------------
 -- ClSlash: has verb and subject, missing object

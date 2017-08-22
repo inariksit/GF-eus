@@ -75,7 +75,7 @@ lin someSg_Det = R.indefDet "zenbait" sg ;
 
 lin that_Quant = R.defDet [] sg ** { s = R.quantHori } ;
 lin this_Quant = R.defDet [] sg ** { s = R.quantHau } ;
-lin which_IQuant = R.defDet "zein" sg ** { s = R.artDef } ; --TODO: get the actual word!
+lin which_IQuant = R.defDet "zein" sg ** { s = R.artDef } ;
 
 
 -----
