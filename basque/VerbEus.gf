@@ -86,10 +86,14 @@ lin
   -- : Comp -> VP ;
   UseComp comp = insertComp comp.s (copulaVP comp.copula) ;
 
-{-
-    PassV2   : V2 -> VP ;               -- be loved
 
--}
+  --  : V2 -> VP ;               -- be loved
+  PassV2 v2 = 
+   let kantatuak : Agr => Str = table {
+         (Gu|Zuek|Hauek) => v2.prc ! Past ++ BIND ++ "ak" ;
+         _               => v2.prc ! Past } ;
+    in insertComp kantatuak (copulaVP Izan) ; --TODO: we lose the nstem, but maybe that's okay?
+
   -- : VP -> Adv -> VP ;  -- sleep here
   AdvVP vp adv = ResEus.insertAdv adv vp ;
 
