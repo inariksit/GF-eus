@@ -8,7 +8,6 @@ lin
 
   UseV = ResEus.useV ;
 
-
   -- : VV  -> VP -> VP ;  -- [lo egin/neska ikusi/jakin] nahi/ahal/behar dut
   ComplVV vv vp = 
     let vcomp : Str = linVPPrc vp ;
@@ -50,6 +49,7 @@ lin
     { dobj = npNor ** { s = mkDObj npNor } 
     } ;
 
+  -- TODO: something wrong in this function!
   -- : V2V -> VP -> VPSlash ;  -- beg (her) to go
   SlashV2V v2v vp = slashDObj v2v **
     { comp = \\agr => linVPPrc vp } ; --How about agreement with tense of the main clause???
@@ -70,10 +70,19 @@ lin
 
   -- : VPSlash -> NP -> VP
   ComplSlash vps np = ResEus.complSlash vps np ;
-{-
-    SlashVV    : VV  -> VPSlash -> VPSlash ;       -- want to buy
-    SlashV2VNP : V2V -> NP -> VPSlash -> VPSlash ; -- beg me to buy
--}
+
+
+  -- : VV  -> VPSlash -> VPSlash ; -- [___ ikusi] nahi/ahal/behar dut
+                  -- Just like ComplVV except missing subject!
+  SlashVV vv vps = ComplVV vv vps ** { missing = vps.missing ; 
+                                       post = vps.post } ;
+ 
+  -- : V2V -> NP -> VPSlash -> VPSlash ; -- beg me to buy
+  SlashV2VNP v2v np vps = 
+    ComplVV v2v vps **
+      { missing = vps.missing ;
+        post = vps.post ;
+        iobj = np ** { s = np.s ! Dat } } ;
 
 --2 Other ways of forming verb phrases
 
