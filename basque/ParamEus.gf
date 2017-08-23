@@ -29,6 +29,8 @@ param
 -}
   APType = Ko | Bare ; 
 
+  AForm = AF Degree | AAdv ;
+
   Bizi = Inan | Anim ;
 
   Case = Abs | Erg | Dat | Par  -- Core argument cases

@@ -9,22 +9,22 @@ concrete AdjectiveEus of Adjective = CatEus ** open ResEus, Prelude in {
 
   -- : A  -> AP ;
   PositA a = a ** { 
-    s    = a.s ! Posit ; 
+    s    = a.s ! AF Posit ; 
     typ  = Bare } ;
 
   -- : A  -> NP -> AP ;  -- euskara ingelesa baino errazagoa da.
   ComparA a np = a ** {
-    s    = np.s ! Abs ++ "baino" ++ a.s ! Compar ; 
+    s    = np.s ! Abs ++ "baino" ++ a.s ! AF Compar ; 
     typ  = Bare } ;
 
   -- : A2 -> NP -> AP ;  -- married to her
   ComplA2 a2 np = a2 ** {
-    s    = applyPost a2.compl np ++ a2.s ! Posit ; 
+    s    = applyPost a2.compl np ++ a2.s ! AF Posit ; 
     typ  = Bare } ;
 
   -- : A2 -> AP ;        -- married to itself
   ReflA2 a2 = a2 ** {
-    s    = applyPost a2.compl buru_NP ++ a2.s ! Posit ; 
+    s    = applyPost a2.compl buru_NP ++ a2.s ! AF Posit ; 
     typ  = Bare } ;
 
   -- : A2 -> AP ;        -- married
@@ -32,7 +32,7 @@ concrete AdjectiveEus of Adjective = CatEus ** open ResEus, Prelude in {
 
   -- : A  -> AP ;     -- warmer
   UseComparA a = a ** {
-    s    = a.s ! Compar ; 
+    s    = a.s ! AF Compar ; 
     typ  = Bare } ;
 
 

@@ -139,12 +139,12 @@ concrete NounEus of Noun = CatEus ** open ResEus, Prelude in {
   OrdNumeral num = num ;
 
   -- : A       -> Ord ;
-  OrdSuperl a = { s = a.s ! Superl ; n = Sg } ; -- why force Sg? 
+  OrdSuperl a = { s = a.s ! AF Superl ; n = Sg } ; -- why force Sg? 
 
 -- One can combine a numeral and a superlative.
 
   -- : Numeral -> A -> Ord ; -- third largest
-  OrdNumeralSuperl num a = num ** { s = num.s ++ a.s ! Superl } ; --TODO: is the word order correct?
+  OrdNumeralSuperl num a = num ** { s = num.s ++ a.s ! AF Superl } ; --TODO: is the word order correct?
 
   -- : Quant
   DefArt = { s     = artDef ;

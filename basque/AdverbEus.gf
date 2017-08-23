@@ -2,10 +2,12 @@ concrete AdverbEus of Adverb = CatEus ** open ResEus, Prelude in {
 
 lin
 
-    --PositAdvAdj : A -> Adv ;
-    PositAdvAdj adj = { s = glue (adj.s ! Posit) "an" } ; --?????? no idea, got it from google translate :-D
+  -- : A -> Adv ;
+  PositAdvAdj adj = { s = adj.s ! AAdv } ; --TODO: check
 
---    ComparAdvAdj  : CAdv -> A -> NP -> Adv ; -- more warmly than John
+  -- : CAdv -> A -> NP -> Adv ; -- more warmly than John
+  ComparAdvAdj cadv a np = { s = np.s ! Abs ++ cadv.s ++ a.s ! AAdv } ;
+
 --    ComparAdvAdjS : CAdv -> A -> S  -> Adv ; -- more warmly than he runs
 
   -- : Prep -> NP -> Adv ;

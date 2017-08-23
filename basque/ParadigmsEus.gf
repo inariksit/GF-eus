@@ -50,7 +50,10 @@ oper
 
 --2 Adjectives
 
-  mkA : Str -> A = \s -> lin A (mkAdj s) ;
+  mkA = overload {
+    mkA : Str -> A = \s -> lin A (regAdj s) ;
+    mkA : Str -> A -> A = \s,a -> irregAdvAdj s a 
+  } ;
 
 --  mkA2 : Str -> A2 = \s -> lin A2 (mkAdj s) ;
 

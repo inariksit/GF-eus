@@ -59,8 +59,6 @@ oper
 --------------------------------------------------------------------
 -- Det, Quant
 
-  -- TODO: some kind of safe independent form to give to DetNP, 
-  -- otherwise sometimes it will generate forms that start with BIND.
   Determiner : Type = BaseDet ** 
     { s   : Case => Phono => Str ;   -- hauek
       nbr : Number } ;
@@ -254,13 +252,13 @@ oper
 --------------------------------------------------------------------
 -- Adjective and AP
 
-  Adjective : Type = {s : Degree => Str ; ph : Phono} ;
+  Adjective : Type = {s : AForm => Str ; ph : Phono} ;
 
   Adjective2 : Type = Adjective ** { compl : Postposizio } ;
 
   AdjPhrase : Type = {s : Str ; ph : Phono ; typ : APType} ; 
 
-  mkAdj : Str -> Adjective = \s -> 
+  regAdj : Str -> Adjective = \s -> 
     let stem : Str = case last s of {
                "a" => init s ; 
                _   => s                } ;
@@ -269,11 +267,15 @@ oper
                "r"               => FinalR ;
                ("e"|"i"|"o"|"u") => FinalVow ;
                _                 => FinalCons } 
-    in { s = table { Posit  => stem ;
-                     Compar => stem + "ago" ;
-                     Superl => stem + "en" } ;
+    in { s = table { AF Posit  => stem ;
+                     AF Compar => stem + "ago" ;
+                     AF Superl => stem + "en" ;
+                     AAdv      => stem + "ki" } ;
                   -- Excess => stem + "egi" } ;
          ph = phono } ; 
+  irregAdvAdj : Str -> Adjective -> Adjective = \adv,a ->
+    a ** { s = table { AAdv => adv ;
+                       x    => a.s ! x } } ;
 
 --------------------------------------------------------------------
 -- Verbs 
@@ -428,7 +430,6 @@ oper
     case vps.missing of {
               MissingAdv  => vps ** { adv = applyPost vps.post np } ;
               MissingIObj => vps ** { iobj = np ** { s = np.s ! Dat }} ;
---                                               agr = np.agr } } ;
               MissingDObj => vps ** { dobj = np ** { s = mkDObj np }} 
           } ;
   
@@ -611,6 +612,4 @@ oper
             ++ (verb.aux ! subjAgr).stem  -- d(it)u 
             ++ en                      -- en
     } ;
-
-
 }
