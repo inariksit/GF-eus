@@ -352,9 +352,11 @@ oper
               adv : Str } ;
 
 
-  VPSlash : Type = 
-    VerbPhrase ** { post : Postposizio ; --VPSlashPrep may specify a postposition to use (for adv slot)
+  VPSlash : Type =  --VPSlashPrep may specify a postposition to use (for adv slot)
+    VerbPhrase ** { post : Postposizio ; 
                     missing : MissingArg } ;  
+
+
 param 
   MissingArg = MissingAdv | MissingDObj | MissingIObj ;
 
@@ -375,11 +377,11 @@ oper
     ++ (chooseAux vp ! tnsAux ! Hau).indep ;
 
   -- Used in ComplVV : does not include aux!
-  linVPPrc : VerbPhrase -> Str = \vp ->
+  linVPPrc : VerbPhrase -> Str = \vp ->  --TODO make it less of a hack.
     vp.adv 
     ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
     ++ vp.prc ! Past ; --If we choose Past, then it will work with Jakin ...
-                       --TODO make it less of a hack.
+                      
 
   -----
   -- Create VP or VPSlash from various Verbs
@@ -503,6 +505,7 @@ oper
       <Cond,Simul> => {aux = adl ! Cond ; prc = vp.prc ! Fut} ;  --joango nintzateke
       <Cond,Anter> => {aux = adl ! Cond ; prc = vp.prc ! Past} } ;--joan nintzateke
   
+  --TODO: write a fallback for synthetic verbs without all forms
   verbformSynthetic : Tense -> Anteriority -> VerbPhrase -> {aux : Agr => VForms ; prc : Str} = \t,a,vp ->
     let adt : IntransV = chooseAux vp ;
     in case <t,a> of {

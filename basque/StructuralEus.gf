@@ -10,8 +10,8 @@ lin almost_AdA = mkAdA "ia" ;
 lin almost_AdN = ss "ia" ;
 lin at_least_AdN = ss "gutxienez" ;
 lin at_most_AdN = ss "gehienez" ;
--- lin so_AdA =
--- lin too_AdA =
+lin so_AdA = ss "hain" ;
+lin too_AdA = ss "gehiegi" ;
 lin very_AdA = mkAdA "oso" ;
 
 lin as_CAdv = { s = "bezain" ; p = [] } ;

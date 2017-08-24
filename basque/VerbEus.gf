@@ -49,9 +49,9 @@ lin
     { dobj = npNor ** { s = mkDObj npNor } 
     } ;
 
-  -- TODO: something wrong in this function!
+
   -- : V2V -> VP -> VPSlash ;  -- beg (her) to go
-  SlashV2V v2v vp = slashDObj v2v **
+  SlashV2V v2v vp = slashDObj v2v **   -- TODO: something wrong in this function!
     { comp = \\agr => linVPPrc vp } ; --How about agreement with tense of the main clause???
     
 

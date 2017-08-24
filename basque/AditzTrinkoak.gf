@@ -221,7 +221,8 @@ oper
   =============================================================================
 -}
 
-  ukanZaio : TransV = table {
+
+  ukanZaio : TransV = table {   --TODO: add all forms
      -- Nori,Nor
       Hau   => table { 
                  Pres => table {
@@ -234,7 +235,7 @@ oper
                           Zuek => mkVForms "zaizue" ;
                           Hauek => mkVForms "zaie" 
                         } ;
-                 _    => \\agr => mkVForms "ukanNoriNor: TODO"
+                 _    => \\agr => noVForm 
                } ;
       Hauek => table {
                  Pres => table {
@@ -247,15 +248,14 @@ oper
                            Zuek => mkVForms "zaizkizue" ;
                            Hauek => mkVForms "zaizkie" 
                         } ;
-                 _    => \\agr => mkVForms "ukanNoriNor: TODO"
+                 _    => \\agr => noVForm 
                } ;
       _     => table { 
                  tns => table {
-                           agr => mkVForms "ukanNoriNor: TODO"
+                           agr => noVForm 
                         }
                }
   } where {
-    -- TODO: maybe use this? 
     -- For Nor-Nori inflection, map from Agr to prefix morpheme in Nor position
     norTableZaio : Agr => Str =
       table { Ni    => "na" ;
@@ -273,8 +273,9 @@ oper
   Ukan [NOR] [NORI] [NORK]
   =============================================================================
 -}
-  -- OBS. Overgenerating and probably wrong in some places, TODO test properly /IL 2017-07
-  ukanDio : DitransV = \\nori,nor,tns,nork => mkVForms (
+
+  ukanDio : DitransV =  -- TODO test properly /IL 2017-07
+   \\nori,nor,tns,nork => mkVForms (
     case tns of {
       Cond => "TODO:conditional" ;
       Past => let zen = norkPast ! nork ;
@@ -330,7 +331,6 @@ oper
                      Gu => mkVForms "geunden" ; 
                      Zuek => mkVForms "zeundeten" ; 
                      Hauek => mkVForms "zeuden" } ;
-             -- TODO: Cond
 	           _ =>  table {
                      Ni => mkVForms "nago" ; 
                      Hi _ => mkVForms "hago" ; 
@@ -491,9 +491,9 @@ oper
   Ibili
   =============================================================================
 -}
-  --TODO: check forms
 
-  ibiliDa : IntransV =
+
+  ibiliDa : IntransV =    --TODO: check forms
     table {
         Past => table {
                     Ni => mkVForms "nenbilen" ; 
