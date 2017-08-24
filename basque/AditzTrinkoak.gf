@@ -540,6 +540,14 @@ oper
         <Hau,Pres,Gu>    => mkVForms "dakigu" ;
         <Hau,Pres,Zuek>  => mkVForms "dakizue" ;
         <Hau,Pres,Hauek> => mkVForms "dakite" ;
+
+        <Hau,Past,Ni>    => mkVForms "nekien" ;
+        <Hau,Past,Zu>    => mkVForms "zenekien" ;
+        <Hau,Past,Hau>   => mkVForms "zekien" ;
+        <Hau,Past,Gu>    => mkVForms "genekien" ;
+        <Hau,Past,Zuek>  => mkVForms "zenekiten" ;
+        <Hau,Past,Hauek> => mkVForms "zekiten" ;
+
         _                => ukanDu ! dobjAgr ! tns ! subjAgr 
       } ;
 

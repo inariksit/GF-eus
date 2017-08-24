@@ -42,7 +42,7 @@ lin there_Adv = ss "hor" ;
 
 lin and_Conj = mkConj [] "eta" pl ; 
 lin or_Conj  = mkConj [] "edo" sg ;
---lin if_then_Conj =
+lin if_then_Conj = mkConj [] "orduan" sg ; --TODO: is there even a way to say this? "if boys then girls"
 lin both7and_DConj = mkConj "bai" "eta" pl ;
 lin either7or_DConj = mkConj "bai" "edo" pl ;
 
@@ -65,8 +65,8 @@ lin most_Predet = { s = "gehien" } ;
 lin every_Det = R.defDet [] sg ** -- egun+ero "every day" --TODO: urtero *urte+ero
                  { s = \\c,_ => SOFT_BIND ++ "ero" 
                               ++ R.artDef ! R.Sg ! c ! R.FinalVow } ; 
---lin few_Det =
---lin many_Det =
+lin few_Det = R.indefDet "gutxi" pl ;
+lin many_Det = R.indefDet "asko" pl ;
 lin much_Det = R.indefDet "asko" sg ;
 lin somePl_Det = R.indefDet "zenbait" pl ;
 lin someSg_Det = R.indefDet "zenbait" sg ;
