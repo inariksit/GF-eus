@@ -18,7 +18,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
     Cl = ResEus.Clause ; 
     ClSlash = ResEus.ClSlash ;
-    SSlash  = { s : Str } ;   -- sentence missing NP           e.g. "she has looked at"
+    SSlash  = ResEus.Sentence ; -- sentence missing NP           e.g. "she has looked at"
     Imp     = { s : Str } ;   -- imperative                    e.g. "look at this"
 
 --2 Questions and interrogatives

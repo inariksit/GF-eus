@@ -11,13 +11,8 @@ lin
 
   -- : SC -> VP -> Cl ;         -- that she goes is good
   PredSCVP sc vp = 
-    let subjSC : NounPhrase =
-         { s = \\c => sc.s ;
-           stem = sc.s ;
-           agr = Hau ;
-           anim = Inan ;
-           isDef = True } ;
-    in clFromVP subjSC vp ;
+    let subjSC = invarNP sc.s 
+     in clFromVP subjSC vp ;
 
 --2 Clauses missing object noun phrases
   -- : NP -> VPSlash -> ClSlash ;
@@ -27,9 +22,16 @@ lin
   AdvSlash cls adv = cls ** insertAdv adv cls ; 
 
 --    SlashPrep : Cl -> Prep -> ClSlash ;         -- (with whom) he walks 
---    SlashVS   : NP -> VS -> SSlash -> ClSlash ; -- (whom) she says that he loves
---    UseSlash : Temp -> Pol -> ClSlash -> SSlash ; -- (that) she had not seen
 
+  -- : NP -> VS -> SSlash -> ClSlash ; -- (whom) she says that he loves
+--  SlashVS np vs ss = {} ;
+
+
+  --  : Temp -> Pol -> ClSlash -> SSlash ; -- (that) she had not seen
+  UseSlash t p cls = 
+    let emptyObj = invarNP [] ; --TODO: object agr is Hau, might this cause problems later?
+        cl = clFromSlash emptyObj cls
+     in UseCl t p cl ;
 
 --2 Imperatives
   -- : VP -> Imp ; 
@@ -81,6 +83,12 @@ lin
 oper 
   insertBeforeAux : Str -> Sentence -> Sentence = \str,sent -> 
     sent ** { beforeAux = str ++ sent.beforeAux } ;
-
+  
+  invarNP : Str -> NounPhrase = \str ->
+    { s = \\c => str ;
+      stem = str ;
+      agr = Hau ;
+      anim = Inan ;
+      isDef = True } ;
 
 }
