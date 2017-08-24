@@ -18,12 +18,12 @@ lin
   -- The subordinator suffix -la is hardcoded in ComplVS
   -- In Extra: ComplVS that takes the S with other suffixes (-en,-tzera)
   ComplVS vs s =
-    let scomp : Str = linSSub s "la" ;
+    let scomp : Str = linSSub s.s "la" ;
     in ResEus.insertComp scomp (useV vs) ;
 
   -- : VQ -> QS -> VP ;   -- ez dakit [nor den]
   ComplVQ vq qs = 
-    let qi : Sentence = qs ! Indir ; -- choose the version without al
+    let qi : Sentence = qs.s ! Indir ; -- choose the version without al
         qcomp : Str = linSSub qi "n" ;
     in ResEus.insertComp qcomp (useV vq) ;
 
@@ -57,11 +57,11 @@ lin
 
   -- : V2S -> S  -> VPSlash ;  -- answer (to him) that it is good
   SlashV2S v2s s = slashDObj v2s **
-    { comp = \\agr => linSSub s "la" } ;
+    { comp = \\agr => linSSub s.s "la" } ;
 
   -- : V2Q -> QS -> VPSlash ;  -- ask (him) who came
   SlashV2Q v2q qs = slashDObj v2q **
-    { comp = \\agr => linSSub (qs ! Indir) "la" } ;
+    { comp = \\agr => linSSub (qs.s ! Indir) "la" } ;
 
   -- : V2A -> AP -> VPSlash ;  -- paint (it) red
   SlashV2A v2a ap = slashDObj v2a **

@@ -3,8 +3,8 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
   lin
     PhrUtt pconj utt voc = {s = pconj.s ++ utt.s ++ voc.s} ;
 
-    UttS s = { s = s.beforeAux ++ s.aux.indep ++ s.afterAux } ;
-    UttQS qs = { s = let s = qs ! Qst 
+    UttS s = { s = s.s.beforeAux ++ s.s.aux.indep ++ s.s.afterAux } ;
+    UttQS qs = { s = let s = qs.s ! Qst 
                      in s.beforeAux ++ s.aux.indep ++ s.afterAux } ;
 
     UttImpSg pol imp = 

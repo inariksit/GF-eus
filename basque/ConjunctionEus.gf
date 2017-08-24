@@ -52,17 +52,18 @@ lin
 -- Produces ungrammatical results for adverbial usage of conj sentences, e.g.
 -- "when [the dog runs and you sleep], I drink beer"
 lincat
-  [S] = Sentence ** { firstSent : Str } ;
+  [S] = { s : Sentence } ** { firstSent : Str } ;
 
 lin 
   BaseS x y = 
-    y ** { firstSent = linS x } ;
+    y ** { firstSent = linS x.s } ;
 
   ConsS x xs = 
-    xs ** { firstSent = linS x ++ "," ++ xs.firstSent } ;
+    xs ** { firstSent = linS x.s ++ "," ++ xs.firstSent } ;
 
   -- Combine the finished sentences all into the beforeAux part of the S
-  ConjS co xs = xs ** { beforeAux = co.s1 ++ xs.firstSent ++ co.s2 ++ xs.beforeAux } ;
+  ConjS co xs = 
+    { s = xs.s ** {beforeAux = co.s1 ++ xs.firstSent ++ co.s2 ++ xs.s.beforeAux} } ;
 
 
 

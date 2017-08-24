@@ -41,10 +41,10 @@ lin
 
 
   -- : S  -> SC ;
-  EmbedS s = { s = linSSub s "la" } ; -- datorrela
+  EmbedS s = { s = linSSub s.s "la" } ; -- datorrela
 
   -- : QS -> SC ;
-  EmbedQS qs = { s = linSSub (qs ! Indir) "la" } ; --???
+  EmbedQS qs = { s = linSSub (qs.s ! Indir) "la" } ; --???
 
   -- : VP -> SC ;                     -- ikusi
   EmbedVP vp = { s = linVPPrc vp } ;
@@ -53,13 +53,13 @@ lin
 
 
   -- : Temp -> Pol -> Cl -> S ;
-  UseCl temp pol cl = cl.s ! temp.t ! temp.a ! pol.p ! Stat ;
+  UseCl temp pol cl = { s = cl.s ! temp.t ! temp.a ! pol.p ! Stat } ;
 
   -- : Temp -> Pol -> RCl -> RS ;
   UseRCl temp pol cl = { s = cl.s ! temp.t ! temp.a ! pol.p } ;
 
   -- : Temp -> Pol -> QCl -> QS ;
-  UseQCl temp pol qcl = qcl.s ! temp.t ! temp.a ! pol.p ;
+  UseQCl temp pol qcl = { s = qcl.s ! temp.t ! temp.a ! pol.p } ;
 
 -- An adverb can be added to the beginning of a sentence, either with comma ("externally")
 -- or without:
@@ -68,7 +68,7 @@ lin
   AdvS adv = insertBeforeAux adv.s ;
 
   -- : Adv -> S  -> S ;            -- next week, I will go home
-  ExtAdvS adv = insertBeforeAux (adv.s ++ SOFT_BIND ++ ",") ;
+  ExtAdvS adv = insertBeforeAux (adv.s ++ SOFT_BIND ++ ",")  ;
 
 -- There's an SubjS already in AdverbEus -- should this be deprecated?
   -- : S -> Subj -> S -> S ; 
@@ -81,8 +81,9 @@ lin
   RelS sent rs = insertBeforeAux (rs.s ! Hau ++ SOFT_BIND ++ ",") sent ;
 
 oper 
-  insertBeforeAux : Str -> Sentence -> Sentence = \str,sent -> 
-    sent ** { beforeAux = str ++ sent.beforeAux } ;
+  insertBeforeAux : Str -> { s : Sentence } -> { s : Sentence } = \str,sent -> 
+    let newS = sent.s ** { beforeAux = str ++ sent.s.beforeAux } ;
+     in { s = newS };
   
   invarNP : Str -> NounPhrase = \str ->
     { s = \\c => str ;

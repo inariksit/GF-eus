@@ -26,10 +26,10 @@ lin
     --: Subj -> S -> Adv ;
   SubjS subj s = 
   	let auxFull : Str = 
-  		if_then_Str subj.isPre (glue subj.s s.aux.indep)  -- badator
-  		 				       (glue s.aux.stem subj.s) ; -- datorrenean
+  		if_then_Str subj.isPre (glue subj.s s.s.aux.indep)  -- badator
+  		 				       (glue s.s.aux.stem subj.s) ; -- datorrenean
 
-    in { s = s.beforeAux ++ auxFull ++ s.afterAux } ;
+    in { s = s.s.beforeAux ++ auxFull ++ s.s.afterAux } ;
 
 -- Comparison adverbs also work as numeral adverbs.
 

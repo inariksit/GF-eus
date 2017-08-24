@@ -7,8 +7,8 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 --2 Sentences and clauses
 -- Constructed in SentenceEus, and also in IdiomEus
 
-    S  = ResEus.Sentence ; --must keep words separate, because we may add Subj particles for Adv
-    QS = ClType => ResEus.Sentence ;
+    S  = { s : ResEus.Sentence } ; --must keep words separate, because we may add Subj particles for Adv
+    QS = { s : ClType => ResEus.Sentence } ;
     RS = { s : Agr => Str };  -- relative sentence. Tense and polarity fixed,
                               -- but agreement may depend on the CN/NP it modifies:
                               -- `gorriak diren txakurrak' vs. `gorria den txakurra'
@@ -18,7 +18,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
     Cl = ResEus.Clause ; 
     ClSlash = ResEus.ClSlash ;
-    SSlash  = ResEus.Sentence ; -- sentence missing NP           e.g. "she has looked at"
+    SSlash  = { s : ResEus.Sentence } ; -- sentence missing NP           e.g. "she has looked at"
     Imp     = { s : Str } ;   -- imperative                    e.g. "look at this"
 
 --2 Questions and interrogatives
@@ -124,7 +124,7 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 
 
 linref
-    S = linS ;
+    S = \s -> linS s.s ;
     Cl = linCl ;
     VP = linVP ;
     CN = linCNIndef ;

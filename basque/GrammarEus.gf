@@ -11,10 +11,10 @@ concrete GrammarEus of Grammar =
   PhraseEus,
   TextX,
   StructuralEus,
---  IdiomEus,
+  IdiomEus,
   TenseX
   ** {
-
+  
 flags startcat = Phr ; unlexer = text ; lexer = text ;
 
 } ;

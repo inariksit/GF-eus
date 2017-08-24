@@ -1,6 +1,7 @@
+
 --1 Idiom: Idiomatic Expressions
 
-concrete IdiomEus = CatEus ** open Prelude, ResEus in {
+concrete IdiomEus of Idiom = CatEus ** open Prelude, ResEus in {
 
 -- This module defines constructions that are formed in fixed ways,
 -- often different even in closely related languages.
@@ -21,10 +22,12 @@ concrete IdiomEus = CatEus ** open Prelude, ResEus in {
     ExistNPAdv : NP -> Adv -> Cl ;    -- there is a house in Paris
     ExistIPAdv : IP -> Adv -> QCl ;   -- which houses are there in Paris
 -}
-    -- : VP -> VP ;        -- garbitzen ari ziren
-    ProgrVP vp = vp ** { prc = \\tns => vp.nstem ! Pres ++ "ari" } ;
+  -- : VP -> VP ;        -- garbitzen ari ziren
+  ProgrVP vp = vp ** { prc = \\tns => vp.prc ! Pres ++ "ari" } ;
+
+  -- : VP -> Utt ;       -- let's go
+  ImpPl1 vp = { s = linVPPrc vp } ;
 {-
-    ImpPl1    : VP -> Utt ;       -- let's go
 
     ImpP3     : NP -> VP -> Utt ; -- let John walk
 
