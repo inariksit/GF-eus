@@ -6,12 +6,12 @@ lin
 -----
 -- VP
 
-  UseV = ResEus.useV ;
+  UseV = ResEus.useVda ;
 
   -- : VV  -> VP -> VP ;  -- [lo egin/neska ikusi/jakin] nahi/ahal/behar dut
   ComplVV vv vp = 
     let vcomp : Str = linVPPrc vp ;
-    in ResEus.insertComp vcomp (useV vv) ;
+    in ResEus.insertComp vcomp (useVdu vv) ;
 
 
   -- : VS  -> S  -> VP ;  -- uste dut [neska etorriko dela]
@@ -19,53 +19,58 @@ lin
   -- In Extra: ComplVS that takes the S with other suffixes (-en,-tzera)
   ComplVS vs s =
     let scomp : Str = linSSub s.s "la" ;
-    in ResEus.insertComp scomp (useV vs) ;
+    in ResEus.insertComp scomp (useVda vs) ;
 
   -- : VQ -> QS -> VP ;   -- ez dakit [nor den]
   ComplVQ vq qs = 
     let qi : Sentence = qs.s ! Indir ; -- choose the version without al
         qcomp : Str = linSSub qi "n" ;
-    in ResEus.insertComp qcomp (useV vq) ;
+    in ResEus.insertComp qcomp (useVdu vq) ;
 
   -- : VA -> AP -> VP ;  -- they become red
-  ComplVA va ap = ResEus.insertComp (CompAP ap).s (useV va) ;
+  ComplVA va ap = ResEus.insertComp (CompAP ap).s (useVda va) ;
 
 
 --------
 -- Slash
 
   -- : V2 -> VPSlash
-  SlashV2a = ResEus.slashDObj ;
+  SlashV2a v2 = ResEus.slashDObj v2 **
+    { aux = Du v2.aux } ;
 
 
   -- : V3 -> NP -> VPSlash ; -- give it (to her)
   Slash2V3 v3 npNori = slashDObj v3 **
     { iobj = { s = npNori.s ! Dat ;
-               agr = npNori.agr }
+               agr = npNori.agr } ;
+      aux = Dio  -- No other auxiliary for 
     } ;
 
   -- : V3 -> NP -> VPSlash ; -- give (it) to her
   Slash3V3 v3 npNor = slashIObj v3 **
-    { dobj = npNor ** { s = mkDObj npNor } 
-    } ;
+    { dobj = npNor ** { s = mkDObj npNor } ;
+      aux = Dio } ;
 
 
   -- : V2V -> VP -> VPSlash ;  -- beg (her) to go
   SlashV2V v2v vp = slashDObj v2v **   -- TODO: something wrong in this function!
-    { comp = \\agr => linVPPrc vp } ; --How about agreement with tense of the main clause???
-    
+    { comp = \\agr => linVPPrc vp ;   --How about agreement with tense of the main clause???
+      aux = Dio } ;
 
   -- : V2S -> S  -> VPSlash ;  -- answer (to him) that it is good
   SlashV2S v2s s = slashDObj v2s **
-    { comp = \\agr => linSSub s.s "la" } ;
+    { comp = \\agr => linSSub s.s "la" ;
+      aux = Dio } ;
 
   -- : V2Q -> QS -> VPSlash ;  -- ask (him) who came
   SlashV2Q v2q qs = slashDObj v2q **
-    { comp = \\agr => linSSub (qs.s ! Indir) "la" } ;
+    { comp = \\agr => linSSub (qs.s ! Indir) "la" ;
+      aux = Dio } ;
 
   -- : V2A -> AP -> VPSlash ;  -- paint (it) red
   SlashV2A v2a ap = slashDObj v2a **
-    { comp = (CompAP ap).s } ;
+    { comp = (CompAP ap).s ;
+      aux = Du v2a.aux } ;
 
 
   -- : VPSlash -> NP -> VP
@@ -76,13 +81,17 @@ lin
                   -- Just like ComplVV except missing subject!
   SlashVV vv vps = ComplVV vv vps ** { missing = vps.missing ; 
                                        post = vps.post } ;
+
  
   -- : V2V -> NP -> VPSlash -> VPSlash ; -- beg me to buy
-  SlashV2VNP v2v np vps = 
-    ComplVV v2v vps **
-      { missing = vps.missing ;
-        post = vps.post ;
-        iobj = np ** { s = np.s ! Dat } } ;
+{-  SlashV2VNP v2v np vps = 
+    let vcomp : Str = linVPPrc vps ;
+        v2vp : VerbPhrase = useVdio v2v ;
+    in insertComp vcomp v2vp ** {
+          missing = vps.missing ;
+          post = vps.post ;
+          iobj = np ** { s = np.s ! Dat } } ;
+--} -- TODO figure out what's wrong
 
 --2 Other ways of forming verb phrases
 
@@ -90,7 +99,9 @@ lin
 -- copula-preceded complements.
 
   -- : VPSlash -> VP ;
-  ReflVP vps = complSlash vps buru_NP ; ------ TODO
+  ReflVP vps = 
+    let neureBurua : Agr => Str = \\a => reflPron ! a ++ "burua" ;
+    in vps ** insertComp neureBurua <vps : VerbPhrase> ;
 
   -- : Comp -> VP ;
   UseComp comp = insertComp comp.s (copulaVP comp.copula) ;
@@ -138,7 +149,7 @@ lin
   -- Complement : Type = {s : Agr => Str ; copula : SyntVerb1 } ;
 
   -- : AP  -> Comp ;
-  CompAP ap = { s = \\agr => ap.s ++ artDef ! getNum agr ! Abs ! ap.ph  ;
+  CompAP ap = { s = \\agr => ap.s ! agr ++ artDef ! getNum agr ! Abs ! ap.ph  ;
                 copula = Izan };
 
   -- : CN  -> Comp ;
@@ -159,9 +170,13 @@ lin
 oper 
 
   copulaVP : SyntVerb1 -> VerbPhrase = \izan ->
-    ResEus.useV { prc = \\tns => [] ; 
-                  nstem = case izan of { Izan => "izate" ; _ => "egote" } ; --TODO is this correct?
-                  val = Da izan } ;
+    ResEus.useVda { prc = \\tns => [] ; 
+                    nstem = case izan of 
+                             { Izan => "izate" ; 
+                               Egon => "egote" ;
+                               Ibili => "ibiltze" ;
+                               _ => nonExist } ;
+                    aux = izan } ;
 } 
 
 

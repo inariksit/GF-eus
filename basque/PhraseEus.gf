@@ -16,11 +16,11 @@ concrete PhraseEus of Phrase = CatEus ** open Prelude, ResEus in {
     UttIP ip = { s = ip.s ! Abs} ;
     UttIAdv iadv = iadv ;
     UttNP np = { s = np.s ! Abs} ;
-    UttVP vp = { s = linVP vp } ;
+    UttVP vp = { s = linVPPrc vp } ;
     UttAdv adv = adv ;
-    UttCN n = {s = n.s ! Hau ++ artDef ! Sg ! Abs ! n.ph } ;
+    UttCN n = {s = linCNDef n } ;
     UttCard n = n ;
-    UttAP ap = ap ;
+    UttAP ap = { s = ap.s ! Hau } ;
     UttInterj i = i ;
 
     NoPConj = {s = []} ;

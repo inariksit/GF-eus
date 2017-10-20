@@ -17,8 +17,8 @@ concrete TranslateEus of Translate =
   SymbolEus [PN, Symb, String, CN, Card, NP, MkSymb, SymbPN, CNNumNP],          ---- why only these?
   ConstructionEus,
 
---  ChunkEus [VPI,VPS],
-    ExtensionsEus [
+  ChunkEus,
+  ExtensionsEus [
  --   ListVPS,BaseVPS,ConsVPS,ConjVPS,ListVPI,BaseVPI,ConsVPI,ConjVPI,
  --   CompoundN,AdAdV,UttAdV,ApposNP,MkVPI, MkVPS, PredVPS, PassVPSlash, PassAgentVPSlash, CompoundAP,
  --   DirectComplVS, DirectComplVQ, FocusObjS

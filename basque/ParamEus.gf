@@ -12,14 +12,14 @@ param
   -- AditzTrinkoak has all the inflection tables fully spelt out, 
   -- and here we just make nice neat set of parameters that go into the verbs.
   SyntVerb1 = Izan | Egon | Ibili | Etorri | Joan ;
-  SyntVerb2 = Ukan | Jakin | Eduki ; --TODO others
+  SyntVerb2 = Ukan | IzanDat | Jakin | Eduki ;
 
 
   AuxType = Da SyntVerb1 
           | Du SyntVerb2 
-          | Zaio | Dio ;  --always Ukan ?
+          {-| Zaio-} | Dio ;  --always Ukan ?
 
-
+  AuxForm = APres | ACond | APast | AImp ; -- TODO: subjunctive & potential
 
 {-
    Type of adjectival phrase, e.g.

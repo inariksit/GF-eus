@@ -46,6 +46,9 @@ oper
   mkN2 = overload {
     mkN2 : Str -> N2 = \s -> lin N2 (mkNoun2 s genitive) ; 
     mkN2 : Str -> Case -> N2 = \s,cas -> lin N2 (mkNoun2 s cas) ;
+    mkN2 : N -> N2 = \n -> lin N2 (n2Noun2 n genitive) ;
+    mkN2 : N -> Case -> N2 = \n,cas -> lin N2 (n2Noun2 n cas) ;
+
   } ;
 
 --2 Adjectives
@@ -55,7 +58,7 @@ oper
     mkA : Str -> A -> A = \s,a -> irregAdvAdj s a 
   } ;
 
---  mkA2 : Str -> A2 = \s -> lin A2 (mkAdj s) ;
+  mkA2 : Str -> Prep -> A2 = \s,pp -> lin A2 (regAdj s ** { compl = pp }) ;
 
 
 
@@ -75,11 +78,11 @@ oper
   mkV2 = overload {
     mkV2 : Str -> V2 = \s -> lin V2 (mkVerbDu s) ;
 
-    mkV2 : Str -> AuxType -> V2 = \s,val -> lin V2 (mkVerbDa s ** { val = val }) ;
+    mkV2 : Str -> SyntVerb2 -> V2 = \s,aux -> lin V2 (mkVerbDu s ** { aux = aux }) ;
 
     mkV2 : Str -> V -> V2 = \lo,egin -> 
       lin V2 (egin ** { prc = \\t => lo ++ egin.prc ! t ;
-                        val = Du Ukan }) ;
+                        aux = Ukan }) ;
 
   } ;
 
@@ -87,7 +90,7 @@ oper
 
   mkV2A : Str -> V2A = \s -> lin V2A (mkVerbDu s) ;  -- Nor-nork   
   mkVQ : Str -> VQ = \s -> lin VQ (mkVerbDu s) ;  -- Nor-nork 
-  mkVS : Str -> VS = \s -> lin VS (mkVerbDu s) ;  -- Nor-nork
+  mkVS : Str -> VS = \s -> lin VS (mkVerbDa s) ;  -- Nor? beldur naiz [ez datorrela]
 
 
   mkV2V : Str -> V2V = \s -> lin V2V (mkVerbDio s) ; -- ??? TODO check valency
@@ -100,14 +103,14 @@ oper
   -- Verbs with non-inflecting participle
   -- These are just Verb, use izanV or egonV for intransitive and ukanV for transitive.
 
-  izanV : Str -> Verb = \bizi -> 
+  izanV : Str -> Verb1 = \bizi -> 
     mkVerbDa bizi ** { prc = \\_ => bizi } ; -- Non-inflecting participle, auxtype is Da (nor): e.g. "bizi naiz", "beldur naiz"
 
-  egonV : Str -> Verb = \zain -> 
+  egonV : Str -> Verb1 = \zain -> 
     mkVerbDaEgon zain ** { prc = \\_ => zain } ; -- Non-inflecting participle, auxtype is Da (nor), but with egon: e.g. "zain nago"
 
 
-  ukanV : Str -> Verb = \maite -> 
+  ukanV : Str -> Verb2 = \maite -> 
     mkVerbDu maite ** { prc = \\_ => maite } ; -- Non-inflecting participle, auxtype is Du (nor-nork): e.g, "maite zaitut"
 
 
@@ -154,7 +157,7 @@ oper
   AuxType = ResEus.AuxType ;
   da = Da Izan ;
   du = Du Ukan ;
-  zaio = Zaio ;
+  zaio = Du IzanDat ;
   dio = Dio ;
 
   Case = ResEus.Case ;

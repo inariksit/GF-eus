@@ -5,7 +5,8 @@ coding=utf8 ;
 
 
 --------------------------------------------------------------------
--- Articles 
+-- Articles
+
 oper
 
   artDef : Number => Case => Phono => Str =
@@ -149,7 +150,7 @@ oper
     in { s = stem ; ph = phono ; anim=Inan } ; 
 
   mkNoun2 : Str -> Case -> Noun2 = \s,cas -> mkNoun s ** { compl1 = mkPost [] cas False } ;
-
+  n2Noun2 : Noun -> Case -> Noun2 = \n,cas -> n ** { compl1 = mkPost [] cas False } ;
   mkPNoun : Str -> PNoun = \s -> mkNoun s ** {nbr = Sg ; anim=Anim} ; 
 
 
@@ -199,8 +200,8 @@ oper
 ---      { Abs => "hargle"; Erg => "bargle" }
 -- the field .agr. is of type Agr.   
 
-  buru_NP : NounPhrase = { s = \\_ => "buru" ;
-                           stem = "buru" ;
+  empty_NP : NounPhrase = { s = \\_ => [] ;
+                           stem = [] ;
                            agr = Hau ; 
                            anim = Anim ; 
                            isDef = True } ;
@@ -248,15 +249,23 @@ oper
   inanPron : (x1,_,_,_,x5 : Str) -> Agr -> Pronoun = \zer,zeri,zerk,zere,zertaz,a ->
     persPron zer zeri zerk zere zertaz a ** { anim = Inan } ;
 
-
+  reflPron : Agr => Str = table {
+    Ni   => "neure" ;
+    Hi _ => "heure" ;
+    Gu   => "geure" ;
+    Zu   => "zeure" ;
+    Zuek => "zeuen" ;
+    hau  => "haren" } ;
 --------------------------------------------------------------------
 -- Adjective and AP
 
-  Adjective : Type = {s : AForm => Str ; ph : Phono} ;
+  Adjective : Type = { s : AForm => Str ; ph : Phono } ;
 
   Adjective2 : Type = Adjective ** { compl : Postposizio } ;
 
-  AdjPhrase : Type = {s : Str ; ph : Phono ; typ : APType} ; 
+  AdjPhrase : Type = { s : Agr => Str ; 
+                       ph : Phono ; 
+                       typ : APType} ; 
 
   regAdj : Str -> Adjective = \s -> 
     let stem : Str = case last s of {
@@ -285,31 +294,33 @@ oper
 
   Verb : Type = { prc : Tense => Str ;
                   nstem : Str ; -- Nominal stem : ibiltze
-                  val : AuxType  --TODO change name of the field
-                } ;
+                } ; 
 
-  mkVerbDa : Str -> Verb = \s -> { val = Da Izan ;
+  Verb1 = Verb ** { aux : SyntVerb1 } ;
+  Verb2 = Verb ** { aux : SyntVerb2 } ;
+
+
+  mkVerbDa : Str -> Verb1 = \s -> { aux = Izan ;
                                    nstem = mkNStem s ;
                                    prc = mkPrc s } ;  
 
-  mkVerbDaEgon : Str -> Verb = \s -> { val = Da Egon ;
+  mkVerbDaEgon : Str -> Verb1 = \s -> { aux = Egon ;
                                        nstem = mkNStem s ;
                                        prc = mkPrc s } ; 
 
-  mkVerbDu : Str -> Verb = \s -> { val = Du Ukan ; 
+  mkVerbDu : Str -> Verb2 = \s -> { aux = Ukan ; 
                                    nstem = mkNStem s ;
                                    prc = mkPrc s } ; 
 
-  mkVerbDio : Str -> Verb = \s -> { val = Dio ; 
-                                    nstem = mkNStem s ;
+  mkVerbDio : Str -> Verb = \s -> { nstem = mkNStem s ;
                                     prc = mkPrc s } ; 
 
   -- Synthetic verbs 
-  syntVerbDa : Str -> SyntVerb1 -> Verb = \sEtorri,pEtorri ->
-    mkVerbDa sEtorri ** { val = Da pEtorri } ;
+  syntVerbDa : Str -> SyntVerb1 -> Verb1 = \sEtorri,pEtorri ->
+    mkVerbDa sEtorri ** { aux = pEtorri } ;
 
-  syntVerbDu : Str -> SyntVerb2 -> Verb = \sJakin,pJakin ->
-    mkVerbDu sJakin ** { val = Du pJakin } ;
+  syntVerbDu : Str -> SyntVerb2 -> Verb2 = \sJakin,pJakin ->
+    mkVerbDu sJakin ** { aux = pJakin } ;
 
   mkNStem : Str -> Str = \ikusi ->
     let ikus : Str = case ikusi of {
@@ -342,7 +353,9 @@ oper
 
   DObj : Type = Polarity => Str ;
 
-  VerbPhrase : Type = 
+
+  -- A hack to make subtyping possible
+  VPLite : Type = 
     Verb ** { dobj : { s : DObj ;
                        agr : Agr ; 
                        isDef : Bool } ; --Indefinite direct object turns into Partitive with negative polarity.
@@ -351,30 +364,34 @@ oper
               comp : Agr => Str ; -- Comps depend on Agr; AuxType is always Nor.
               adv : Str } ;
 
+  VPSlashLite : Type = 
+    VPLite ** { post : Postposizio ; 
+                missing : MissingArg } ;  
+
+  -- The types used in CatEus
+  VerbPhrase : Type = VPLite ** { aux : AuxType } ; 
+
 
   VPSlash : Type =  --VPSlashPrep may specify a postposition to use (for adv slot)
     VerbPhrase ** { post : Postposizio ; 
                     missing : MissingArg } ;  
-
 
 param 
   MissingArg = MissingAdv | MissingDObj | MissingIObj ;
 
 oper
   --to be used in linref, PhraseEus ... anything where a VP is turned into string!
-  linVP : VerbPhrase -> Str = linVPTense Pres Pres ;
+  linVP : VerbPhrase -> Str = linVPTense Pres Simul ;
 
-  linVPTense : Tense -> Tense -> VerbPhrase -> Str = 
-   \tnsPrc,tnsAux,vp ->
-   let prc = case vp.val of {
-      Da Izan => vp.nstem ;
-      Da Egon => vp.nstem ;
-      _       => vp.prc ! tnsPrc } ;
+  linVPTense : Tense -> Anteriority -> VerbPhrase -> Str = \t,a,vp ->
+   let verb = case isSynthetic vp.aux of {
+                    True  => verbformSynthetic t a vp ;
+                    False => verbformPeriphrastic t a vp } ;     
    in 
     vp.adv 
     ++ vp.iobj.s ++ vp.dobj.s ! Pos ++ vp.comp ! Hau  --all the compls!
-    ++ prc
-    ++ (chooseAux vp ! tnsAux ! Hau).indep ;
+    ++ verb.prc
+    ++ (verb.aux ! Hau).indep ;
 
   -- Used in ComplVV : does not include aux!
   linVPPrc : VerbPhrase -> Str = \vp ->  --TODO make it less of a hack.
@@ -386,7 +403,7 @@ oper
   -----
   -- Create VP or VPSlash from various Verbs
 
-  useV : Verb -> VerbPhrase = \v -> 
+  useV : Verb -> VPLite = \v -> 
     v ** { dobj = { agr = Hau ; -- This will be used for *all* V* becoming VP! 
                               -- e.g. VQ, VS, ... will use a Du copula, but 
                               -- the sentence complement will be stored in comp field.
@@ -401,13 +418,25 @@ oper
            adv  = [] ;
            comp = \\agr => [] } ;
 
-  slashV : MissingArg -> Verb -> VPSlash = \missingArg,vstar -> useV vstar ** 
+
+  useVdu : Verb2 -> VerbPhrase = \v ->
+    useV v ** { aux = Du v.aux } ;
+
+  useVda : Verb1 -> VerbPhrase = \v -> 
+    useV v ** { aux = Da v.aux } ;
+
+  useVdio : Verb -> VerbPhrase = \v ->
+    useV v ** { aux = Dio } ;
+
+
+
+  slashV : MissingArg -> Verb -> VPSlashLite = \missingArg,vstar -> useV vstar ** 
     { post = noPost ;
       missing = missingArg } ;
 
-  slashDObj : Verb -> VPSlash = slashV MissingDObj ; --works for V2, V2V, V2S, V2Q, V2A.
+  slashDObj : Verb -> VPSlashLite = slashV MissingDObj ; --works for V2, V2V, V2S, V2Q, V2A.
 
-  slashIObj : Verb -> VPSlash = slashV MissingIObj ; --only Slash3V3
+  slashIObj : Verb -> VPSlashLite = slashV MissingIObj ; --only Slash3V3
 
   -----
   -- Modify existing VPs
@@ -472,16 +501,16 @@ oper
   clFromSlash : NounPhrase -> ClSlash -> Clause = \o,cls -> 
     let obj = o ** { s = mkDObj o } ;
         vp = cls ** { dobj = obj } ; --Insert the object's agr into the cls's dobj!
-        subj = buru_NP ** cls.subj ; -- Just a dummy NP, we won't use more than is in cls.subj
+        subj = empty_NP ** cls.subj ; -- Just a dummy NP, we won't use more than is in cls.subj
      in mkClause True subj vp ;
 
   mkClause : (isIP : Bool) -> NounPhrase -> VerbPhrase -> Clause = \isIP,subj,vp ->
     { s = \\t,a,pol =>
-        let verb = case isSynthetic vp.val of {
+        let verb = case isSynthetic vp.aux of {
                       True  => verbformSynthetic t a vp ;
                       False => verbformPeriphrastic t a vp 
             } ;
-            sc : Case = subjCase vp.val ;
+            sc : Case = subjCase vp.aux ;
         in wordOrder isIP 
                      { pol = pol ;
                        adv = vp.adv ;
@@ -496,22 +525,22 @@ oper
   verbformPeriphrastic : Tense -> Anteriority -> VerbPhrase -> {aux : Agr => VForms ; prc : Str} = \t,a,vp ->
     let adl : IntransV = chooseAux vp ;
     in case <t,a> of {
-      <Pres,Simul> => {aux = adl ! Pres ; prc = vp.prc ! Pres} ; --noa / lo egiten da
-      <Pres,Anter> => {aux = adl ! Pres ; prc = vp.prc ! Past} ; --joan da / lo egin da
-      <Past,Simul> => {aux = adl ! Past ; prc = vp.prc ! Pres} ; --nindoan / lo egiten zen
-      <Past,Anter> => {aux = adl ! Past ; prc = vp.prc ! Past} ; --joan nintzen / ...
-      <Fut,Simul>  => {aux = adl ! Pres ; prc = vp.prc ! Fut} ;  --joango da
-      <Fut,Anter>  => {aux = adl ! Pres ; prc = vp.prc ! Fut} ; --joango nintzen
-      <Cond,Simul> => {aux = adl ! Cond ; prc = vp.prc ! Fut} ;  --joango nintzateke
-      <Cond,Anter> => {aux = adl ! Cond ; prc = vp.prc ! Past} } ;--joan nintzateke
+      <Pres,Simul> => {aux = adl ! APres ; prc = vp.prc ! Pres} ; --noa / lo egiten da
+      <Pres,Anter> => {aux = adl ! APres ; prc = vp.prc ! Past} ; --joan da / lo egin da
+      <Past,Simul> => {aux = adl ! APast ; prc = vp.prc ! Pres} ; --nindoan / lo egiten zen
+      <Past,Anter> => {aux = adl ! APast ; prc = vp.prc ! Past} ; --joan nintzen / ...
+      <Fut,Simul>  => {aux = adl ! APres ; prc = vp.prc ! Fut} ;  --joango da
+      <Fut,Anter>  => {aux = adl ! APres ; prc = vp.prc ! Fut} ; --joango nintzen
+      <Cond,Simul> => {aux = adl ! ACond ; prc = vp.prc ! Fut} ;  --joango nintzateke
+      <Cond,Anter> => {aux = adl ! ACond ; prc = vp.prc ! Past} } ;--joan nintzateke
   
   --TODO: write a fallback for synthetic verbs without all forms
   verbformSynthetic : Tense -> Anteriority -> VerbPhrase -> {aux : Agr => VForms ; prc : Str} = \t,a,vp ->
     let adt : IntransV = chooseAux vp ;
     in case <t,a> of {
-      <Pres,Simul> => {aux = adt ! Pres ; prc = []} ;         --noa 
-      <Past,Simul> => {aux = adt ! Past ; prc = []} ;         --nindoan
-      _            => verbformPeriphrastic t a (vp ** {val = defaultAux vp.val}) } ;
+      <Pres,Simul> => {aux = adt ! APres ; prc = []} ;         --noa 
+      <Past,Simul> => {aux = adt ! APast ; prc = []} ;         --nindoan
+      _            => verbformPeriphrastic t a (vp ** {val = defaultAux vp.aux}) } ;
 
 
 
@@ -519,10 +548,10 @@ oper
 
   --TODO: add other synthetic transitive verbs
   chooseAuxPol : Polarity -> VerbPhrase -> IntransV = \pol,vp -> 
-    case vp.val of {
-      Da x     => AditzTrinkoak.syntIntransVerb (Da x) ;
+    case vp.aux of {
+      Da x => AditzTrinkoak.syntIntransVerb (Da x) ;
 
-      Zaio   => AditzTrinkoak.ukanZaio ! vp.iobj.agr ; --are there other Zaio (nor-nori) verbs?
+ --     Du IzanDat => AditzTrinkoak.izanZaio ! vp.dobj.agr ; --are there other Zaio (nor-nori) verbs?
 
       Du x =>
         let aux = AditzTrinkoak.syntTransVerb (Du x) 
@@ -564,7 +593,7 @@ oper
  
 
   mkClSlash : NounPhrase -> VPSlash -> ClSlash = \np,vps ->
-    let sc : Case = subjCase vps.val ;
+    let sc : Case = subjCase vps.aux ;
     in vps ** { subj = np };
 
 ------------------------------------------------
@@ -592,13 +621,13 @@ oper
             subjAgr : Agr = case cls.objFixed of {
                              True  => agr ;
                              False => cls.subj.agr } ;
-            sc : Case = subjCase cls.val ;
+            sc : Case = subjCase cls.aux ;
 
             -- We make sure that the agr param in RS affects the right argument
             cls' = cls ** { dobj = cls.dobj ** { agr = objAgr } ;
                             subj = cls.subj ** { agr = subjAgr } } ; 
 
-            verb = case isSynthetic cls.val of {
+            verb = case isSynthetic cls.aux of {
                       True  => verbformSynthetic t a cls' ;
                       False => verbformPeriphrastic t a cls' } ;
         in  cls'.adv 

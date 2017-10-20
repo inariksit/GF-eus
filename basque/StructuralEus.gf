@@ -62,9 +62,8 @@ lin not_Predet = { s = "ez" } ;
 lin only_Predet = { s = "bakarrik" } ;
 lin most_Predet = { s = "gehien" } ;
 
-lin every_Det = R.defDet [] sg ** -- egun+ero "every day" --TODO: urtero *urte+ero
-                 { s = \\c,_ => SOFT_BIND ++ "ero" 
-                              ++ R.artDef ! R.Sg ! c ! R.FinalVow } ; 
+lin every_Det = R.defDet [] pl **
+                 { s = \\c,_ => "guzti" ++ R.artDef ! R.Pl ! c ! R.FinalVow } ; 
 lin few_Det = R.indefDet "gutxi" pl ;
 lin many_Det = R.indefDet "asko" pl ;
 lin much_Det = R.indefDet "asko" sg ;
@@ -96,8 +95,8 @@ oper
 -- Prep
 
 lin above_Prep = mkPrep "gainean" ;
-lin after_Prep = mkPrep "ondoan" ;
-lin before_Prep = mkPrep "gabe" absolutive ;
+lin after_Prep = mkPrep "ondoren" ;
+lin before_Prep = mkPrep "aurretik" ;
 lin behind_Prep = mkPrep "atzean"  ;
 lin between_Prep = mkPrep "artean"  ; --`bitartean' for time
 lin by8agent_Prep = mkPrep [] ergative ; -- choose just case, no separate postposition
@@ -110,7 +109,7 @@ lin in8front_Prep = mkPrep "aurrean"  ;
 lin in_Prep = mkPrep [] inessive ;
 lin on_Prep = mkPrep "gainean"   ; 
 lin part_Prep = mkPrep [] partitive ; 
-lin possess_Prep = mkPrep [] ; --Genitive. TODO add locative genitive in extra
+lin possess_Prep = mkPrep [] ; -- Possessive genitive. Locative genitive in wide-coverage.
 lin through_Prep = mkPrep "barrena" inessive  ; -- ?
 lin to_Prep = mkPrep [] dative ; --"I gave it to Fran", not "I went to school"
 lin under_Prep = mkPrep "azpian"   ;

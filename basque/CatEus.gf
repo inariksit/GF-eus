@@ -102,17 +102,32 @@ concrete CatEus of Cat = CommonX ** open ResEus, Prelude in {
 -- These are constructed in LexiconEus and in 
 -- additional lexicon modules.
 
-    V,
-    V2,
-    V3,
-    VV,    -- verb-phrase-complement verb         e.g. "want"
-    VS,    -- sentence-complement verb            e.g. "claim"
-    VQ,    -- question-complement verb            e.g. "wonder"  
     VA,    -- adjective-complement verb           e.g. "look"
+    VS,    -- sentence-complement verb            e.g. "claim"
+    V = ResEus.Verb ** { aux : SyntVerb1 } ;
+
+
+    VV,    -- verb-phrase-complement verb         e.g. "want"
+    VQ,    -- question-complement verb            e.g. "wonder"  
+    V2A, -- verb with NP and AP complement      e.g. "paint"
+    V2 = ResEus.Verb ** { aux : SyntVerb2 } ;   
+
     V2V,   -- verb with NP and V complement       e.g. "cause"
     V2S,   -- verb with NP and S complement       e.g. "tell"
     V2Q,   -- verb with NP and Q complement       e.g. "ask"
-    V2A = ResEus.Verb ;   -- verb with NP and AP complement      e.g. "paint"
+    V3 = ResEus.Verb ; -- No variation in AuxType
+
+    --V,
+    --V2,
+    --V3,
+    --VV,    -- verb-phrase-complement verb         e.g. "want"
+    --VS,    -- sentence-complement verb            e.g. "claim"
+    --VQ,    -- question-complement verb            e.g. "wonder"  
+    --VA,    -- adjective-complement verb           e.g. "look"
+    --V2V,   -- verb with NP and V complement       e.g. "cause"
+    --V2S,   -- verb with NP and S complement       e.g. "tell"
+    --V2Q,   -- verb with NP and Q complement       e.g. "ask"
+    --V2A = ResEus.Verb ;   -- verb with NP and AP complement      e.g. "paint"
 
     A = ResEus.Adjective ;
     A2  = ResEus.Adjective2 ;
